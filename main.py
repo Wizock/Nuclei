@@ -1,8 +1,5 @@
-from nuclei import app, import_tables
-
-import_tables(app)
+from nuclei import app
 
 if __name__ == "__main__":
-    
-    app.run(debug=True)
 
+    app.run(debug=True)

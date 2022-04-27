@@ -4,13 +4,18 @@ from secrets import token_urlsafe
 
 from flask import Flask
 from flask_admin import Admin
+from flask_caching import Cache
 from flask_cors import CORS
+from flask_debugtoolbar import DebugToolbarExtension
+from flask_dropzone import Dropzone
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
+from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
+from flask_uploads import IMAGES, UploadSet, configure_uploads
 
-from nuclei.database.register_models import import_tables
+from nuclei.database import import_tables
 
 
 # create app class
@@ -25,7 +30,6 @@ class Nuclei(Flask):
         self.config["MAIL_PORT"] = 465
         self.config["MAIL_USE_SSL"] = True
 
-
         self.db = SQLAlchemy(self)
         self.migrate = Migrate(self, self.db)
         self.login_manager = LoginManager(self)
@@ -33,7 +37,11 @@ class Nuclei(Flask):
         self.mail = Mail(self)
         self.admin = Admin(self, name="Nuclei")
         self.cors = CORS(self, resources={r"/*": {"origins": "*"}})
-        self.register_blueprints()
+        self.dropzone = Dropzone(self)
+        self.socketio = SocketIO(self)
+        self.cache = Cache(self)
+        self.debugtoolbar = DebugToolbarExtension(self)
+
         self.register_extensions()
 
     def return_db(self) -> SQLAlchemy:
@@ -42,8 +50,7 @@ class Nuclei(Flask):
     def register_blueprints(self):
         from nuclei.admin_interface.views import admin_interface_blueprint
         from nuclei.authentication.views import authentication_blueprint
-        from nuclei.compression_service.views import \
-            compression_service_blueprint
+        from nuclei.compression_service.views import compression_service_blueprint
 
         self.register_blueprint(compression_service_blueprint)
         self.register_blueprint(admin_interface_blueprint)
@@ -55,12 +62,14 @@ class Nuclei(Flask):
         self.login_manager.init_app(self)
         self.mail.init_app(self)
         self.cors.init_app(self)
+        self.dropzone.init_app(self)
+        self.socketio.init_app(self)
+        self.cache.init_app(self)
+        self.debugtoolbar.init_app(self)
+
 
 app = Nuclei(__name__)
 
 with app.app_context():
     import_tables(app)
-
-
-
-
+    app.register_blueprints()

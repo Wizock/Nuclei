@@ -2,8 +2,9 @@ from nuclei import app
 
 db = app.return_db()
 
+
 class CompressionService(db.Model):
-    __tablename__ = 'compression_service'
+    __tablename__ = "compression_service"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     # file path
@@ -18,4 +19,3 @@ class CompressionService(db.Model):
     file_hash_md5 = db.Column(db.String(255), nullable=True)
     # file base64
     file_base64 = db.Column(db.String(255), nullable=True)
-    
