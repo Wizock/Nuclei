@@ -7,7 +7,7 @@ from flask_admin import Admin
 from flask_caching import Cache
 from flask_cors import CORS
 from flask_debugtoolbar import DebugToolbarExtension
-from flask_login import LoginManager
+# from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_socketio import SocketIO
@@ -30,8 +30,8 @@ class Nuclei(Flask):
 
         self.db = SQLAlchemy(self)
         self.migrate = Migrate(self, self.db)
-        self.login_manager = LoginManager(self)
-        self.login_manager.login_view = "auth.login"
+        # self.login_manager = LoginManager(self)
+        # self.login_manager.login_view = "auth.login"
         self.mail = Mail(self)
         self.admin = Admin(self, name="Nuclei")
         self.cors = CORS(self, resources={r"/*": {"origins": "*"}})
@@ -56,7 +56,7 @@ class Nuclei(Flask):
     def register_extensions(self):
         self.db.init_app(self)
         self.migrate.init_app(self)
-        self.login_manager.init_app(self)
+        # self.login_manager.init_app(self)
         self.mail.init_app(self)
         self.cors.init_app(self)
         self.socketio.init_app(self)
