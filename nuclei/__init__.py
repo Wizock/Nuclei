@@ -7,13 +7,11 @@ from flask_admin import Admin
 from flask_caching import Cache
 from flask_cors import CORS
 from flask_debugtoolbar import DebugToolbarExtension
-from flask_dropzone import Dropzone
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
-from flask_uploads import IMAGES, UploadSet, configure_uploads
 
 from nuclei.database import import_tables
 
@@ -37,7 +35,6 @@ class Nuclei(Flask):
         self.mail = Mail(self)
         self.admin = Admin(self, name="Nuclei")
         self.cors = CORS(self, resources={r"/*": {"origins": "*"}})
-        self.dropzone = Dropzone(self)
         self.socketio = SocketIO(self)
         self.cache = Cache(self)
         self.debugtoolbar = DebugToolbarExtension(self)
@@ -62,7 +59,6 @@ class Nuclei(Flask):
         self.login_manager.init_app(self)
         self.mail.init_app(self)
         self.cors.init_app(self)
-        self.dropzone.init_app(self)
         self.socketio.init_app(self)
         self.cache.init_app(self)
         self.debugtoolbar.init_app(self)
