@@ -1,9 +1,10 @@
-from nturl2path import url2pathname
-import os
+import pathlib
 
 from flask import Blueprint, Flask, jsonify, render_template, request, url_for
+from nturl2path import url2pathname
 
 from .models import CompressionService, db
+from werkzeug.utils import secure_filename
 
 compression_service_blueprint = Blueprint(
     "compression_service",
@@ -36,17 +37,17 @@ def upload():
         file = request.files["file"]
         print(file)
         # get the file name
-        file_name = file.filename
+        file_name = secure_filename(file.filename)
         print(file_name)
-        # get the file path
-        file_path = os.path.join(os.getcwd(), "file_storage")
-        print(file_path)
+        # get pathlib to get the path to file_storage
+        file_storage_path = str(pathlib.Path.cwd()) + str(pathlib.Path(r"\nuclei\compression_service\file_storage"))+str(rf"\{file_name}")
+        print(file_storage_path)
         # save the file
-        file.save(file_path)
+        file.save(file_storage_path)
         # return the file path
-        return file_path
+        return file_storage_path
     else:
-        return '''
+        return """
             <!doctype html>
             <title>Upload new File</title>
             <h1>Upload new File</h1>
@@ -54,4 +55,4 @@ def upload():
             <input type=file name=file>
             <input type=submit value=Upload>
             </form>
-        '''
+        """
