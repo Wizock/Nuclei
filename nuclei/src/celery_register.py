@@ -29,4 +29,3 @@ class Celery_Register(object):
     def task_register(self) -> Celery:
         celery.Task = self.ContextTask
         return self.celery
-    
