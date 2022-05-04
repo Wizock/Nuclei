@@ -1,8 +1,8 @@
-from nuclei import Nuclei
+# from .type_aliases import Nuclei
 
 
 class Blueprints_Register(object):
-    def __init__(self, app: Nuclei):
+    def __init__(self, app):
         self.app = app
 
     def register_blueprints(self):

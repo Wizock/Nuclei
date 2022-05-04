@@ -1,8 +1,9 @@
-from kafka import KafkaConsumer, KafkaProducer
-import os
 import json
+import os
 import uuid
 from concurrent.futures import ThreadPoolExecutor
+
+from kafka import KafkaConsumer, KafkaProducer
 
 TOPIC_NAME = "EMAIL"
 consumer = KafkaConsumer(

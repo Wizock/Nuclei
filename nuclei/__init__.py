@@ -26,25 +26,25 @@ class Nuclei(Flask):
         return self
 
 
-from nuclei.src import *
+from nuclei.src.blueprint_register import Blueprints_Register
+from nuclei.src.database_register import Database_Register
 
 
 class Libraries(object):
     def __init__(self, app: Nuclei):
-        self.app = app
+
+        self.app: Nuclei = app
+        self.db_obj = Database_Register(app)
         self.blueprint_register = Blueprints_Register(self.app)
-        self.config_register = Config_Register(self.app)
-        self.extension_register = Extension_Register(self.app)
-        self.database_register = Database_Register(self.app)
+
+    def return_db(self) -> SQLAlchemy:
+        return self.db_obj.return_db()
+
+    def import_tables(self, app):
+        self.db_obj.import_tables(app)
 
 
 __app__ = Nuclei(__name__)
 __libraries__ = Libraries(__app__)
-
-
-with __app__.app_context():
-    __libraries__.blueprint_register.register_blueprints()
-    __libraries__.config_register.register_config()
-    __libraries__.extension_register.register_extensions()
-    __libraries__.database_register.import_tables(__app__)
-    __libraries__.database_register.register_extensions()
+__libraries__.blueprint_register.register_blueprints()
+__libraries__.import_tables(__app__)

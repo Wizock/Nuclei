@@ -1,5 +1,6 @@
-from nuclei import Nuclei
 import secrets
+
+from nuclei import Nuclei
 
 
 class Config_Register(object):

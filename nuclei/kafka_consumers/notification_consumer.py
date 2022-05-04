@@ -1,8 +1,9 @@
-from kafka import KafkaConsumer, KafkaProducer
-import os
 import json
+import os
 import uuid
 from concurrent.futures import ThreadPoolExecutor
+
+from kafka import KafkaConsumer, KafkaProducer
 
 TOPIC_NAME = "NOTIFICATION"
 consumer = KafkaConsumer(
@@ -25,6 +26,6 @@ def sendNotification(data):
 
 for notification in consumer:
 
-    notification_data = email.value
+    notification_data = notification.value
 
     sendNotification(notification_data)

@@ -1,6 +1,6 @@
-from nuclei import app
+from nuclei import __libraries__
 
-db = app.return_db()
+db = __libraries__.return_db()
 
 
 class CompressionService(db.Model):

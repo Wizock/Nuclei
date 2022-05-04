@@ -13,7 +13,6 @@ class extensions(object):
         self.debugtoolbar = DebugToolbarExtension(self)
 
     def register_extensions(self):
-        self.db.init_app(self)
         self.migrate.init_app(self)
         self.mail.init_app(self)
         self.cors.init_app(self)

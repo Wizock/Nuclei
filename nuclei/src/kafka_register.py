@@ -1,7 +1,13 @@
-from nuclei import Nuclei
-from kafka import KafkaConsumer, KafkaProducer
-import os, json, uuid
+import json
+import os
+import uuid
 from concurrent.futures import ThreadPoolExecutor
+
+from kafka import KafkaConsumer, KafkaProducer
+
+from nuclei import Nuclei
+
+# https://medium.com/geekculture/streaming-model-inference-using-flask-and-kafka-3476d9ff5ca5
 
 
 class kafka_register(object):
@@ -13,7 +19,7 @@ class kafka_register(object):
         self.EMAIL_TOPIC = "EMAIL"
 
     def register_kafka(self):
-        
+
         self.consumer = KafkaConsumer(
             self.TOPIC_NAME,
             bootstrap_servers=self.KAFKA_SERVER,
@@ -36,7 +42,7 @@ class kafka_register(object):
             # to deserialize kafka.producer.object into dict
             value_deserializer=lambda m: json.loads(m.decode("utf-8")),
         )
-    
+
     def infrence_process_function(self, data):
         """
         . . . . .
