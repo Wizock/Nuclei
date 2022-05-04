@@ -16,6 +16,7 @@ from flask_migrate import Migrate
 from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 
+
 # create app class
 class Nuclei(Flask):
     def __init__(self, import_name, template_folder=None, root_path=None):
@@ -25,17 +26,7 @@ class Nuclei(Flask):
         return self
 
 
-from nuclei.blueprint_register import Blueprints_Register
-from nuclei.config_register import Config_Register
-from nuclei.database_register import Database_Register
-from nuclei.extension_register import extensions
-from nuclei.security_register import Security_Register
-from nuclei.socket_register import Socket_Register
-from nuclei.redis_register import Redis_Register
-from nuclei.celery_register import Celery_Register
-from nuclei.kafka_register import Kafka_Register
-
-
+from nuclei.src import *
 
 
 class Libraries(object):
@@ -45,7 +36,6 @@ class Libraries(object):
         self.config_register = Config_Register(self.app)
         self.extension_register = Extension_Register(self.app)
         self.database_register = Database_Register(self.app)
-
 
 
 __app__ = Nuclei(__name__)
