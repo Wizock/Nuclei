@@ -1,8 +1,14 @@
-import pathlib, os, shutil, base64, hashlib
+import base64
+import hashlib
+import os
+import pathlib
+import shutil
+
 from flask import Blueprint, Flask, jsonify, render_template, request, url_for
 from nturl2path import url2pathname
-from .models import CompressionService, db
 from werkzeug.utils import secure_filename
+
+from .models import CompressionService, db
 
 compression_service_blueprint = Blueprint(
     "compression_service",
@@ -18,6 +24,7 @@ def index():
     compression_services = CompressionService.query.all()
     return render_template("indexer.html", compression_services=compression_services)
 
+
 # file upload endpoint
 @compression_service_blueprint.route("/upload", methods=["POST", "GET"])
 def upload():
@@ -25,7 +32,11 @@ def upload():
         file = request.files["file"]
 
         file_name = secure_filename(file.filename)
-        file_storage_path = str(pathlib.Path.cwd()) + str(pathlib.Path(r"\nuclei\compression_service\file_storage"))+str(rf"\{file_name}")
+        file_storage_path = (
+            str(pathlib.Path.cwd())
+            + str(pathlib.Path(r"\nuclei\compression_service\file_storage"))
+            + str(rf"\{file_name}")
+        )
         file.save(file_storage_path)
 
         # get file size
@@ -33,7 +44,9 @@ def upload():
         # get file hash
         file_hash_md5 = hashlib.md5(open(file_storage_path, "rb").read()).hexdigest()
         # get file base64
-        file_base64 = base64.b64encode(open(file_storage_path, "rb").read()).decode("utf-8")
+        file_base64 = base64.b64encode(open(file_storage_path, "rb").read()).decode(
+            "utf-8"
+        )
         # get file extension
         file_extension = os.path.splitext(file_storage_path)[1]
         # get file path
