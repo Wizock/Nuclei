@@ -6,7 +6,11 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = "this-really-needs-to-be-changed"
-    SQLALCHEMY_DATABASE_URI = os.environ["DATABASE_URL"]
+    SQLALCHEMY_ECHO = False
+    SQLALCHEMY_RECORD_QUERIES = False
+    SQLALCHEMY_BIND_DECLARED_SOURCES = True
+    SQLALCHEMY_DATABASE_URI = "sqlite:///database/nuclei.db"
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class ProductionConfig(Config):
