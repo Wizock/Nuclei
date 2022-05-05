@@ -1,7 +1,7 @@
 # import dependances for the nuclei package
 import importlib
+import os
 import secrets
-from secrets import token_urlsafe
 
 # import flask_security
 from flask import Flask
@@ -17,6 +17,7 @@ from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 
 
+
 # create app class
 class Nuclei(Flask):
     def __init__(self, import_name, template_folder=None, root_path=None):
@@ -24,34 +25,42 @@ class Nuclei(Flask):
 
     def return_app(self) -> Flask:
         return self
-    
-    def import_config(self):
-        self.config.from_object("nuclei.config.Config")
-        self.config.from_pyfile("config.py")
+
+    def import_config(self) -> None:
+        return self.config.from_object("nuclei.config.Config")
 
 
-from nuclei.src.blueprint_register import Blueprints_Register
-from nuclei.src.database_register import Database_Register
+class NucleiApp(Nuclei):
+    def __init__(self, import_name, template_folder=None, root_path=None):
+        super().__init__(import_name, template_folder, root_path)
 
+    @staticmethod
+    def extension_init(self) -> None:
 
-class Libraries(object):
-    def __init__(self, app: Nuclei):
+        # create database instance
+        __db__ = database_object(__app__)
 
-        self.app: Nuclei = app
-        self.db_obj = Database_Register(app)
-        self.blueprint_register = Blueprints_Register(self.app)
+        # create cache instance
+        __cache__ = Cache(__app__)
+        # create admin instance
+        __admin__ = Admin(__app__, name="Nuclei", template_mode="bootstrap3")
+        # create migrate instance
+        __migrate__ = Migrate(__app__, __db__)
+        # create socketio instance
+        __socketio__ = SocketIO(__app__)
+        # create mail instance
+        __mail__ = Mail(__app__)
+        # create debugtoolbar instance
+        __debugtoolbar__ = DebugToolbarExtension(__app__)
+        # create cors instance
+        __cors__ = CORS(__app__)
+        # create login instance
 
-    def return_db(self) -> SQLAlchemy:
-        return self.db_obj.return_db()
+from nuclei.src.database_register import database_object
 
-    def import_tables(self):
-        self.db_obj.import_tables()
-
-
-__app__ = Nuclei(__name__).return_app()
-__libraries__ = Libraries(__app__)
+# create app instance
+__app__ = Nuclei(__name__)
 with __app__.app_context():
-    with __libraries__.return_db().engine.connect() as connection:
-        __libraries__.import_tables()
-    __libraries__.blueprint_register.register_blueprints()
-
+    __app__.import_config()
+    __deps__ = NucleiApp(__name__)
+    __deps__.extension_init(__app__)
