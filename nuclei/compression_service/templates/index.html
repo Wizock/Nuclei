@@ -1,0 +1,3 @@
+{% for imgs in img %}
+    <img height='720' width=' 1280' src="{{ url_for("compression_service.static", filename= imgs.file_name  )}}">
+{% endfor %}

@@ -1,5 +1,5 @@
 # todays goals
 
-- [] get the tree structure parser done
-- [] get the display the files uploaded
+- [x] get the tree structure parser done
+- [] display the uploaded files
 - [] get the compression demo going

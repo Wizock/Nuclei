@@ -1,3 +1,5 @@
+import os
+
 from ..extension_globals.database import db
 
 
@@ -17,6 +19,7 @@ class CompressionService(db.Model):
     file_hash_md5 = db.Column(db.String(255), nullable=True)
     # file base64
     file_base64 = db.Column(db.String(255), nullable=True)
+    # file url
 
     def __init__(
         self,
@@ -27,6 +30,7 @@ class CompressionService(db.Model):
         file_size,
         file_hash_md5="",
         file_base64="",
+        file_url="",
     ) -> None:
         self.name = name
         self.file_path = file_path

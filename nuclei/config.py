@@ -11,6 +11,9 @@ class Config(object):
     SQLALCHEMY_BIND_DECLARED_SOURCES = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///database/nuclei.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    UPLOAD_FOLDER = os.path.join(
+        os.getcwd(), "nuclei", "compression_service", "file_storage"
+    )
 
 
 class ProductionConfig(Config):
