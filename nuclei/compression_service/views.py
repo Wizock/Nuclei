@@ -15,13 +15,13 @@ compression_service_blueprint = Blueprint(
 
 
 from ..extension_globals.database import db
-from .models import CompressionService
+from .models import media_index, compression_index
 
 
 @compression_service_blueprint.route("/disp")
 def display():
     # query all compression services
-    compression_services = CompressionService.query.all()
+    compression_services = media_index.query.all()
 
     return render_template("index.html", img=compression_services)
 
@@ -48,7 +48,7 @@ def upload():
         # get file path
         file_path = os.path.dirname(file_storage_path)
         # create new CompressionService object
-        compression_service = CompressionService(
+        compression_service = media_index(
             name=file_name,
             file_path=file_path,
             file_name=file_name,
@@ -91,7 +91,7 @@ def compression(file_name):
     # get file path
     file_path = os.path.dirname(file_path_compressed)
     # create new CompressionService object
-    compression_service = CompressionService(
+    compression_service = compression_index(
         name=file_name,
         file_path=file_path,
         file_name=file_name,
