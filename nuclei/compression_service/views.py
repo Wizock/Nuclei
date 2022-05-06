@@ -134,5 +134,4 @@ def compression(file_name):
             db.session.add(compression_service)
             # commit changes to database
             db.session.commit()
-
             return file_path

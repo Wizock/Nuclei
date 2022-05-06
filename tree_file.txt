@@ -3,14 +3,13 @@
 Folder PATH listing for volume coding_drive
 Volume serial number is 90CE-93C1
 H:.
+|   Compressed_2295819.jpg
+|   image.jpg
 |   main.py
-|   monkeytype.sqlite3
-|   nuclei.db
 |   poetry.lock
 |   pyproject.toml
 |   README.md
 |   session_goals.md
-|   tempCodeRunnerFile.py
 |   tree_file.txt
 |   tree_structure.py
 |   
@@ -41,12 +40,15 @@ H:.
     |   |   views.py
     |   |   __init__.py
     |   |   
-    |   +---file_storage
-    |   |       2295819.jpg
-    |   |       My_project.jpg
-    |   |       
+    |   +---static
+    |   |   +---compressed
+    |   |   |       2295819.jpg
+    |   |   |       
+    |   |   \---imgs
+    |   |           2295819.jpg
+    |   |           
     |   +---templates
-    |   |       indexer.html
+    |   |       index.html
     |   |       
     |           
     +---database
