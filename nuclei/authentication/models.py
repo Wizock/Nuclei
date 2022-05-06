@@ -2,7 +2,7 @@ from ..extension_globals.database import db
 from ..extension_globals.praetorian import *
 
 
-class User_Auth(UserMixin,db.Model):
+class User_Auth(UserMixin, db.Model):
     __tablename__ = "user_auth"
 
     id = db.Column(db.Integer(), primary_key=True)
@@ -58,5 +58,6 @@ class User_Auth(UserMixin,db.Model):
 
     def is_valid(self):
         return self.is_active
+
 
 db.create_all()

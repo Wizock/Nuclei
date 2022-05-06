@@ -3,12 +3,11 @@ import hashlib
 import os
 import pathlib
 import shutil
+from pyguetzli import GueltZip
 
 from flask import Blueprint, Flask, jsonify, render_template, request, url_for
 from nturl2path import url2pathname
 from werkzeug.utils import secure_filename
-
-from .models import CompressionService, database
 
 compression_service_blueprint = Blueprint(
     "compression_service",
@@ -17,8 +16,11 @@ compression_service_blueprint = Blueprint(
     static_folder="/file_storage/",
 )
 
+from ..extension_globals.database import db
+from .models import CompressionService
 
-@compression_service_blueprint.route("/index")
+
+@compression_service_blueprint.route("/")
 def index():
     # query all compression services
     compression_services = CompressionService.query.all()
@@ -63,9 +65,9 @@ def upload():
             file_base64=file_base64,
         )
         # add new CompressionService object to database
-        database.session.add(compression_service)
+        db.session.add(compression_service)
         # commit changes to database
-        database.session.commit()
+        db.session.commit()
 
         return file_storage_path
     else:

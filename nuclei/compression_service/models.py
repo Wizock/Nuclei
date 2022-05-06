@@ -1,5 +1,6 @@
 from ..extension_globals.database import db
 
+
 class CompressionService(db.Model):
     __tablename__ = "compression_service"
     id = db.Column(db.Integer(), primary_key=True)
@@ -34,5 +35,6 @@ class CompressionService(db.Model):
         self.file_size = file_size
         self.file_hash_md5 = file_hash_md5
         self.file_base64 = file_base64
+
 
 db.create_all()

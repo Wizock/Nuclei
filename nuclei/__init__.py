@@ -18,6 +18,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from nuclei.extension_globals.database import db
 
+
 # create app class
 class Nuclei(Flask):
     def __init__(self, import_name, template_folder=None, root_path=None):
@@ -26,6 +27,7 @@ class Nuclei(Flask):
 
             self.import_config()
             self.import_db()
+            self.import_blueprints()
 
     def return_app(self) -> Flask:
         return self
@@ -35,11 +37,16 @@ class Nuclei(Flask):
 
     def import_db(self) -> None:
         db.init_app(self)
-        from nuclei.compression_service.models import CompressionService
         from nuclei.authentication.models import User_Auth
+        from nuclei.compression_service.models import CompressionService
 
         db.create_all()
-        
+
+    def import_blueprints(self) -> None:
+        from nuclei.compression_service.views import compression_service_blueprint
+
+        self.register_blueprint(compression_service_blueprint)
+
 
 # create app instance
-app = Nuclei(__name__, template_folder=os.path.join(os.getcwd(), "templates"))
+app = Nuclei(__name__)
