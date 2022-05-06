@@ -41,6 +41,8 @@ class media_index(db.Model):
         self.file_hash_md5 = file_hash_md5
         self.file_base64 = file_base64
         self.file_compressed = file_compressed
+
+
 class compression_index(db.Model):
     __tablename__ = "compression_index"
     id = db.Column(db.Integer(), primary_key=True)
@@ -79,5 +81,6 @@ class compression_index(db.Model):
         self.file_hash_md5 = file_hash_md5
         self.file_base64 = file_base64
         self.file_compressed = file_compressed
+
 
 db.create_all()

@@ -1,9 +1,14 @@
+import base64
+import hashlib
+import os
+import pathlib
+import shutil
+import sys
+
 from flask import Blueprint, Flask, jsonify, render_template, request, url_for
-import base64, hashlib, os, shutil, pathlib, sys
-from werkzeug.utils import secure_filename
 from nturl2path import url2pathname
 from PIL import Image
-
+from werkzeug.utils import secure_filename
 
 compression_service_blueprint = Blueprint(
     "compression_service",
@@ -15,7 +20,7 @@ compression_service_blueprint = Blueprint(
 
 
 from ..extension_globals.database import db
-from .models import media_index, compression_index
+from .models import compression_index, media_index
 
 
 @compression_service_blueprint.route("/disp")
@@ -24,6 +29,7 @@ def display():
     compression_services = media_index.query.all()
 
     return render_template("index.html", img=compression_services)
+
 
 # file upload endpoint
 @compression_service_blueprint.route("/upload", methods=["POST", "GET"])
@@ -42,7 +48,9 @@ def upload():
         # get file hash
         file_hash_md5 = hashlib.md5(open(file_storage_path, "rb").read()).hexdigest()
         # get file base64
-        file_base64 = base64.b64encode(open(file_storage_path, "rb").read()).decode("utf-8")
+        file_base64 = base64.b64encode(open(file_storage_path, "rb").read()).decode(
+            "utf-8"
+        )
         # get file extension
         file_extension = os.path.splitext(file_storage_path)[1]
         # get file path
@@ -65,27 +73,30 @@ def upload():
     else:
         return """<!doctype html> <title>Upload new File</title> <h1>Upload new File</h1> <form method=post enctype=multipart/form-data> <input type=file name=file> <input type=submit value=Upload> </form>"""
 
+
 @compression_service_blueprint.route("/compress/<file_name>")
 def compression(file_name):
     # get file path
     file_path = (
-            str(pathlib.Path.cwd())
-            + str(pathlib.Path(r"\nuclei\compression_service\static\imgs"))
-            + str(rf"\{file_name}")
-        )
+        str(pathlib.Path.cwd())
+        + str(pathlib.Path(r"\nuclei\compression_service\static\imgs"))
+        + str(rf"\{file_name}")
+    )
     file_path_compressed = (
-            str(pathlib.Path.cwd())
-            + str(pathlib.Path(r"\nuclei\compression_service\static\compressed"))
-            + str(rf"\{file_name}")
-        )
-    
+        str(pathlib.Path.cwd())
+        + str(pathlib.Path(r"\nuclei\compression_service\static\compressed"))
+        + str(rf"\{file_name}")
+    )
+
     picture = Image.open(file_path)
     picture.save(file_path_compressed, "JPEG", optimize=True, quality=50)
     file_size = os.path.getsize(file_path_compressed)
-        # get file hash
+    # get file hash
     file_hash_md5 = hashlib.md5(open(file_path_compressed, "rb").read()).hexdigest()
     # get file base64
-    file_base64 = base64.b64encode(open(file_path_compressed, "rb").read()).decode("utf-8")
+    file_base64 = base64.b64encode(open(file_path_compressed, "rb").read()).decode(
+        "utf-8"
+    )
     # get file extension
     file_extension = os.path.splitext(file_path_compressed)[1]
     # get file path
@@ -104,5 +115,5 @@ def compression(file_name):
     db.session.add(compression_service)
     # commit changes to database
     db.session.commit()
-    
+
     return file_path
