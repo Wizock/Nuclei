@@ -8,7 +8,7 @@ from flask import Blueprint, Flask, jsonify, render_template, request, url_for
 from nturl2path import url2pathname
 from werkzeug.utils import secure_filename
 
-from .models import CompressionService, db
+from .models import CompressionService, database
 
 compression_service_blueprint = Blueprint(
     "compression_service",
@@ -63,9 +63,9 @@ def upload():
             file_base64=file_base64,
         )
         # add new CompressionService object to database
-        db.session.add(compression_service)
+        database.session.add(compression_service)
         # commit changes to database
-        db.session.commit()
+        database.session.commit()
 
         return file_storage_path
     else:
