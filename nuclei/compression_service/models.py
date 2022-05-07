@@ -24,23 +24,23 @@ class media_index(db.Model):
 
     def __init__(
         self,
-        name,
-        file_path,
-        file_name,
-        file_extension,
-        file_size,
-        file_hash_md5="",
-        file_base64="",
-        file_compressed="",
+        name: str = "",
+        file_path: str = "",
+        file_name: str = "",
+        file_extension: str = "",
+        file_size: int = 0,
+        file_hash_md5: str = "",
+        file_base64: str = "",
+        file_compressed: bool = False,
     ) -> None:
-        self.name = name
-        self.file_path = file_path
-        self.file_name = file_name
-        self.file_extension = file_extension
-        self.file_size = file_size
-        self.file_hash_md5 = file_hash_md5
-        self.file_base64 = file_base64
-        self.file_compressed = file_compressed
+        self.name: str = name
+        self.file_path: str = file_path
+        self.file_name: str = file_name
+        self.file_extension: str = file_extension
+        self.file_size: int = file_size
+        self.file_hash_md5: str = file_hash_md5
+        self.file_base64: str = file_base64
+        self.file_compressed: bool = file_compressed
 
 
 class compression_index(db.Model):
@@ -64,23 +64,23 @@ class compression_index(db.Model):
 
     def __init__(
         self,
-        name,
-        file_path,
-        file_name,
-        file_extension,
-        file_size,
-        file_hash_md5="",
-        file_base64="",
-        file_compressed="",
+        name: str = "",
+        file_path: str = "",
+        file_name: str = "",
+        file_extension: str = "",
+        file_size: int = 0,
+        file_hash_md5: str = "",
+        file_base64: str = "",
+        file_compressed: bool = False,
     ) -> None:
-        self.name = name
-        self.file_path = file_path
-        self.file_name = file_name
-        self.file_extension = file_extension
-        self.file_size = file_size
-        self.file_hash_md5 = file_hash_md5
-        self.file_base64 = file_base64
-        self.file_compressed = file_compressed
+        self.name: str = name
+        self.file_path: str = file_path
+        self.file_name: str = file_name
+        self.file_extension: str = file_extension
+        self.file_size: int = file_size
+        self.file_hash_md5: str = file_hash_md5
+        self.file_base64: str = file_base64
+        self.file_compressed: bool = file_compressed
 
 
 db.create_all()

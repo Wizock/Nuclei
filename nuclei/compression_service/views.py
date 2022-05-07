@@ -5,7 +5,8 @@ import pathlib
 import shutil
 import sys
 
-from flask import Blueprint, Flask, jsonify, redirect, render_template, request, url_for
+from flask import (Blueprint, Flask, jsonify, redirect, render_template,
+                   request, url_for)
 from nturl2path import url2pathname
 from PIL import Image
 from sqlalchemy import false
@@ -24,19 +25,29 @@ from ..extension_globals.database import db
 from .models import compression_index, media_index
 
 
+@compression_service_blueprint.route("/")
 @compression_service_blueprint.route("/display/uncompressed/")
 def display_uncompressed():
     # query all compression services
     uncompressed = media_index.query.all()
 
-    return render_template("index.html", img=uncompressed, compressed=False)
+    return render_template("indexed_view.html", img=uncompressed, compressed=False)
+
 
 @compression_service_blueprint.route("/display/compressed/")
 def display_compressed():
     # query all compression services
     compressed = compression_index.query.all()
 
-    return render_template("index.html", img=compressed, compressed=True)
+    return render_template("indexed_view.html", img=compressed, compressed=True)
+
+
+@compression_service_blueprint.route("/precompressed/<name>")
+def precompressed(name):
+    # query all compression services
+
+    return render_template("indexed_view.html", img=name, compressed=True)
+
 
 # file upload endpoint
 @compression_service_blueprint.route("/upload", methods=["POST", "GET"])
@@ -93,34 +104,35 @@ def compression(file_name):
         ).first()
         if check_compression:
             # file is already compressed
-            return redirect(url_for("compression_service.display"))
+            return redirect(url_for("compression_service.display_compressed"))
         else:
-            file_path = (
+            file_path: str = (
                 str(pathlib.Path.cwd())
                 + str(pathlib.Path(r"\nuclei\compression_service\static\imgs"))
                 + str(rf"\{file_name}")
             )
-            file_path_compressed = (
+            file_path_compressed: str = (
                 str(pathlib.Path.cwd())
                 + str(pathlib.Path(r"\nuclei\compression_service\static\compressed"))
                 + str(rf"\{file_name}")
             )
-
-            picture = Image.open(file_path)
-            picture.save(file_path_compressed, "JPEG", optimize=True, quality=50)
-            file_size = os.path.getsize(file_path_compressed)
+            picture: Image = Image.open(file_path)
+            picture.save(file_path_compressed, "JPEG", optimize=True, quality=85)
+            file_size: int = os.path.getsize(file_path_compressed)
             # get file hash
-            file_hash_md5 = hashlib.md5(open(file_path_compressed, "rb").read()).hexdigest()
+            file_hash_md5:str = hashlib.md5(
+                open(file_path_compressed, "rb").read()
+            ).hexdigest()
             # get file base64
-            file_base64 = base64.b64encode(open(file_path_compressed, "rb").read()).decode(
-                "utf-8"
-            )
+            file_base64 : str= base64.b64encode(
+                open(file_path_compressed, "rb").read()
+            ).decode("utf-8")
             # get file extension
-            file_extension = os.path.splitext(file_path_compressed)[1]
+            file_extension: str = os.path.splitext(file_path_compressed)[1]
             # get file path
-            file_path = os.path.dirname(file_path_compressed)
+            file_path: str = os.path.dirname(file_path_compressed)
             # create new CompressionService object
-            compression_service = compression_index(
+            compression_service: compression_index = compression_index(
                 name=file_name,
                 file_path=file_path,
                 file_name=file_name,
