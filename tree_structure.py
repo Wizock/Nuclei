@@ -32,7 +32,7 @@ def rem_doubles():
     # remove extra ```py and ``` from tree_file.txt
     with open("tree_file.txt", "r") as f:
         lines = f.read()
-        lines = lines.replace("```py", "")
+        lines = lines.replace("```bat", "")
         lines = lines.replace("```", "")
         with open("tree_file.txt", "w") as f:
             f.write(lines)
@@ -41,7 +41,7 @@ def rem_doubles():
 def highlighting_wrapper():
     with open("tree_file.txt", "r") as f:
         lines = f.read()
-        lines = f"```py\n{lines}\n```"
+        lines = f"```bat\n{lines}\n```"
 
         with open("tree_file.txt", "w") as f:
             f.write(lines)
