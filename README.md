@@ -2,12 +2,12 @@
 
 # todays goals
 
-- [x] impliment the front end
-  - [x] create application flow
-  - [x] create clean index page
-  - [x] create good compression flow for images
-  - [x] create easy indexer for images
-  - [x] figure out if we can use a single image for all pages
+- [ ] impliment the front end
+  - [ ] create application flow
+  - [ ] create clean index page
+  - [ ] create good compression flow for images
+  - [ ] create easy indexer for images
+  - [ ] figure out if we can use a single image for all pages
 
 # File Structure
 ```py
