@@ -1,18 +1,7 @@
-# Nuclei
-
-# todays goals
-
-- [ ] impliment the front end
-  - [ ] create application flow
-  - [ ] create clean index page
-  - [ ] create good compression flow for images
-  - [ ] create easy indexer for images
-  - [ ] figure out if we can use a single image for all pages
-
-# File Structure
 ```py
 
-
+Folder PATH listing for volume coding_drive
+Volume serial number is 90CE-93C1
 H:.
 |   main.py
 |   poetry.lock
