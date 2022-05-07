@@ -10,9 +10,7 @@
   - [ ] figure out if we can use a single image for all pages
 
 # File Structure
-```py
-
-
+```bat
 H:.
 |   main.py
 |   poetry.lock
