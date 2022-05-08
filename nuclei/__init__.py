@@ -9,6 +9,7 @@ from flask_admin import Admin
 from flask_caching import Cache
 from flask_cors import CORS
 from flask_debugtoolbar import DebugToolbarExtension
+
 # from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
@@ -37,14 +38,12 @@ class Nuclei(Flask):
     def import_db(self) -> None:
         db.init_app(self)
         from nuclei.authentication.models import User_Auth
-        from nuclei.compression_service.models import (compression_index,
-                                                       media_index)
+        from nuclei.compression_service.models import compression_index, media_index
 
         db.create_all()
 
     def import_blueprints(self) -> None:
-        from nuclei.compression_service.views import \
-            compression_service_blueprint
+        from nuclei.compression_service.views import compression_service_blueprint
 
         self.register_blueprint(compression_service_blueprint)
 

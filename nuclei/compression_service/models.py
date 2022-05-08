@@ -21,6 +21,12 @@ class media_index(db.Model):
     file_base64 = db.Column(db.String(255), nullable=True)
     # file compressed bool
     file_compressed = db.Column(db.Boolean(), nullable=False)
+    # date created
+    date_created = db.Column(db.DateTime, nullable=False, default=db.func.now())
+    # date updated
+    date_created = db.Column(
+        db.DateTime, nullable=True, default=db.func.now(), onupdate=db.func.now()
+    )
 
     def __init__(
         self,
@@ -32,6 +38,8 @@ class media_index(db.Model):
         file_hash_md5: str = "",
         file_base64: str = "",
         file_compressed: bool = False,
+        date_created: str = "",
+        date_updated: str = "",
     ) -> None:
         self.name: str = name
         self.file_path: str = file_path
@@ -41,6 +49,8 @@ class media_index(db.Model):
         self.file_hash_md5: str = file_hash_md5
         self.file_base64: str = file_base64
         self.file_compressed: bool = file_compressed
+        self.date_created: str = date_created
+        self.date_updated: str = date_updated
 
 
 class compression_index(db.Model):
@@ -61,6 +71,12 @@ class compression_index(db.Model):
     file_base64 = db.Column(db.String(255), nullable=True)
     # file compressed bool
     file_compressed = db.Column(db.Boolean(), nullable=False)
+    # date created
+    date_created = db.Column(db.DateTime, nullable=False, default=db.func.now())
+    # date updated
+    date_created = db.Column(
+        db.DateTime, nullable=True, default=db.func.now(), onupdate=db.func.now()
+    )
 
     def __init__(
         self,
@@ -72,6 +88,8 @@ class compression_index(db.Model):
         file_hash_md5: str = "",
         file_base64: str = "",
         file_compressed: bool = False,
+        date_created: str = "",
+        date_updated: str = "",
     ) -> None:
         self.name: str = name
         self.file_path: str = file_path
@@ -81,6 +99,8 @@ class compression_index(db.Model):
         self.file_hash_md5: str = file_hash_md5
         self.file_base64: str = file_base64
         self.file_compressed: bool = file_compressed
+        self.date_created: str = date_created
+        self.date_updated: str = date_updated
 
 
 db.create_all()
