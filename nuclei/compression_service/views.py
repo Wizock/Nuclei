@@ -6,7 +6,17 @@ import pathlib
 import shutil
 import sys
 
-from flask import Blueprint, Flask, jsonify, redirect, render_template, request, url_for
+import sqlalchemy
+from flask import (
+    Blueprint,
+    Flask,
+    Response,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from nturl2path import url2pathname
 from PIL import Image
 from sqlalchemy import false
@@ -22,49 +32,64 @@ compression_service_blueprint = Blueprint(
 
 
 from ..extension_globals.database import db
-from .models import compression_index, media_index
+from .models import media_index
 
-@compression_service_blueprint.route("/display/compressed/<int:id>")
-def display_compressed_id(id):
+
+@compression_service_blueprint.route("/")
+@compression_service_blueprint.route("/index_design", methods=["POST", "GET"])
+def index_design():
+    # query media and compression models to get all media and compression objects
+    media = media_index.query.all()
+    media.sort(key=lambda x: x.date_created)
+    return render_template(
+        "dashboard.html", imgs=media
+    )
+
+
+@compression_service_blueprint.route("/display/compressed/<int:id>/<string:name>")
+def display_compressed_id(id: int, name: str):
     # query all compression services
-    compressed = compression_index.query.filter_by(id=id).first()
+    compressed = media_index.query.filter_by(
+        id=id, file_name=name, compressed=True
+    ).first()
     if not compressed:
         return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
     return render_template("individual_display.html", img=compressed, compressed=True)
 
-@compression_service_blueprint.route("/display/uncompressed/<int:id>")
-def display_uncompressed_id(id):
+
+@compression_service_blueprint.route("/display/uncompressed/<int:id>/<string:name>")
+def display_uncompressed_id(id: int, name: str):
     # query all compression services
-    uncompressed = compression_index.query.filter_by(id=id).first()
+    uncompressed = media_index.query.filter_by(
+        id=id, file_name=name, compressed=False
+    ).first()
     if not uncompressed:
         return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
-    return render_template("individual_display.html", img=uncompressed, compressed=True)
+    return render_template(
+        "individual_display.html", img=uncompressed, compressed=False
+    )
 
 
+@compression_service_blueprint.route("/sorted/compressed")
+def sorted_compressed_render():
+    # query all compression services
+    compressed = media_index.query.filter_by(compressed=True).all()
+    if not compressed:
+        return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
+    return render_template("grouped_rendering.html", img=compressed, compressed=True)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@compression_service_blueprint.route("/sorted/uncompressed")
+def sorted_uncompressed_render():
+    # query all compression services
+    uncompressed = media_index.query.filter_by(compressed=False).all()
+    if not uncompressed:
+        return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
+    return render_template("grouped_rendering.html", img=uncompressed, compressed=False)
 
 
 @compression_service_blueprint.route("/upload", methods=["POST", "GET"])
-def upload():
+def upload() -> Response:
     if request.method == "POST":
         file = request.files["file"]
         file_name = secure_filename(file.filename)
@@ -103,93 +128,39 @@ def upload():
         db.session.add(compression_service)
         # commit changes to database
         db.session.commit()
-        return file_storage_path
+        return redirect(url_for("compression_service.index_design"))
     else:
-        return """<!doctype html> <title>Upload new File</title> <h1>Upload new File</h1> <form method=post enctype=multipart/form-data> <input type=file name=file> <input type=submit value=Upload> </form>"""
+        return render_template("upload_template.html")
 
-@compression_service_blueprint.route("/index_design", methods=["POST", "GET"])
-def index_design():
-    # query media and compression models to get all media and compression objects
-    media = media_index.query.all()
-    compression = compression_index.query.all()
-    # combine both lists
-    combined = media + compression
-    # sort combined list by date_created
-    combined.sort(key=lambda x: x.date_created)
-    # return index.html
-    return render_template("dashboard.html", img=combined)
 
-@compression_service_blueprint.route("/existing_compression/<file_name>")
-def compress_uploaded(file_name):
+@compression_service_blueprint.route("/existing_compression/<int:id>/<string:name>")
+def compress_uploaded(id: int, name: str) -> Response:
     # check if file exists in database of either compressed or uncompressed files
-    file_exists = media_index.query.filter_by(file_name=file_name).first()
+    file_exists = media_index.query.filter_by(
+        id=id, file_name=name, compressed=True
+    ).first()
     if file_exists:
-        # check if file is already compressed
-        check_compression = compression_index.query.filter_by(
-            file_name=file_name
-        ).first()
-        if check_compression:
-            # file is already compressed
-            return redirect(url_for("compression_service.display_compressed"))
-        else:
-            file_path: str = (
-                str(pathlib.Path.cwd())
-                + str(pathlib.Path(r"\nuclei\compression_service\static\imgs"))
-                + str(rf"\{file_name}")
-            )
-            file_path_compressed: str = (
-                str(pathlib.Path.cwd())
-                + str(pathlib.Path(r"\nuclei\compression_service\static\compressed"))
-                + str(rf"\{file_name}")
-            )
-            picture: Image = Image.open(file_path)
-            picture.save(file_path_compressed, "JPEG", optimize=True, quality=85)
-            file_size: int = os.path.getsize(file_path_compressed)
-            # get file hash
-            file_hash_md5: str = hashlib.md5(
-                open(file_path_compressed, "rb").read()
-            ).hexdigest()
-            # get file base64
-            file_base64: str = base64.b64encode(
-                open(file_path_compressed, "rb").read()
-            ).decode("utf-8")
-            # get file extension
-            file_extension: str = os.path.splitext(file_path_compressed)[1]
-            # get file path
-            file_path: str = os.path.dirname(file_path_compressed)
-            # create new CompressionService object
-            compression_service: compression_index = compression_index(
-                name=file_name,
-                file_path=file_path,
-                file_name=file_name,
-                file_extension=file_extension,
-                file_size=file_size,
-                file_hash_md5=file_hash_md5,
-                file_base64=file_base64,
-                file_compressed=True,
-                date_created=datetime.datetime.now(),
-                date_updated=datetime.datetime.now(),
-            )
-            # add new CompressionService object to database
-            db.session.add(compression_service)
-            # commit changes to database
-            db.session.commit()
-            return file_path
-
-
-@compression_service_blueprint.route("/compression_upload")
-def compression_upload():
-    if request.method == "POST":
-        file = request.files["file"]
-        file_name = secure_filename(file.filename)
-
+        return redirect(f"/compression_service/display/compressed/{id}/{name}")
+    else:
+        file_path: str = (
+            str(pathlib.Path.cwd())
+            + str(pathlib.Path(r"\nuclei\compression_service\static\imgs"))
+            + str(rf"\{file_exists.file_name}")
+        )
         file_path_compressed: str = (
             str(pathlib.Path.cwd())
             + str(pathlib.Path(r"\nuclei\compression_service\static\compressed"))
-            + str(rf"\{file_name}")
+            + str(rf"\{file_exists.file_name}")
         )
-        picture: Image = Image.open(file_path)
-        picture.save(file_path_compressed, "JPEG", optimize=True, quality=85)
+        try:
+            picture: Image = Image.open(file_path)
+            picture.save(file_path_compressed, "JPEG", optimize=True, quality=85)
+        except OSError as e:
+            print(e)
+        finally:
+            picture: Image = Image.open(file_path)
+            rgb_im = picture.convert("RGB")
+            rgb_im.save(file_path_compressed, "JPEG", optimize=True, quality=85)
         file_size: int = os.path.getsize(file_path_compressed)
         # get file hash
         file_hash_md5: str = hashlib.md5(
@@ -204,7 +175,62 @@ def compression_upload():
         # get file path
         file_path: str = os.path.dirname(file_path_compressed)
         # create new CompressionService object
-        compression_service: compression_index = compression_index(
+        try:
+            compression_service = media_index.query.get(id)
+            compression_service.file_path = file_path
+            compression_service.file_name = file_exists.file_name
+            compression_service.file_extension = file_extension
+            compression_service.file_size = file_size
+            compression_service.file_hash_md5 = file_hash_md5
+            compression_service.file_base64 = file_base64
+            compression_service.file_compressed = True
+            compression_service.date_updated = datetime.datetime.now()
+            db.session.commit()
+        except Exception as e:
+            print(e)
+        return redirect(f"/compression_service/display/compressed/{id}/{name}")
+
+
+@compression_service_blueprint.route("/compression_upload", methods=["POST", "GET"])
+def compression_upload() -> Response:
+    if request.method == "POST":
+        file = request.files["file"]
+        file_name = secure_filename(file.filename)
+        file_path_static: str = (
+            str(pathlib.Path.cwd())
+            + str(pathlib.Path(r"\nuclei\compression_service\static\imgs"))
+            + str(rf"\{file_name}")
+        )
+        file_path_compressed: str = (
+            str(pathlib.Path.cwd())
+            + str(pathlib.Path(r"\nuclei\compression_service\static\compressed"))
+            + str(rf"\{file_name}")
+        )
+        try:
+            file.save(file_path_static)
+            picture: Image = Image.open(file_path_static)
+            picture.save(file_path_compressed, "JPEG", optimize=True, quality=85)
+        except OSError as e:
+            print(e)
+        finally:
+            picture: Image = Image.open(file_path_static)
+            rgb_im = picture.convert("RGB")
+            rgb_im.save(file_path_compressed, "JPEG", optimize=True, quality=85)
+        file_size: int = os.path.getsize(file_path_compressed)
+        # get file hash
+        file_hash_md5: str = hashlib.md5(
+            open(file_path_compressed, "rb").read()
+        ).hexdigest()
+        # get file base64
+        file_base64: str = base64.b64encode(
+            open(file_path_compressed, "rb").read()
+        ).decode("utf-8")
+        # get file extension
+        file_extension: str = os.path.splitext(file_path_compressed)[1]
+        # get file path
+        file_path: str = os.path.dirname(file_path_compressed)
+        # create new CompressionService object
+        compression_service: media_index = media_index(
             name=file_name,
             file_path=file_path,
             file_name=file_name,
@@ -220,6 +246,6 @@ def compression_upload():
         db.session.add(compression_service)
         # commit changes to database
         db.session.commit()
-        return file_path
+        return redirect(url_for("compression_service.index_design"))
     else:
-        return """<!doctype html> <title>Compress a file</title> <h1>Compress a file</h1> <form method=post enctype=multipart/form-data> <input type=file name=file> <input type=submit value=Upload> </form>"""
+        return render_template("upload_template.html")

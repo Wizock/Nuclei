@@ -1,8 +1,10 @@
-```py
+```bat
 
 Folder PATH listing for volume coding_drive
 Volume serial number is 90CE-93C1
 H:.
+|   .gitattributes
+|   .gitignore
 |   main.py
 |   poetry.lock
 |   pyproject.toml
@@ -46,7 +48,9 @@ H:.
     |   |           2295819.jpg
     |   |           
     |   +---templates
+    |   |       dashboard.html
     |   |       indexed_view.html
+    |   |       individual_display.html
     |   |       
     |           
     +---database

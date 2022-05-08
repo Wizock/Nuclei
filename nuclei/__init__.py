@@ -38,7 +38,7 @@ class Nuclei(Flask):
     def import_db(self) -> None:
         db.init_app(self)
         from nuclei.authentication.models import User_Auth
-        from nuclei.compression_service.models import compression_index, media_index
+        from nuclei.compression_service.models import media_index
 
         db.create_all()
 

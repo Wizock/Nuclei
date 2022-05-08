@@ -7,7 +7,7 @@
   - [x] create clean index page
   - [x] create good compression flow for images
   - [x] create easy indexer for images
-  - [ ] figure out if we can use a single image for all pages
+  - [ ] create iconified previews
 
 # File Structure
 
