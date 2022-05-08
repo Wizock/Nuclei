@@ -4,21 +4,19 @@
 
 - [ ] impliment the front end
   - [ ] create application flow
-  - [ ] create clean index page
-  - [ ] create good compression flow for images
-  - [ ] create easy indexer for images
+  - [x] create clean index page
+  - [x] create good compression flow for images
+  - [x] create easy indexer for images
   - [ ] figure out if we can use a single image for all pages
 
 # File Structure
+
 ```bat
 H:.
 |   main.py
 |   poetry.lock
 |   pyproject.toml
 |   README.md
-|   session_goals.md
-|   tree_file.txt
-|   tree_structure.py
 |   
 \---nuclei
     |   config.py
@@ -55,7 +53,9 @@ H:.
     |   |           2295819.jpg
     |   |           
     |   +---templates
+    |   |       dashboard.html
     |   |       indexed_view.html
+    |   |       individual_display.html
     |   |       
     |           
     +---database
@@ -67,7 +67,4 @@ H:.
     |   |   __init__.py
     |   |   
     |           
-            
-
-
 ```
