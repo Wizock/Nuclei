@@ -2,8 +2,7 @@
 
 # todays goals
 
-- [ ] impliment the front end
-  - [ ] create iconified previews
+
 
 - [ ] security measures
   - [ ] create a admin/superuser password protected login
@@ -84,3 +83,13 @@ H:.
     |   |   praetorian.py
     |   |   __init__.py
 ```
+
+# achived goals
+
+- [x] impliment the front end
+  - [x] create iconified previews
+  - [x] create application flow
+  - [x] create clean index page
+  - [x] create good compression flow for images
+  - [x] create easy indexer for images
+  - [x] figure out if we can use a single image for all pages
