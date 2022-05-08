@@ -3,23 +3,12 @@ import datetime
 import hashlib
 import os
 import pathlib
-import shutil
-import sys
 
-import sqlalchemy
-from flask import (
-    Blueprint,
-    Flask,
-    Response,
-    jsonify,
-    redirect,
-    render_template,
-    request,
-    url_for,
-)
-from nturl2path import url2pathname
+from flask import Blueprint, Response, redirect, render_template, request, url_for
+
+# import login required decorator
+from flask_login import login_required
 from PIL import Image
-from sqlalchemy import false
 from werkzeug.utils import secure_filename
 
 compression_service_blueprint = Blueprint(
@@ -29,24 +18,22 @@ compression_service_blueprint = Blueprint(
     url_prefix="/compression_service",
     static_folder="static/imgs",
 )
-
-
 from ..extension_globals.database import db
 from .models import media_index
 
 
 @compression_service_blueprint.route("/")
 @compression_service_blueprint.route("/index_design", methods=["POST", "GET"])
+@login_required
 def index_design():
     # query media models to get all media objects
     media = media_index.query.all()
     media.sort(key=lambda x: x.date_created)
-    return render_template(
-        "dashboard.html", img=media
-    )
+    return render_template("dashboard.html", img=media)
 
 
 @compression_service_blueprint.route("/display/compressed/<int:id>/<string:name>")
+@login_required
 def display_compressed_id(id: int, name: str):
     # query all compression services
     compressed = media_index.query.filter_by(
@@ -58,6 +45,7 @@ def display_compressed_id(id: int, name: str):
 
 
 @compression_service_blueprint.route("/display/uncompressed/<int:id>/<string:name>")
+@login_required
 def display_uncompressed_id(id: int, name: str):
     # query all compression services
     uncompressed = media_index.query.filter_by(
@@ -71,6 +59,7 @@ def display_uncompressed_id(id: int, name: str):
 
 
 @compression_service_blueprint.route("/sorted/compressed")
+@login_required
 def sorted_compressed_render():
     # query all compression services
     compressed = media_index.query.filter_by(file_compressed=True).all()
@@ -80,6 +69,7 @@ def sorted_compressed_render():
 
 
 @compression_service_blueprint.route("/sorted/uncompressed")
+@login_required
 def sorted_uncompressed_render():
     # query all compression services
     uncompressed = media_index.query.filter_by(file_compressed=False).all()
@@ -89,6 +79,7 @@ def sorted_uncompressed_render():
 
 
 @compression_service_blueprint.route("/upload", methods=["POST", "GET"])
+@login_required
 def upload() -> Response:
     if request.method == "POST":
         file = request.files["file"]
@@ -134,6 +125,7 @@ def upload() -> Response:
 
 
 @compression_service_blueprint.route("/existing_compression/<int:id>/<string:name>")
+@login_required
 def compress_uploaded(id: int, name: str) -> Response:
     # check if file exists in database of either compressed or uncompressed files
     file_is_compressed = media_index.query.filter_by(
@@ -192,6 +184,7 @@ def compress_uploaded(id: int, name: str) -> Response:
 
 
 @compression_service_blueprint.route("/compression_upload", methods=["POST", "GET"])
+@login_required
 def compression_upload() -> Response:
     if request.method == "POST":
         file = request.files["file"]

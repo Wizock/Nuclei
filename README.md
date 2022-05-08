@@ -2,8 +2,6 @@
 
 # todays goals
 
-
-
 - [ ] security measures
   - [ ] create a admin/superuser password protected login
   - [ ] create a admin/superuser password protected logout

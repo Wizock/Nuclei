@@ -8,7 +8,6 @@
     <title>dashboard</title>
   </head>
   <body>
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="/compression_service">Nuclei</a>
@@ -39,48 +38,43 @@
         </div>
       </div>
     </nav>
-    <!-- image index table -->
-    <div class="container">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">preview</th>
-            <th scope="col">#</th>
-            <th scope="col">file name</th>
-            <th scope="col">file size</th>
-            <th scope="col">compressed</th>
-            <th scope="col">compress</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for imgs in img %}
-          <tr>
-            <th scope="row">{{ imgs.id }}</th>
-            <th><img height='30' width='30' src="{{ url_for("compression_service.static", filename=imgs.file_name)}}"></th>
-            <td>{{ imgs.file_name }}</td>
-            <td>{{ imgs.file_size }}</td>
-            <td>{{ imgs.file_compressed }}</td>
-            <td>
-              {% if not imgs.file_compressed %}
-              <button>
-                <a href="/compression_service/existing_compression/{{ imgs.id }}/{{ imgs.file_name }}">compress</a>
-              </button>
-              <button>
-                <a href="/compression_service/display/uncompressed/{{ imgs.id }}/{{ imgs.file_name }}">view image</a>
-              </button>
-              {% else %}
-              <button >
-                <a href="/compression_service/display/compressed/{{ imgs.id }}/{{ imgs.file_name }}">
-                  view image
-                </a>
-              </button>
-              {% endif %}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">preview</th>
+                  <th scope="col">file name</th>
+                  <th scope="col">file size</th>
+                  <th scope="col">compressed</th>
+                  <th scope="col">compress</th>
+                </tr>
+              </thead>
+              <tbody> {% for imgs in img %} <tr>
+                  <th scope="row">{{ imgs.id }}</th>
+                  <th>
+                    <a href="/compression_service/display/compressed/{{ imgs.id }}/{{ imgs.file_name }}">
+                      <figure class="figure">
+                        <img height='50' width='50' class="figure-img img-fluid rounded" src="{{ url_for("compression_service.static", filename=imgs.file_name)}}">
+                      </figure>
+                    </a>
+                  </th>
+                  <td>{{ imgs.file_name[:20] }}</td>
+                  <td>{{ imgs.file_size }}-bytes</td>
+                  <td>{{ imgs.file_compressed }}</td>
+                  <td> {% if not imgs.file_compressed %} <button>
+                      <a href="/compression_service/existing_compression/{{ imgs.id }}/{{ imgs.file_name }}">compress</a>
+                    </button> {% else %} <button>
+                      <a href="/compression_service/display/compressed/{{ imgs.id }}/{{ imgs.file_name }}"> view image </a>
+                    </button> {% endif %} </td>
+                </tr> {% endfor %} </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-    
   </body>
 </html>

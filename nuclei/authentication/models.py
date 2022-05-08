@@ -1,8 +1,10 @@
+from flask_login import UserMixin
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from ..extension_globals.database import db
-from ..extension_globals.praetorian import *
 
 
-class User_Auth(UserMixin, db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = "user_auth"
 
     id = db.Column(db.Integer(), primary_key=True)
@@ -19,7 +21,7 @@ class User_Auth(UserMixin, db.Model):
     def __init__(self, email, username, hashed_password):
         self.email = email
         self.username = username
-        self.hashed_password = guard.hash_password(hashed_password)
+        self.hashed_password = generate_password_hash(hashed_password)
 
     def is_active(self):
         return True

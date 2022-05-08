@@ -28,6 +28,8 @@ class Nuclei(Flask):
             self.import_config()
             self.import_db()
             self.import_blueprints()
+            self.import_admin()
+            self.import_cookies()
 
     def return_app(self) -> Flask:
         return self
@@ -37,15 +39,32 @@ class Nuclei(Flask):
 
     def import_db(self) -> None:
         db.init_app(self)
-        from nuclei.authentication.models import User_Auth
+        from nuclei.authentication.models import User
         from nuclei.compression_service.models import media_index
 
         db.create_all()
 
+    def import_admin(self) -> None:
+        from nuclei.extension_globals.admin import admin_instance
+
+        admin_instance.init_app(self)
+
+    def import_cookies(self) -> None:
+        from nuclei.extension_globals.cookies import login_manager
+
+        login_manager.init_app(self)
+        from nuclei.authentication.models import User
+
+        @login_manager.user_loader
+        def load_user(user_id):
+            return User.get(user_id)
+
     def import_blueprints(self) -> None:
+        from nuclei.authentication.views import authentication_blueprint
         from nuclei.compression_service.views import compression_service_blueprint
 
         self.register_blueprint(compression_service_blueprint)
+        self.register_blueprint(authentication_blueprint)
 
 
 # create app instance
