@@ -42,7 +42,7 @@ def index_design():
     media = media_index.query.all()
     media.sort(key=lambda x: x.date_created)
     return render_template(
-        "dashboard.html", imgs=media
+        "dashboard.html", img=media
     )
 
 
@@ -50,7 +50,7 @@ def index_design():
 def display_compressed_id(id: int, name: str):
     # query all compression services
     compressed = media_index.query.filter_by(
-        id=id, file_name=name, compressed=True
+        id=id, file_name=name, file_compressed=True
     ).first()
     if not compressed:
         return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
@@ -61,10 +61,10 @@ def display_compressed_id(id: int, name: str):
 def display_uncompressed_id(id: int, name: str):
     # query all compression services
     uncompressed = media_index.query.filter_by(
-        id=id, file_name=name, compressed=False
+        id=id, file_name=name, file_compressed=False
     ).first()
-    if not uncompressed:
-        return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
+    # if not uncompressed:
+    #     return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
     return render_template(
         "individual_display.html", img=uncompressed, compressed=False
     )
@@ -73,7 +73,7 @@ def display_uncompressed_id(id: int, name: str):
 @compression_service_blueprint.route("/sorted/compressed")
 def sorted_compressed_render():
     # query all compression services
-    compressed = media_index.query.filter_by(compressed=True).all()
+    compressed = media_index.query.filter_by(file_compressed=True).all()
     if not compressed:
         return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
     return render_template("grouped_rendering.html", img=compressed, compressed=True)
@@ -82,7 +82,7 @@ def sorted_compressed_render():
 @compression_service_blueprint.route("/sorted/uncompressed")
 def sorted_uncompressed_render():
     # query all compression services
-    uncompressed = media_index.query.filter_by(compressed=False).all()
+    uncompressed = media_index.query.filter_by(file_compressed=False).all()
     if not uncompressed:
         return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
     return render_template("grouped_rendering.html", img=uncompressed, compressed=False)
@@ -136,21 +136,21 @@ def upload() -> Response:
 @compression_service_blueprint.route("/existing_compression/<int:id>/<string:name>")
 def compress_uploaded(id: int, name: str) -> Response:
     # check if file exists in database of either compressed or uncompressed files
-    file_exists = media_index.query.filter_by(
-        id=id, file_name=name, compressed=True
+    file_is_compressed = media_index.query.filter_by(
+        id=id, file_name=name, file_compressed=True
     ).first()
-    if file_exists:
+    if file_is_compressed:
         return redirect(f"/compression_service/display/compressed/{id}/{name}")
     else:
         file_path: str = (
             str(pathlib.Path.cwd())
             + str(pathlib.Path(r"\nuclei\compression_service\static\imgs"))
-            + str(rf"\{file_exists.file_name}")
+            + str(rf"\{name}")
         )
         file_path_compressed: str = (
             str(pathlib.Path.cwd())
             + str(pathlib.Path(r"\nuclei\compression_service\static\compressed"))
-            + str(rf"\{file_exists.file_name}")
+            + str(rf"\{name}")
         )
         try:
             picture: Image = Image.open(file_path)
@@ -178,7 +178,7 @@ def compress_uploaded(id: int, name: str) -> Response:
         try:
             compression_service = media_index.query.get(id)
             compression_service.file_path = file_path
-            compression_service.file_name = file_exists.file_name
+            compression_service.file_name = name
             compression_service.file_extension = file_extension
             compression_service.file_size = file_size
             compression_service.file_hash_md5 = file_hash_md5

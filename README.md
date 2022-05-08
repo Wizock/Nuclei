@@ -3,20 +3,45 @@
 # todays goals
 
 - [ ] impliment the front end
-  - [ ] create application flow
-  - [x] create clean index page
-  - [x] create good compression flow for images
-  - [x] create easy indexer for images
   - [ ] create iconified previews
 
-# File Structure
+- [ ] security measures
+  - [ ] create a admin/superuser password protected login
+  - [ ] create a admin/superuser password protected logout
+  - [ ] create a admin/superuser protected registration
+  - [ ] create a admin/superuser dashboard page
+  - [ ] create a admin/superuser protected upload page
+  - [ ] create a admin/superuser protected delete page
+  - [ ] create a admin/superuser protected edit page
+  - [ ] create a admin/superuser protected view page
+  - [ ] create a design models for the admin/superuser dashboard
+  - [ ] impliment password reset functionality
+  - [ ] hash passwords
+  - [ ] create password reset email
+  - [ ] hash uncompressed images
 
+- [ ] impliment the video media player
+  - [ ] create a video player
+  - [ ] create a video player controls
+  - [ ] create a video player controls container
+  - [ ] impliment video compression flow
+  - [ ] design video media models
+  - [ ] index video media
+
+
+# File Structure
 ```bat
+
 H:.
+|   .gitattributes
+|   .gitignore
 |   main.py
 |   poetry.lock
 |   pyproject.toml
 |   README.md
+|   session_goals.md
+|   tree_file.txt
+|   tree_structure.py
 |   
 \---nuclei
     |   config.py
@@ -47,24 +72,15 @@ H:.
     |   |   
     |   +---static
     |   |   +---compressed
-    |   |   |       2295819.jpg
-    |   |   |       
     |   |   \---imgs
-    |   |           2295819.jpg
-    |   |           
     |   +---templates
     |   |       dashboard.html
-    |   |       indexed_view.html
+    |   |       grouped_rendering.html
     |   |       individual_display.html
-    |   |       
-    |           
+    |   |       upload_template.html
     +---database
-    |       nuclei.db
-    |       
     +---extension_globals
     |   |   database.py
     |   |   praetorian.py
     |   |   __init__.py
-    |   |   
-    |           
 ```

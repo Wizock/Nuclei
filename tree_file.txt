@@ -42,20 +42,15 @@ H:.
     |   |   
     |   +---static
     |   |   +---compressed
-    |   |   |       2295819.jpg
-    |   |   |       
     |   |   \---imgs
-    |   |           2295819.jpg
-    |   |           
     |   +---templates
     |   |       dashboard.html
-    |   |       indexed_view.html
+    |   |       grouped_rendering.html
     |   |       individual_display.html
+    |   |       upload_template.html
     |   |       
     |           
     +---database
-    |       nuclei.db
-    |       
     +---extension_globals
     |   |   database.py
     |   |   praetorian.py
