@@ -44,6 +44,7 @@
       <table class="table table-striped">
         <thead>
           <tr>
+            <th scope="col">preview</th>
             <th scope="col">#</th>
             <th scope="col">file name</th>
             <th scope="col">file size</th>
@@ -55,6 +56,7 @@
           {% for imgs in img %}
           <tr>
             <th scope="row">{{ imgs.id }}</th>
+            <th><img height='30' width='30' src="{{ url_for("compression_service.static", filename=imgs.file_name)}}"></th>
             <td>{{ imgs.file_name }}</td>
             <td>{{ imgs.file_size }}</td>
             <td>{{ imgs.file_compressed }}</td>
