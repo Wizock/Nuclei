@@ -1,11 +1,13 @@
-import base64, datetime, hashlib, os, pathlib
-from typing import Any, final
+from __future__ import annotations
 
+from typing import *
 
-from flask import (Blueprint, Response, redirect, render_template, request, 
-                   url_for)
-from flask_login import login_required, login_user, logout_user, current_user
 import werkzeug
+from flask import (Blueprint, Response, redirect, render_template, request,
+                   url_for)
+from flask_login import current_user, login_required, login_user, logout_user
+from pyparsing import str_type
+from typing_extensions import *
 
 authentication_blueprint = Blueprint(
     "authentication",
@@ -19,7 +21,7 @@ from .models import User
 
 @authentication_blueprint.route("/")
 @authentication_blueprint.route("/index", methods=["POST", "GET"])
-def landing_page():
+def landing_page() -> Response or render_template:
     """
     Landing page for the application.
     """
@@ -28,7 +30,7 @@ def landing_page():
 
 
 @authentication_blueprint.route("/login", methods=["POST", "GET"])
-def login():
+def login() -> Response or redirect or render_template or url_for or None:
     # docstring
     """
     Login page for the application.
@@ -36,8 +38,8 @@ def login():
 
     if request.method == "POST":
         # get username and password from form
-        email = request.form["email"]
-        password = request.form["password"]
+        email: LiteralString = request.form["email"]
+        password: LiteralString = request.form["password"]
         # query user with username
         user = User.query.filter_by(email=email).first()
         # check if user exists
@@ -53,10 +55,14 @@ def login():
                         return redirect(url_for("compression_service.index_design"))
                 except werkzeug.exceptions.HTTPException:
                     # if user is not authenticated
-                    return render_template("login.html", error="Invalid username or password.")
+                    return render_template(
+                        "login.html", error="Invalid username or password."
+                    )
             else:
                 # if password is not correct
-                return render_template("login.html", error="Invalid username or password.")
+                return render_template(
+                    "login.html", error="Invalid username or password."
+                )
         else:
             # if user does not exist
             return render_template("login.html", error="Invalid username or password.")
@@ -64,8 +70,9 @@ def login():
         # if request is not POST
         return render_template("login.html")
 
+
 @authentication_blueprint.route("/register", methods=["POST", "GET"])
-def register():
+def register() -> Response or redirect or render_template or url_for or None:
     # docstring
     """Register a new user."""
     if request.method == "POST":
@@ -73,7 +80,6 @@ def register():
         username = request.form["username"]
         password = request.form["password"]
         email = request.form["email"]
-        print(username, password, email)
         # check if user exists
         if User.query.filter_by(username=username).first():
             # return error message
@@ -88,32 +94,48 @@ def register():
             # login user
             login_user(user)
             # redirect to home page
-            return redirect('/compression_service/')
+            return redirect("/compression_service/")
     else:
         # return register page
         return render_template("register.html")
 
-@authentication_blueprint.route("/user")
-def user():
+
+@authentication_blueprint.route("/user", methods=["GET"])
+@login_required
+def user() -> Response or redirect or url_for or dict[str, Any] or None:
     # docstring
     """
     User page for the application.
     """
-    # query user
-    current_user_dict:dict[str, Any] = {
-        "username": current_user.username,
-        "email": current_user.email,
-        "password": current_user.hashed_password,
-    }
-    # return user page
-    return render_template("user.html", current_user= current_user_dict)
+    if request.method == "GET":
+        # check if user is logged in
+        try:
+            if current_user.is_authenticated:
+                # return user page
+                return redirect(url_for("compression_service.index_design"))
+        except werkzeug.exceptions.HTTPException:
+            # if user is not authenticated
+            return redirect(url_for("authentication.login"))
+        finally:
+            # query user
+            current_user_dict: dict[str, Any] = {
+                "username": current_user.username,
+                "email": current_user.email,
+                "password": current_user.hashed_password,
+            }
+            return current_user_dict
+    else:
+        # if request is not GET
+        return redirect(url_for("authentication.login"))
+
 
 @authentication_blueprint.route("/logout")
 @login_required
-def logout():
+def logout() -> Response or redirect or url_for or None:
     # docstring
     """Logout the current user."""
     # logout user
-    logout_user()
+    if request.method == "GET":
+        logout_user()
     # redirect to home page
     return redirect(url_for("authentication.landing_page"))

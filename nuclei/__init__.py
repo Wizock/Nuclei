@@ -9,7 +9,6 @@ from flask_admin import Admin
 from flask_caching import Cache
 from flask_cors import CORS
 from flask_debugtoolbar import DebugToolbarExtension
-
 # from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
@@ -26,13 +25,13 @@ class Nuclei(Flask):
     """
 
     def __init__(self, import_name, template_folder=None, root_path=None):
-        '''
+        """
         Initialize the app.
         :param import_name: app's import name
         :param template_folder: app's template folder
         :param root_path: app's root path
 
-        '''
+        """
         super().__init__(import_name, template_folder, root_path)
         with self.app_context():
 
@@ -43,21 +42,21 @@ class Nuclei(Flask):
             self.import_cookies()
 
     def return_app(self) -> Flask:
-        '''
+        """
         Return the app.
-        '''
+        """
         return self
 
     def import_config(self) -> None:
-        '''
+        """
         Import the config.
-        '''
+        """
         return self.config.from_object("nuclei.config.Config")
 
     def import_db(self) -> None:
-        '''
+        """
         Import the database.
-        '''
+        """
         db.init_app(self)
         from nuclei.authentication.models import User
         from nuclei.compression_service.models import media_index
@@ -65,17 +64,17 @@ class Nuclei(Flask):
         db.create_all()
 
     def import_admin(self) -> None:
-        '''
+        """
         Import the admin.
-        '''
+        """
         from nuclei.extension_globals.admin import admin_instance
 
         admin_instance.init_app(self)
 
     def import_cookies(self) -> None:
-        '''
+        """
         Import the cookies.
-        '''
+        """
         from nuclei.extension_globals.cookies import login_manager
 
         login_manager.init_app(self)
@@ -86,11 +85,12 @@ class Nuclei(Flask):
             return User.query.get(user_id)
 
     def import_blueprints(self) -> None:
-        '''
+        """
         Import the blueprints.
-        '''
+        """
         from nuclei.authentication.views import authentication_blueprint
-        from nuclei.compression_service.views import compression_service_blueprint
+        from nuclei.compression_service.views import \
+            compression_service_blueprint
 
         self.register_blueprint(compression_service_blueprint)
         self.register_blueprint(authentication_blueprint)

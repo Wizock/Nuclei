@@ -6,6 +6,7 @@ H:.
 |   .gitattributes
 |   .gitignore
 |   main.py
+|   monkeytype.sqlite3
 |   poetry.lock
 |   pyproject.toml
 |   README.md
@@ -13,51 +14,62 @@ H:.
 |   tree_file.txt
 |   tree_structure.py
 |   
-\---nuclei
-    |   config.py
-    |   __init__.py
-    |   
-    +---admin_interface
-    |   |   config.py
-    |   |   models.py
-    |   |   tests.py
-    |   |   views.py
-    |   |   __init__.py
-    |   |   
-    |           
-    +---authentication
-    |   |   config.py
-    |   |   models.py
-    |   |   tests.py
-    |   |   views.py
-    |   |   __init__.py
-    |   |   
-    |           
-    +---compression_service
-    |   |   config.py
-    |   |   models.py
-    |   |   tests.py
-    |   |   views.py
-    |   |   __init__.py
-    |   |   
-    |   +---static
-    |   |   +---compressed
-    |   |   \---imgs
-    |   +---templates
-    |   |       dashboard.html
-    |   |       grouped_rendering.html
-    |   |       individual_display.html
-    |   |       upload_template.html
-    |   |       
-    |           
-    +---database
-    +---extension_globals
-    |   |   database.py
-    |   |   praetorian.py
-    |   |   __init__.py
-    |   |   
-    |           
-            
++---nuclei
+|   |   config.py
+|   |   __init__.py
+|   |   
+|   +---admin_interface
+|   |   |   config.py
+|   |   |   models.py
+|   |   |   tests.py
+|   |   |   views.py
+|   |   |   __init__.py
+|   |   |   
+|   |           
+|   +---authentication
+|   |   |   config.py
+|   |   |   models.py
+|   |   |   tests.py
+|   |   |   views.py
+|   |   |   __init__.py
+|   |   |   
+|   |   +---static
+|   |   +---templates
+|   |   |       landing_page.html
+|   |   |       login.html
+|   |   |       register.html
+|   |   |       
+|   |           
+|   +---compression_service
+|   |   |   config.py
+|   |   |   models.py
+|   |   |   tests.py
+|   |   |   views.py
+|   |   |   __init__.py
+|   |   |   
+|   |   +---static
+|   |   |   +---compressed
+|   |   |   \---imgs
+|   |   +---templates
+|   |   |       dashboard.html
+|   |   |       grouped_rendering.html
+|   |   |       individual_display.html
+|   |   |       upload_template.html
+|   |   |       
+|   |           
+|   +---database
+|   |       nuclei.db
+|   |       
+|   +---extension_globals
+|   |   |   admin.py
+|   |   |   cookies.py
+|   |   |   database.py
+|   |   |   praetorian.py
+|   |   |   __init__.py
+|   |   |   
+|   |           
+|           
+        
 
 
 ```

@@ -1232,6 +1232,33 @@ requests = "*"
 dev = ["pytest", "flask", "jsonschema", "flake8", "autopep8", "pyyaml", "flask-cors"]
 
 [[package]]
+name = "types-requests"
+version = "2.27.25"
+description = "Typing stubs for requests"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+types-urllib3 = "<1.27"
+
+[[package]]
+name = "types-six"
+version = "1.16.15"
+description = "Typing stubs for six"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
+name = "types-urllib3"
+version = "1.26.14"
+description = "Typing stubs for urllib3"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "typing-extensions"
 version = "4.2.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -1330,7 +1357,7 @@ email = ["email-validator"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "83ced2c915331e5c067a7308cd6fcc3eb6db836cf26fd0f10b933c833a79d5c0"
+content-hash = "2814b6262cf6693324010e2353ed091bcd184783d0dbdf046301c2b18ddad327"
 
 [metadata.files]
 0-core-client = [
@@ -2004,6 +2031,18 @@ sqlalchemy = [
 supertokens-flask = [
     {file = "supertokens_flask-1.4.1-py3-none-any.whl", hash = "sha256:9cc5ba5dfd4450cfe6c0d439387f075f214c79a675f7ff18b4e9f47c5879cc21"},
     {file = "supertokens_flask-1.4.1.tar.gz", hash = "sha256:523d1f3de3330b2535d36a4b7d311fc1a029ff754091f4ce907ac94f2937c52b"},
+]
+types-requests = [
+    {file = "types-requests-2.27.25.tar.gz", hash = "sha256:805ae7e38fd9d157153066dc4381cf585fd34dfa212f2fc1fece248c05aac571"},
+    {file = "types_requests-2.27.25-py3-none-any.whl", hash = "sha256:2444905c89731dbcb6bbcd6d873a04252445df7623917c640e463b2b28d2a708"},
+]
+types-six = [
+    {file = "types-six-1.16.15.tar.gz", hash = "sha256:d244f0537dab0d0570a5bc6f8a60c4da7f0546d960a8677520e6bff214a64fb8"},
+    {file = "types_six-1.16.15-py3-none-any.whl", hash = "sha256:18f6856a7df44fc7a292c2d73093908333e5f7cb858667b8cbefc8ed1e91942e"},
+]
+types-urllib3 = [
+    {file = "types-urllib3-1.26.14.tar.gz", hash = "sha256:2a2578e4b36341ccd240b00fccda9826988ff0589a44ba4a664bbd69ef348d27"},
+    {file = "types_urllib3-1.26.14-py3-none-any.whl", hash = "sha256:5d2388aa76395b1e3999ff789ea5b3283677dad8e9bcf3d9117ba19271fd35d9"},
 ]
 typing-extensions = [
     {file = "typing_extensions-4.2.0-py3-none-any.whl", hash = "sha256:6657594ee297170d19f67d55c05852a874e7eb634f4f753dbd667855e07c1708"},

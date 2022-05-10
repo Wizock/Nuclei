@@ -48,9 +48,11 @@
                   <th scope="col">#</th>
                   <th scope="col">preview</th>
                   <th scope="col">file name</th>
-                  <th scope="col">file size</th>
+                  <th scope="col">file size compressed</th>
+                  <th scope="col">file size original</th>
                   <th scope="col">compressed</th>
                   <th scope="col">compress</th>
+                  <th scope="col">delete</th>
                 </tr>
               </thead>
               <tbody> {% for imgs in img %} <tr>
@@ -63,13 +65,18 @@
                     </a>
                   </th>
                   <td>{{ imgs.file_name[:20] }}</td>
-                  <td>{{ imgs.file_size }}-bytes</td>
+                  <td>{{ imgs.file_size_compressed }}-bytes</td>
+                  <td>{{ imgs.file_size_original }}-bytes</td>
                   <td>{{ imgs.file_compressed }}</td>
                   <td> {% if not imgs.file_compressed %} <button>
                       <a href="/compression_service/existing_compression/{{ imgs.id }}/{{ imgs.file_name }}">compress</a>
                     </button> {% else %} <button>
                       <a href="/compression_service/display/compressed/{{ imgs.id }}/{{ imgs.file_name }}"> view image </a>
                     </button> {% endif %} </td>
+                  <td> <button>
+                      <a href="/compression_service/delete/{{ imgs.id }}/{{ imgs.file_name }}">delete</a>
+                    </button> </td>
+                    
                 </tr> {% endfor %} </tbody>
             </table>
           </div>

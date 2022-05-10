@@ -22,8 +22,6 @@ from ..extension_globals.database import db
 from .models import media_index
 
 
-
-
 @compression_service_blueprint.route("/")
 @compression_service_blueprint.route("/index_design", methods=["POST", "GET"])
 @login_required
@@ -79,6 +77,20 @@ def sorted_uncompressed_render():
         return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
     return render_template("grouped_rendering.html", img=uncompressed, compressed=False)
 
+
+@compression_service_blueprint.route('/delete/<int:id>/<string:name>')
+@login_required
+def delete_id(id: int, name: str):
+    # query all compression services
+    compressed = media_index.query.filter_by(id=id, file_name=name).first()
+    if not compressed:
+        return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
+    # delete the image from the file storage
+    os.remove(os.path.join(compressed.file_path, compressed.file_name))
+    # delete the image from the database
+    db.session.delete(compressed)
+    db.session.commit()
+    return redirect(url_for("compression_service.index_design"))
 
 @compression_service_blueprint.route("/upload", methods=["POST", "GET"])
 @login_required
@@ -155,7 +167,8 @@ def compress_uploaded(id: int, name: str) -> Response:
             picture: Image = Image.open(file_path)
             rgb_im = picture.convert("RGB")
             rgb_im.save(file_path_compressed, "JPEG", optimize=True, quality=85)
-        file_size: int = os.path.getsize(file_path_compressed)
+        file_size_orignal = os.path.getsize(file_path)
+        file_size_compressed: int = os.path.getsize(file_path_compressed)
         # get file hash
         file_hash_md5: str = hashlib.md5(
             open(file_path_compressed, "rb").read()
@@ -170,11 +183,12 @@ def compress_uploaded(id: int, name: str) -> Response:
         file_path: str = os.path.dirname(file_path_compressed)
         # create new CompressionService object
         try:
-            compression_service = media_index.query.get(id)
+            compression_service: media_index = media_index.query.get(id)
             compression_service.file_path = file_path
             compression_service.file_name = name
             compression_service.file_extension = file_extension
-            compression_service.file_size = file_size
+            compression_service.file_size_orignal = file_size_orignal
+            compression_service.file_size_compressed = file_size_compressed
             compression_service.file_hash_md5 = file_hash_md5
             compression_service.file_base64 = file_base64
             compression_service.file_compressed = True
@@ -211,7 +225,8 @@ def compression_upload() -> Response:
             picture: Image = Image.open(file_path_static)
             rgb_im = picture.convert("RGB")
             rgb_im.save(file_path_compressed, "JPEG", optimize=True, quality=85)
-        file_size: int = os.path.getsize(file_path_compressed)
+        file_size_original = os.path.getsize(file_path_static)
+        file_size_compressed: int = os.path.getsize(file_path_compressed)
         # get file hash
         file_hash_md5: str = hashlib.md5(
             open(file_path_compressed, "rb").read()
@@ -230,7 +245,8 @@ def compression_upload() -> Response:
             file_path=file_path,
             file_name=file_name,
             file_extension=file_extension,
-            file_size=file_size,
+            file_size_original=file_size_original,
+            file_size_compressed=file_size_compressed,
             file_hash_md5=file_hash_md5,
             file_base64=file_base64,
             file_compressed=True,
