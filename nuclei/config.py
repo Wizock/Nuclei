@@ -14,6 +14,9 @@ class Config(object):
     UPLOAD_FOLDER = os.path.join(
         os.getcwd(), "nuclei", "compression_service", "file_storage"
     )
+    ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
+    MAX_CONTENT_LENGTH = 16 * 1024 * 1024
+    FLASK_ADMIN_SWATCH = 'cyborg' 
 
 
 class ProductionConfig(Config):

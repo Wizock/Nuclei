@@ -9,7 +9,6 @@ from flask_admin import Admin
 from flask_caching import Cache
 from flask_cors import CORS
 from flask_debugtoolbar import DebugToolbarExtension
-
 # from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
@@ -71,6 +70,7 @@ class Nuclei(Flask):
         Import the admin.
         """
         from nuclei.extension_globals.admin import admin_instance
+        from nuclei.admin_interface.views import admin_interface_blueprint
 
         admin_instance.init_app(self)
 
@@ -92,7 +92,8 @@ class Nuclei(Flask):
         Import the blueprints.
         """
         from nuclei.authentication.views import authentication_blueprint
-        from nuclei.compression_service.views import compression_service_blueprint
+        from nuclei.compression_service.views import \
+            compression_service_blueprint
 
         self.register_blueprint(compression_service_blueprint)
         self.register_blueprint(authentication_blueprint)
