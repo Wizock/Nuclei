@@ -39,9 +39,19 @@ class Nuclei(Flask):
 
             self.import_config()
             self.import_db()
-            self.import_blueprints()
+            self.import_celery()
+            self.import_redis()
             self.import_admin()
             self.import_cookies()
+            self.import_blueprints()
+
+    def import_redis(self) -> None:
+        """
+        Import the redis.
+        """
+        from nuclei.extension_globals.redis import redis_client
+        redis_client.init_app(self)
+
 
     def return_app(self) -> Flask:
         """
@@ -54,6 +64,12 @@ class Nuclei(Flask):
         Import the config.
         """
         return self.config.from_object("nuclei.config.Config")
+    def import_celery(self) -> None:
+        """
+        Import the celery.
+        """
+        from nuclei.extension_globals.celery import celery
+        self.celery = celery
 
     def import_db(self) -> None:
         """
@@ -62,8 +78,14 @@ class Nuclei(Flask):
         db.init_app(self)
         from nuclei.authentication.models import User
         from nuclei.compression_service.models import media_index
-
         db.create_all()
+    
+    def import_security(self) -> None:
+        """
+        Import the security.
+        """
+        from nuclei.extension_globals.security import security
+        security.init_app(self)
 
     def import_admin(self) -> None:
         """

@@ -19,12 +19,15 @@ compression_service_blueprint = Blueprint(
     static_folder="static/imgs",
 )
 from ..extension_globals.database import db
+from ..extension_globals.celery import celery
+
 from .models import media_index
 
 
 @compression_service_blueprint.route("/")
 @compression_service_blueprint.route("/index_design", methods=["POST", "GET"])
 @login_required
+@celery.task
 def index_design():
     # query media models to get all media objects
     media = media_index.query.all()
@@ -34,6 +37,7 @@ def index_design():
 
 @compression_service_blueprint.route("/display/compressed/<int:id>/<string:name>")
 @login_required
+@celery.task
 def display_compressed_id(id: int, name: str):
     # query all compression services
     compressed = media_index.query.filter_by(
@@ -46,6 +50,7 @@ def display_compressed_id(id: int, name: str):
 
 @compression_service_blueprint.route("/display/uncompressed/<int:id>/<string:name>")
 @login_required
+@celery.task
 def display_uncompressed_id(id: int, name: str):
     # query all compression services
     uncompressed = media_index.query.filter_by(
@@ -60,6 +65,7 @@ def display_uncompressed_id(id: int, name: str):
 
 @compression_service_blueprint.route("/sorted/compressed")
 @login_required
+@celery.task
 def sorted_compressed_render():
     # query all compression services
     compressed = media_index.query.filter_by(file_compressed=True).all()
@@ -70,6 +76,7 @@ def sorted_compressed_render():
 
 @compression_service_blueprint.route("/sorted/uncompressed")
 @login_required
+@celery.task
 def sorted_uncompressed_render():
     # query all compression services
     uncompressed = media_index.query.filter_by(file_compressed=False).all()
@@ -80,6 +87,7 @@ def sorted_uncompressed_render():
 
 @compression_service_blueprint.route("/delete/<int:id>/<string:name>")
 @login_required
+@celery.task
 def delete_id(id: int, name: str):
     # query all compression services
     compressed = media_index.query.filter_by(id=id, file_name=name).first()
@@ -95,6 +103,7 @@ def delete_id(id: int, name: str):
 
 @compression_service_blueprint.route("/upload", methods=["POST", "GET"])
 @login_required
+@celery.task
 def upload() -> Response:
     if request.method == "POST":
         file = request.files["file"]
@@ -141,6 +150,7 @@ def upload() -> Response:
 
 @compression_service_blueprint.route("/existing_compression/<int:id>/<string:name>")
 @login_required
+@celery.task    
 def compress_uploaded(id: int, name: str) -> Response:
     # check if file exists in database of either compressed or uncompressed files
     file_is_compressed = media_index.query.filter_by(
@@ -202,6 +212,7 @@ def compress_uploaded(id: int, name: str) -> Response:
 
 @compression_service_blueprint.route("/compression_upload", methods=["POST", "GET"])
 @login_required
+@celery.task
 def compression_upload() -> Response:
     if request.method == "POST":
         file = request.files["file"]

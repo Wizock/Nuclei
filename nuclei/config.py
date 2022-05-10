@@ -1,5 +1,7 @@
 import os
 
+from celery import Celery
+
 
 class Config(object):
     DEBUG = False
@@ -17,7 +19,9 @@ class Config(object):
     ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024
     FLASK_ADMIN_SWATCH = 'cyborg' 
-
+    CELERY_BROKER_URL = "redis://localhost:6379"
+    CELERY_RESULT_BACKEND = "redis://localhost:6379"
+    REDIS_URL = "redis://:password@localhost:6379"
 
 class ProductionConfig(Config):
     DEBUG = False
