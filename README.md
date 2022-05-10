@@ -1,4 +1,6 @@
 # Nuclei
+- [ ] compression implimentation
+- [ ] test different compression commands on videos to test quality against bytes compressed
 
 ## todays goals
 
@@ -13,6 +15,21 @@
   - [ ] create a admin/superuser protected view page
   - [ ] create a design models for the admin/superuser dashboard
   - [ ] implement password reset functionality
+  - [ ] create password reset email
+  - [ ] hash uncompressed images
+  
+- [ ] security measures
+  - [ ] create a admin/superuser password protected login 2
+  - [ ] create a admin/superuser password protected logout 2
+  - [ ] create a admin/superuser protected registration 2
+  - [ ] create a admin/superuser dashboard page
+  - [ ] create a admin/superuser protected upload page 2
+  - [ ] create a admin/superuser protected delete page 2
+  - [ ] create a admin/superuser protected edit page
+  - [ ] create a admin/superuser protected view page
+  - [ ] create a design models for the admin/superuser dashboard
+  - [ ] impliment password reset functionality 2
+  - [ ] hash passwords 2
   - [ ] create password reset email
   - [ ] hash uncompressed images
 
@@ -95,3 +112,15 @@ H:.
 |   |           
 
 ```
+
+
+# achived goals
+
+- [x] impliment the front end
+  - [x] create iconified previews
+  - [x] create application flow
+  - [x] create clean index page
+  - [x] create good compression flow for images
+  - [x] create easy indexer for images
+  - [x] figure out if we can use a single image for all pages
+

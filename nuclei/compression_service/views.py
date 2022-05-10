@@ -4,8 +4,8 @@ import hashlib
 import os
 import pathlib
 
-from flask import (Blueprint, Response, redirect, render_template, request,
-                   url_for)
+from flask import Blueprint, Response, redirect, render_template, request, url_for
+
 # import login required decorator
 from flask_login import login_required
 from PIL import Image
@@ -78,7 +78,7 @@ def sorted_uncompressed_render():
     return render_template("grouped_rendering.html", img=uncompressed, compressed=False)
 
 
-@compression_service_blueprint.route('/delete/<int:id>/<string:name>')
+@compression_service_blueprint.route("/delete/<int:id>/<string:name>")
 @login_required
 def delete_id(id: int, name: str):
     # query all compression services
@@ -91,6 +91,7 @@ def delete_id(id: int, name: str):
     db.session.delete(compressed)
     db.session.commit()
     return redirect(url_for("compression_service.index_design"))
+
 
 @compression_service_blueprint.route("/upload", methods=["POST", "GET"])
 @login_required

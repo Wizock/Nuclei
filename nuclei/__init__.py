@@ -9,6 +9,7 @@ from flask_admin import Admin
 from flask_caching import Cache
 from flask_cors import CORS
 from flask_debugtoolbar import DebugToolbarExtension
+
 # from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
@@ -24,7 +25,9 @@ class Nuclei(Flask):
     Nuclei class.
     """
 
-    def __init__(self, import_name, template_folder=None, root_path=None):
+    def __init__(
+        self, import_name: str, template_folder: None = None, root_path: None = None
+    ) -> None:
         """
         Initialize the app.
         :param import_name: app's import name
@@ -89,8 +92,7 @@ class Nuclei(Flask):
         Import the blueprints.
         """
         from nuclei.authentication.views import authentication_blueprint
-        from nuclei.compression_service.views import \
-            compression_service_blueprint
+        from nuclei.compression_service.views import compression_service_blueprint
 
         self.register_blueprint(compression_service_blueprint)
         self.register_blueprint(authentication_blueprint)
