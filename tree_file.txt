@@ -1,49 +1,7 @@
-# Nuclei
-- [ ] compression implimentation
-- [ ] test different compression commands on videos to test quality against bytes compressed
-
-## todays goals
-
-- [ ] UI revamp
-  - [ ] add individual media view
-  - [ ] add individual media edit
-  - [ ] implement tiled dashboard view
-
-- [ ] security measures
-  - [ ] create a admin/superuser dashboard page
-  - [ ] create a admin/superuser protected edit page
-  - [ ] create a admin/superuser protected view page
-  - [ ] create a design models for the admin/superuser dashboard
-  - [ ] implement password reset functionality
-  - [ ] create password reset email
-  - [ ] hash uncompressed images
-  
-- [ ] security measures
-  - [ ] create a admin/superuser password protected login 2
-  - [ ] create a admin/superuser password protected logout 2
-  - [ ] create a admin/superuser protected registration 2
-  - [ ] create a admin/superuser dashboard page
-  - [ ] create a admin/superuser protected upload page 2
-  - [ ] create a admin/superuser protected delete page 2
-  - [ ] create a admin/superuser protected edit page
-  - [ ] create a admin/superuser protected view page
-  - [ ] create a design models for the admin/superuser dashboard
-  - [ ] impliment password reset functionality 2
-  - [ ] hash passwords 2
-  - [ ] create password reset email
-  - [ ] hash uncompressed images
-
-- [ ] implement the video media player
-  - [ ] create a video player
-  - [ ] create a video player controls
-  - [ ] create a video player controls container
-  - [ ] implement video compression flow
-  - [ ] design video media models
-  - [ ] index video media
-
-# File Structure
 ```bat
 
+Folder PATH listing for volume coding_drive
+Volume serial number is 90CE-93C1
 H:.
 |   .gitattributes
 |   .gitignore
@@ -123,5 +81,7 @@ H:.
 |   |   |   
 |   |           
 |           
+        
+
 
 ```
