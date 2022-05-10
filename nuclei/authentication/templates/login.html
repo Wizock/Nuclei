@@ -20,16 +20,16 @@
     <div class=" mx-auto border border-light p-3 mb-4 card">
       <div class="card-body p-2 bd-highlight col-example ">
       <!-- Pills navs -->
-      <form>
+      <form method="post">
         <!-- Email input -->
         <div class="form-outline mb-4">
-          <input type="email" id="form2Example1" class="form-control" />
+          <input type="email" name="email" class="form-control" />
           <label class="form-label" for="form2Example1">Email address</label>
         </div>
       
         <!-- Password input -->
         <div class="form-outline mb-4">
-          <input type="password" id="form2Example2" class="form-control" />
+          <input type="password" name="password" class="form-control" />
           <label class="form-label" for="form2Example2">Password</label>
         </div>
       
@@ -53,25 +53,14 @@
         <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
       
         <!-- Register buttons -->
-        <div class="text-center">
-          <p>Not a member?<a class="nav-link active" aria-current="page" href="{{ url_for('authentication.register')}}">Register</a>
-          </p>
-          <p>or sign up with:</p>
-          <button type="button" class="btn btn-primary btn-floating mx-1">
-            <i class="fab fa-facebook-f"></i>
-          </button>
-      
-          <button type="button" class="btn btn-primary btn-floating mx-1">
-            <i class="fab fa-google"></i>
-          </button>
-      
-          <button type="button" class="btn btn-primary btn-floating mx-1">
-            <i class="fab fa-twitter"></i>
-          </button>
-      
-          <button type="button" class="btn btn-primary btn-floating mx-1">
-            <i class="fab fa-github"></i>
-          </button>
+        <div class="row">
+          <div class="col">
+            <a href="#!" class="btn btn-block btn-secondary">Register</a>
+            {% if error %}
+              <div class="alert alert-danger" role="alert">
+                {{ error }}
+              </div>
+            {% endif %}
         </div>
       </form>
           </div>

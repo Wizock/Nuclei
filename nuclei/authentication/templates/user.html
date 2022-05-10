@@ -1,0 +1,7 @@
+{% for header, vals in current_user %}
+
+    <h1>{{ header }}</h1>
+    {% for key, val in vals %}
+        <p>{{ key }}: {{ val }}</p> 
+    {% endfor %}
+{% endfor %}

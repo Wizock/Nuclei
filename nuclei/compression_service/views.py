@@ -4,8 +4,8 @@ import hashlib
 import os
 import pathlib
 
-from flask import Blueprint, Response, redirect, render_template, request, url_for
-
+from flask import (Blueprint, Response, redirect, render_template, request,
+                   url_for)
 # import login required decorator
 from flask_login import login_required
 from PIL import Image
@@ -20,6 +20,8 @@ compression_service_blueprint = Blueprint(
 )
 from ..extension_globals.database import db
 from .models import media_index
+
+
 
 
 @compression_service_blueprint.route("/")
