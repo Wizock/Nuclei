@@ -39,7 +39,7 @@
         </div>
       </div>
     </nav>
-    <img height='500' width='500' src="{{ url_for("compression_service.static", filename=img.file_name)}}">
+    <img src="{{ url_for("compression_service.static", filename=img.file_name)}}">
     {% if img.file_compressed and compressed %}
       <p> this file is compressed </p>
     {% else %}
