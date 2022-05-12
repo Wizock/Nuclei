@@ -9,6 +9,7 @@ from flask_admin import Admin
 from flask_caching import Cache
 from flask_cors import CORS
 from flask_debugtoolbar import DebugToolbarExtension
+
 # from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
@@ -50,8 +51,8 @@ class Nuclei(Flask):
         Import the redis.
         """
         from nuclei.extension_globals.redis import redis_client
-        redis_client.init_app(self)
 
+        redis_client.init_app(self)
 
     def return_app(self) -> Flask:
         """
@@ -64,11 +65,13 @@ class Nuclei(Flask):
         Import the config.
         """
         return self.config.from_object("nuclei.config.Config")
+
     def import_celery(self) -> None:
         """
         Import the celery.
         """
         from nuclei.extension_globals.celery import celery
+
         self.celery = celery
 
     def import_db(self) -> None:
@@ -78,13 +81,15 @@ class Nuclei(Flask):
         db.init_app(self)
         from nuclei.authentication.models import User
         from nuclei.compression_service.models import media_index
+
         db.create_all()
-    
+
     def import_security(self) -> None:
         """
         Import the security.
         """
         from nuclei.extension_globals.security import security
+
         security.init_app(self)
 
     def import_admin(self) -> None:
@@ -114,8 +119,7 @@ class Nuclei(Flask):
         Import the blueprints.
         """
         from nuclei.authentication.views import authentication_blueprint
-        from nuclei.compression_service.views import \
-            compression_service_blueprint
+        from nuclei.compression_service.views import compression_service_blueprint
 
         self.register_blueprint(compression_service_blueprint)
         self.register_blueprint(authentication_blueprint)

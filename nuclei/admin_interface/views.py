@@ -1,11 +1,18 @@
-from flask import (Blueprint, Flask, Response, redirect, render_template,
-                   request, url_for)
+from flask import (
+    Blueprint,
+    Flask,
+    Response,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from flask_login import login_required
 from PIL import Image
 from werkzeug.utils import secure_filename
 
 
-from ..extension_globals.admin import admin_instance 
+from ..extension_globals.admin import admin_instance
 from flask_admin.contrib.sqla import ModelView
 
 from ..extension_globals.database import db
@@ -23,6 +30,3 @@ admin_interface_blueprint = Blueprint(
     template_folder="templates",
     static_url_path="/admin/static",
 )
-
-
-

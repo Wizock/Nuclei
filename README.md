@@ -1,8 +1,9 @@
 # Nuclei
-- [ ] compression implimentation
-- [ ] test different compression commands on videos to test quality against bytes compressed
 
 ## todays goals
+
+- [ ] compression implimentation
+  - [ ] test different compression commands on videos to test quality against bytes compressed
 
 - [ ] UI revamp
   - [ ] add individual media view

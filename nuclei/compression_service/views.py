@@ -1,9 +1,4 @@
-import base64
-import datetime
-import hashlib
-import os
-import pathlib
-
+import base64, datetime, hashlib, os, pathlib
 from flask import (Blueprint, Response, redirect, render_template, request,
                    url_for)
 # import login required decorator
@@ -18,9 +13,9 @@ compression_service_blueprint = Blueprint(
     url_prefix="/compression_service",
     static_folder="static/imgs",
 )
-from ..extension_globals.database import db
-from ..extension_globals.celery import celery
 
+from ..extension_globals.celery import celery
+from ..extension_globals.database import db
 from .models import media_index
 
 
@@ -122,6 +117,7 @@ def upload() -> Response:
         file_base64 = base64.b64encode(open(file_storage_path, "rb").read()).decode(
             "utf-8"
         )
+        file_size_original = os.path.getsize(file_storage_path)
         # get file extension
         file_extension = os.path.splitext(file_storage_path)[1]
         # get file path
@@ -132,7 +128,8 @@ def upload() -> Response:
             file_path=file_path,
             file_name=file_name,
             file_extension=file_extension,
-            file_size=file_size,
+            file_size_original=file_size_original,
+            file_size_compressed=0,
             file_hash_md5=file_hash_md5,
             file_base64=file_base64,
             file_compressed=False,
@@ -150,7 +147,7 @@ def upload() -> Response:
 
 @compression_service_blueprint.route("/existing_compression/<int:id>/<string:name>")
 @login_required
-@celery.task    
+@celery.task
 def compress_uploaded(id: int, name: str) -> Response:
     # check if file exists in database of either compressed or uncompressed files
     file_is_compressed = media_index.query.filter_by(
@@ -272,3 +269,5 @@ def compression_upload() -> Response:
         return redirect(url_for("compression_service.index_design"))
     else:
         return render_template("upload_template.html")
+
+from .video_compression import views

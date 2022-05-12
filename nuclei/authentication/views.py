@@ -3,8 +3,7 @@ from __future__ import annotations
 from typing import *
 
 import werkzeug
-from flask import (Blueprint, Response, redirect, render_template, request,
-                   url_for)
+from flask import Blueprint, Response, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from pyparsing import str_type
 from typing_extensions import *
@@ -48,7 +47,7 @@ def login() -> Response or redirect or render_template or url_for or None:
             if user.check_password(password):
                 try:
                     # login user
-                    login_user(user, remember=True, force=True, fresh=True)
+                    login_user(user, remember=True, force=True)
                     # make sure user is logged in
                     if user.is_authenticated:
                         print("User is authenticated")
