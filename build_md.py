@@ -169,7 +169,7 @@ def main():
     highlighting_wrapper()
     rem_doubles()
     inject_into_readme()
-    write_lines_file()
+    # write_lines_file()
 
 
 if __name__ == "__main__":
