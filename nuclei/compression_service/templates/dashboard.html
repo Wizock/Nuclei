@@ -74,7 +74,11 @@
                   <td>{{ imgs.file_size_original }}-bytes</td>
                   <td>{{ imgs.file_compressed }}</td>
                   <td> {% if not imgs.file_compressed %} <button>
+                      {% if imgs.file_extension == ".mp4" or ".avi" or ".mov"%}
+                      <a href="/compression_service/compressed/video/{{ imgs.id }}/{{ imgs.file_name }}">compress</a>
+                      {% else %}
                       <a href="/compression_service/existing_compression/{{ imgs.id }}/{{ imgs.file_name }}">compress</a>
+                      {% endif %}
                     </button> {% else %} <button>
                       <a href="/compression_service/display/compressed/{{ imgs.id }}/{{ imgs.file_name }}"> view image </a>
                     </button> {% endif %} </td>

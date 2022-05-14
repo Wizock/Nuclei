@@ -6,6 +6,7 @@ import pathlib
 
 from flask import Blueprint, Response, redirect, render_template, request, url_for
 from .compression_preset import *
+
 # import login required decorator
 from flask_login import login_required
 from PIL import Image
@@ -14,6 +15,8 @@ from werkzeug.utils import secure_filename
 from ...extension_globals.database import db
 from ..models import media_index
 from ..views import compression_service_blueprint
+
+
 def static_path_videos(file_name):
     file_path_static: str = (
         str(pathlib.Path.cwd())
@@ -22,6 +25,7 @@ def static_path_videos(file_name):
     )
     return file_path_static
 
+
 def compressed_path(file_name):
     file_path_compressed: str = (
         str(pathlib.Path.cwd())
@@ -29,6 +33,7 @@ def compressed_path(file_name):
         + str(rf"\{file_name}")
     )
     return file_path_compressed
+
 
 def commit_video(file):
     file_name = secure_filename(file.filename)
@@ -39,9 +44,7 @@ def commit_video(file):
     # get file hash
     file_hash_md5 = hashlib.md5(open(file_storage_path, "rb").read()).hexdigest()
     # get file base64
-    file_base64 = base64.b64encode(open(file_storage_path, "rb").read()).decode(
-        "utf-8"
-    )
+    file_base64 = base64.b64encode(open(file_storage_path, "rb").read()).decode("utf-8")
     file_size_original = os.path.getsize(file_storage_path)
     # get file extension
     file_extension = os.path.splitext(file_storage_path)[1]
@@ -67,10 +70,9 @@ def commit_video(file):
     db.session.commit()
 
 
-
-def commit_video_compressed(file, preset=None):
+def commit_video_compressed(file, filename, preset=None):
     # secure the file size
-    file_name = secure_filename(file.filename)
+    file_name = secure_filename(filename)
     # uncompressed file path
     file_path_static = static_path_videos(file_name)
     # compressed file path
@@ -78,10 +80,8 @@ def commit_video_compressed(file, preset=None):
 
     # compression algorithm
     try:
-        file.save(file_path_static)
-        # run the presetted video compression
         compression_main(file_path_compressed, file, preset=preset)
-        # apply 
+        # apply
     except OSError as e:
         print(e)
 
@@ -93,9 +93,9 @@ def commit_video_compressed(file, preset=None):
         open(file_path_compressed, "rb").read()
     ).hexdigest()
     # get file base64
-    file_base64: str = base64.b64encode(
-        open(file_path_compressed, "rb").read()
-    ).decode("utf-8")
+    file_base64: str = base64.b64encode(open(file_path_compressed, "rb").read()).decode(
+        "utf-8"
+    )
     # get file extension
     file_extension: str = os.path.splitext(file_path_compressed)[1]
     # get file path

@@ -26,66 +26,45 @@ def upload_video():
     else:
         return render_template("upload_template.html")
 
+
 @compression_service_blueprint.route("/compress/video", methods=["POST", "GET"])
 def compress_video():
     if request.method == "POST":
         # get file name
-        file_name = request.form["file_name"]
+        file_name = request.form["file"]
+        
         try:
-            commit_video_compressed(file_name, compression_main(file_name))
+            commit_video_compressed(file_name)
         except Exception as e:
             return e
         finally:
             return redirect(url_for("compression_service.index_design"))
     else:
-        return render_template("video_compression_upload.html")
-
-
-
-
-
-@compression_service_blueprint.route(
-    "/compress/video/<video_name>/<video_id>/<preset>", methods=["POST", "GET"]
-)
-def compress_video_presetted(video_name: str, video_id: int, preset: str):
-    return "compress_video"
-
-# get the status of a video
-@compression_service_blueprint.route("/status/video", methods=["POST", "GET"])
-def status_video():
-    return "status_video"
+        return render_template("upload_template.html")
 
 
 # compress already uploaded video
-@compression_service_blueprint.route("/compressed/video", methods=["POST", "GET"])
-def compressed_video(name):
-        # check if file exists in database of either compressed or uncompressed files
+@compression_service_blueprint.route(
+    "/compressed/video/<id>/<video_name>", methods=["POST", "GET"]
+)
+def compressed_video(id: int, video_name: str):
+    # check if file exists in database of either compressed or uncompressed files
+
     file_is_compressed = media_index.query.filter_by(
-        id=id, file_name=name, file_compressed=True
+        id=id, file_name=video_name, file_compressed=True
     ).first()
     if file_is_compressed:
-        return redirect(f"/compression_service/display/compressed/{id}/{name}")
+        return redirect(f"/compression_service/display/compressed/{id}/{video_name}")
+
     else:
-        file_path: str = (
-            str(pathlib.Path.cwd())
-            + str(pathlib.Path(r"\nuclei\compression_service\static\imgs"))
-            + str(rf"\{name}")
-        )
-        file_path_compressed: str = (
-            str(pathlib.Path.cwd())
-            + str(pathlib.Path(r"\nuclei\compression_service\static\compressed"))
-            + str(rf"\{name}")
-        )
-        try:
-            picture: Image = Image.open(file_path)
-            picture.save(file_path_compressed, "JPEG", optimize=True, quality=85)
-        except OSError as e:
-            print(e)
-        finally:
-            picture: Image = Image.open(file_path)
-            rgb_im = picture.convert("RGB")
-            rgb_im.save(file_path_compressed, "JPEG", optimize=True, quality=85)
+        file_path = str(static_path_videos(video_name))
+
+        file_path_compressed: str = compressed_path(video_name)
+
+        compression_main(file_path, file_path_compressed, video_name)
+
         file_size_orignal = os.path.getsize(file_path)
+
         file_size_compressed: int = os.path.getsize(file_path_compressed)
         # get file hash
         file_hash_md5: str = hashlib.md5(
@@ -103,7 +82,7 @@ def compressed_video(name):
         try:
             compression_service: media_index = media_index.query.get(id)
             compression_service.file_path = file_path
-            compression_service.file_name = name
+            compression_service.file_name = video_name
             compression_service.file_extension = file_extension
             compression_service.file_size_orignal = file_size_orignal
             compression_service.file_size_compressed = file_size_compressed
@@ -114,4 +93,4 @@ def compressed_video(name):
             db.session.commit()
         except Exception as e:
             print(e)
-        return redirect(f"/compression_service/display/compressed/{id}/{name}")
+        return redirect(f"/compression_service/display/compressed/{id}/{video_name}")
