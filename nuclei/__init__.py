@@ -96,8 +96,8 @@ class Nuclei(Flask):
         """
         Import the admin.
         """
-        from nuclei.extension_globals.admin import admin_instance
         from nuclei.admin_interface.views import admin_interface_blueprint
+        from nuclei.extension_globals.admin import admin_instance
 
         admin_instance.init_app(self)
 

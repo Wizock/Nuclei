@@ -1,6 +1,11 @@
-import base64, datetime, hashlib, os, pathlib
-from flask import (Blueprint, Response, redirect, render_template, request,
-                   url_for)
+import base64
+import datetime
+import hashlib
+import os
+import pathlib
+
+from flask import Blueprint, Response, redirect, render_template, request, url_for
+
 # import login required decorator
 from flask_login import login_required
 from PIL import Image
@@ -269,5 +274,6 @@ def compression_upload() -> Response:
         return redirect(url_for("compression_service.index_design"))
     else:
         return render_template("upload_template.html")
+
 
 from .video_compression import views
