@@ -4,7 +4,7 @@
 
 - [ ] compression implimentation
   - [ ] test different compression commands on videos to test quality against bytes compressed
-- [ ] https://pythonhosted.org/python-gnupg/
+- [ ] <https://pythonhosted.org/python-gnupg/>
 - [ ] UI revamp
   - [ ] add individual media view
   - [ ] add individual media edit
@@ -21,11 +21,15 @@
 # Project Size
 
 ## lines of code
+
 Project lines: 653891
+
 ## amount of files
+
 Project files: 235
 
 # File Structure
+
 ```bat
 
 Folder PATH listing for volume Windows
