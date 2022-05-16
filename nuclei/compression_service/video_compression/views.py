@@ -16,6 +16,8 @@ from ..models import media_index
 from ..views import compression_service_blueprint
 from .compression_preset import compression_main
 
+# https://blog.programster.org/ffmpeg-output-progress-to-file
+
 
 @compression_service_blueprint.route("/upload/video", methods=["GET", "POST"])
 def upload_video():
