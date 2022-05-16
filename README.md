@@ -22,11 +22,7 @@
 
 ## lines of code
 
-Project lines: 653891
-
-## amount of files
-
-Project files: 235
+Project lines: 9538
 
 # File Structure
 
