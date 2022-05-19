@@ -1,4 +1,4 @@
-from flask import redirect, render_template, request
+from flask import redirect, render_template, request, url_for
 from flask_login import login_required
 
 from ...extension_globals.celery import celery
@@ -36,7 +36,20 @@ def compress_video():
             db.session.commit()
             return redirect("/compression_service/")
     else:
-        return render_template("upload_template.html")
+        return render_template(
+            "upload_template.html",
+            loading=url_for("compression_service.static", filename="loading.gif"),
+        )
+
+
+@compression_service_blueprint.route("/loading", methods=["GET"])
+@login_required
+@celery.task
+def loading():
+    return render_template(
+        "loading.html",
+        loading=url_for("compression_service.static", filename="loading.gif"),
+    )
 
 
 @compression_service_blueprint.route("/compressed/video", methods=["GET"])
