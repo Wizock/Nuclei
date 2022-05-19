@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import typing
 from argparse import FileType
 from ast import Bytes
 from ctypes.wintypes import BOOL, INT
@@ -31,7 +32,7 @@ class media_index(db.Model):
     # file size compressed
     file_size_compressed: Bytes = db.Column(db.Integer(), nullable=False)
     # file hash
-    file_hash_md5: md5 = db.Column(db.String(255), nullable=True, unique=True)
+    file_hash_md5: Callable = db.Column(db.String(255), nullable=True, unique=True)
     # file base64
     file_base64: BASE64 = db.Column(db.String(255), nullable=True)
     # file compressed bool

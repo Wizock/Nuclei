@@ -20,6 +20,7 @@ class Config(object):
     CELERY_BROKER_URL = "redis://localhost:6379"
     CELERY_RESULT_BACKEND = "redis://localhost:6379"
     REDIS_URL = "redis://:password@localhost:6379"
+    MAX_CONTENT_LENGTH = 2450 * 1024 * 1024
 
 
 class ProductionConfig(Config):

@@ -1,5 +1,17 @@
 import subprocess
 
+"""
+transform these functions into generators
+
+yeild the current status
+
+if the status is not 0, then the process failed
+if the status is 1, then the process is currently running
+and if the status is 2, then the process is finished
+else, the process is not running
+
+"""
+
 
 def compression_low_preset(file_path, file_path_compressed):
     return subprocess.run(
