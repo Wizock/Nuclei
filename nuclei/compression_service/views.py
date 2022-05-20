@@ -16,7 +16,7 @@ compression_service_blueprint = Blueprint(
     __name__,
     template_folder="templates",
     url_prefix="/compression_service",
-    static_folder="static/imgs",
+    static_folder="static/",
 )
 
 from ..extension_globals.celery import celery
