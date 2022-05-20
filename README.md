@@ -18,12 +18,6 @@
   - [ ] design video media models
   - [ ] index video media
 
-# Project Size
-
-## lines of code
-
-Project lines: 9538
-
 # File Structure
 
 ```bat
