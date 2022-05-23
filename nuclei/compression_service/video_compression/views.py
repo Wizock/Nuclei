@@ -41,17 +41,6 @@ def compress_video():
             loading=url_for("compression_service.static", filename="loading.gif"),
         )
 
-
-@compression_service_blueprint.route("/loading", methods=["GET"])
-@login_required
-@celery.task
-def loading():
-    return render_template(
-        "loading.html",
-        loading=url_for("compression_service.static", filename="loading.gif"),
-    )
-
-
 @compression_service_blueprint.route("/compressed/video", methods=["GET"])
 def compressed_video():
     return render_template("compression_service/compressed_video.html")
