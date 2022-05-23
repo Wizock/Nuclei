@@ -3,6 +3,7 @@
 ## todays goals
 
 - [ ] compression implimentation
+  - [ ] need to figure out video static 
   - [ ] test different compression commands on videos to test quality against bytes compressed
 - [ ] <https://pythonhosted.org/python-gnupg/>
 - [ ] UI revamp
@@ -21,9 +22,6 @@
 # File Structure
 
 ```bat
-
-Folder PATH listing for volume Windows
-Volume serial number is 165C-21C8
 C:.
 |   .gitattributes
 |   .gitignore
