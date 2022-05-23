@@ -19,7 +19,6 @@ def compression_low_preset(file_path, file_path_compressed):
         shell=True,
     )
 
-@jit(target ="cuda") 
 def compress_medium_preset(file_path, file_path_compressed):
     return subprocess.run(
         f"ffmpeg -i {file_path} -vcodec libx264 -crf 28 {file_path_compressed}",
