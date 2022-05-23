@@ -1,6 +1,5 @@
 import subprocess
-from numba import jit, cuda
-
+import ffmpeg
 """
 transform these functions into generators
 
@@ -36,10 +35,12 @@ def compression_high_preset(file_path, file_path_compressed):
 
 
 def tested_perfect_preset(file_path, file_path_compressed):
-    return subprocess.Popen(
-        f"ffmpeg -i {file_path} -vcodec libx264 -crf 30 {file_path_compressed}",
-        shell=True,
-    ).wait()
+    result = (
+        ffmpeg.input(file_path)
+        .output(file_path_compressed, vcodec="libx264", crf=26)
+        .run(overwrite_output=True)
+    )
+    return result
 
 def compression_main(file_path, file_path_compressed, preset=None):
     if preset == "low":
