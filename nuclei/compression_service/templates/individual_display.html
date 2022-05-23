@@ -39,12 +39,11 @@
         </div>
       </div>
     </nav>
-    <img src="{{ url_for("compression_service.static", filename=img.file_name)}}">
-    {% if img.file_compressed and compressed %}
-      <p> this file is compressed </p>
-    {% else %}
-      <p> this file is not compressed yet. </p>
-    {% endif %}
+    <video width="320" height="240" controls>
+      <source src="{{ url_for("compression_service.static", filename=img.file_name)}}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
     
     </body>
 </html>
