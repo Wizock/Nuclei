@@ -45,7 +45,7 @@ def display_compressed_id(id: int, name: str):
     ).first()
     if not compressed:
         return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
-    return render_template("individual_display.html", img=compressed, compressed=True)
+    return render_template("individual_display.html", media=compressed, compressed_flag=True)
 
 
 @compression_service_blueprint.route("/display/uncompressed/<int:id>/<string:name>")
