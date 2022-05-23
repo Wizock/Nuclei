@@ -12,7 +12,6 @@ else, the process is not running
 
 """
 
-@jit(target ="cuda") 
 def compression_low_preset(file_path, file_path_compressed):
     return subprocess.run(
         f"ffmpeg -i {file_path} -vcodec libx264 -crf 24 {file_path_compressed}",
@@ -26,11 +25,12 @@ def compress_medium_preset(file_path, file_path_compressed):
     )
 
 def compression_high_preset(file_path, file_path_compressed):
-    return subprocess.run(
-        f"ffmpeg -i {file_path} -vcodec libx264 -crf 30 {file_path_compressed}",
-        shell=True,
+    result = (
+        ffmpeg.input(file_path)
+        .output(file_path_compressed, vcodec="libx264", crf=30)
+        .run(overwrite_output=True)
     )
-
+    return result
 
 def tested_perfect_preset(file_path, file_path_compressed):
     result = (
