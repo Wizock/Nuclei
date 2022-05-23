@@ -34,7 +34,7 @@ def compression_high_preset(file_path, file_path_compressed):
         shell=True,
     )
 
-@jit(target ="cuda") 
+
 def tested_perfect_preset(file_path, file_path_compressed):
     return subprocess.Popen(
         f"ffmpeg -i {file_path} -vcodec libx264 -crf 30 {file_path_compressed}",
