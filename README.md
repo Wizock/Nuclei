@@ -20,7 +20,7 @@
   - [ ] index video media
 
 # File Structure
-
+## *1275* lines of code  
 ```bat
 C:.
 |   .gitattributes
