@@ -16,7 +16,6 @@ _index_view = Blueprint(
     __name__,
     template_folder="templates",
     url_prefix="/",
-    static_folder="static/imgs",
 )
 
 from ..extension_globals.celery import celery
@@ -31,6 +30,7 @@ from ..video_compression.models import video_media
 def index_design():
     # query media models to get all media objects
     images = media_index.query.all()
+
     videos = video_media.query.all()
     images.sort(key=lambda x: x.date_created)
     videos.sort(key=lambda x: x.date_created)
