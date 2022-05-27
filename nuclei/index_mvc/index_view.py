@@ -30,9 +30,13 @@ from ..video_compression.models import video_media
 def index_design():
     # query media models to get all media objects
     images = media_index.query.all()
-
     videos = video_media.query.all()
+
     images.sort(key=lambda x: x.date_created)
     videos.sort(key=lambda x: x.date_created)
+    # merge the data
+    data = images + videos
+    data.sort(key=lambda x: x.date_created)
+    # render the index_design template
 
-    return render_template("dashboard.html", images=images, videos=videos)
+    return render_template("dashboard.html", data=data)
