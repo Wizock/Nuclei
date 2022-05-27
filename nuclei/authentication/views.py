@@ -24,6 +24,8 @@ def landing_page() -> Response or render_template:
     """
     Landing page for the application.
     """
+    if current_user.is_authenticated:
+        return redirect(url_for("index_view.index_design"))
     # query all users
     return render_template("landing_page.html")
 

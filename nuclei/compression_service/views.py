@@ -24,17 +24,6 @@ from ..extension_globals.database import db
 from .models import media_index
 
 
-@compression_service_blueprint.route("/")
-@compression_service_blueprint.route("/index_design", methods=["POST", "GET"])
-@login_required
-@celery.task
-def index_design():
-    # query media models to get all media objects
-    media = media_index.query.all()
-    media.sort(key=lambda x: x.date_created)
-    return render_template("dashboard.html", img=media)
-
-
 @compression_service_blueprint.route("/display/compressed/<int:id>/<string:name>")
 @login_required
 @celery.task

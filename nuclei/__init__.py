@@ -103,10 +103,12 @@ class Nuclei(Flask):
         from nuclei.authentication.views import authentication_blueprint
         from nuclei.video_compression.views import video_compression_blueprint
         from nuclei.compression_service.views import compression_service_blueprint
+        from nuclei.index_mvc.index_view import _index_view
 
         self.register_blueprint(compression_service_blueprint)
         self.register_blueprint(video_compression_blueprint)
         self.register_blueprint(authentication_blueprint)
+        self.register_blueprint(_index_view)
 
 
 # create app instance
