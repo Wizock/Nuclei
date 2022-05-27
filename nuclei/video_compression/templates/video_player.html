@@ -11,35 +11,48 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/compression_service">Nuclei</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Images </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="nav-link" href="/compression_service/compression_upload">compress new file</a>
-                <a class="nav-link" href="/compression_service/sorted/compressed">compressed files</a>
-                <a class="nav-link" href="/compression_service/upload">upload new file</a>
-                <a class="nav-link" href="/compression_service/sorted/uncompressed">view uncompressed files</a>
-              </div>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> videos </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="nav-link" href="/compression_service/upload/video">upload a video</a>
-                <a class="nav-link" href="/compression_service/compress/video">compress a video</a>
-                <a class="nav-link" href="/compression_service/status/video">compress uploaded video</a>
-                <a class="nav-link" href="/compression_service/compressed/video">view compressed videos</a>
-              </div>
-            </li>
-          </ul>
-        </div>
+      <a class="navbar-brand" href="#">Navbar</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Images </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="nav-link" href="/compression_service/compression_upload">compress new file</a>
+              <a class="nav-link" href="/compression_service/sorted/compressed">compressed files</a>
+              <a class="nav-link" href="/compression_service/upload">upload new file</a>
+              <a class="nav-link" href="/compression_service/sorted/uncompressed">view uncompressed files</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> videos </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="nav-link" href="/video_compression/upload/video">upload a video</a>
+              <a class="nav-link" href="/video_compression/compress/video">compress a video</a>
+              <a class="nav-link" href="/video_compression/status/video">compress uploaded video</a>
+              <a class="nav-link" href="/video_compression/compressed/video">view compressed videos</a>
+            </div>
+          </li>
+        </ul>
       </div>
     </nav>
-    <iframe src="https://www.w3schools.com" title="W3Schools Free Online Web Tutorials"></iframe>
+    <!-- render the video -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Video Player</h5>
+              <div class="embed-responsive embed-responsive-16by9">
+                <video controls>
+                  <source src="{{url_for("video_compression.static", filename='example.mp4')}}" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
   </body>
 </html>

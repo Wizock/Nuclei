@@ -10,12 +10,11 @@
     <title>Nuclei Compression Service</title>
   </head>
   <body>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="#">Navbar</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-    
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item dropdown">
@@ -30,16 +29,15 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> videos </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="nav-link" href="/compression_service/upload/video">upload a video</a>
-              <a class="nav-link" href="/compression_service/compress/video">compress a video</a>
-              <a class="nav-link" href="/compression_service/status/video">compress uploaded video</a>
-              <a class="nav-link" href="/compression_service/compressed/video">view compressed videos</a>
+              <a class="nav-link" href="/video_compression/upload/video">upload a video</a>
+              <a class="nav-link" href="/video_compression/compress/video">compress a video</a>
+              <a class="nav-link" href="/video_compression/status/video">compress uploaded video</a>
+              <a class="nav-link" href="/video_compression/compressed/video">view compressed videos</a>
             </div>
           </li>
         </ul>
       </div>
     </nav>
-
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
@@ -57,8 +55,7 @@
                   <th scope="col">delete</th>
                 </tr>
               </thead>
-              <tbody> 
-                {% for imgs in img %} <tr>
+              <tbody> {% for imgs in data %} <tr>
                   <th scope="row">{{ imgs.id }}</th>
                   <th>
                     <a href="/compression_service/display/compressed/{{ imgs.id }}/{{ imgs.file_name }}">
@@ -71,25 +68,21 @@
                   <td>{{ imgs.file_size_compressed }}-bytes</td>
                   <td>{{ imgs.file_size_original }}-bytes</td>
                   <td>{{ imgs.file_compressed }}</td>
-                  <td> 
-                    {% if not imgs.file_compressed %} 
-                      <button>
-                        <a href="/compression_service/existing_compression/{{ imgs.id }}/{{ imgs.file_name }}">compress</a>
-                      </button> 
-                    {% else %} 
-                      <button>
-                        <a href="/compression_service/display/compressed/{{ imgs.id }}/{{ imgs.file_name }}"> view image </a>
-                      </button> 
-                    {% endif %} 
-                    </td>
-                    <td> 
-                      <button>
-                        <a href="/compression_service/delete/{{ imgs.id }}/{{ imgs.file_name }}">delete</a>
-                      </button> 
-                    </td>
-                  </tr> 
-                {% endfor %} 
-              </tbody>
+                  <td> {% if not imgs.file_compressed %} <button>
+                      <a href="/compression_service/existing_compression/{{ imgs.id }}/{{ imgs.file_name }}">compress</a>
+                    </button> {% else %}
+                    <!-- check if the --> {% if imgs.file_extension == ".mp4" %} <button>
+                      <a href="/video_compression/video/{{ imgs.id }}/{{ imgs.file_name }}">view video</a>
+                    </button> {% else %} <button>
+                      <a href="/compression_service/display/compressed/{{ imgs.id }}/{{ imgs.file_name }}">view image</a>
+                    </button> {% endif %} {% endif %}
+                  </td>
+                  <td>
+                    <button>
+                      <a href="/compression_service/delete/{{ imgs.id }}/{{ imgs.file_name }}">delete</a>
+                    </button>
+                  </td>
+                </tr> {% endfor %} </tbody>
             </table>
           </div>
         </div>
