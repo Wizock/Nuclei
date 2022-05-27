@@ -37,6 +37,5 @@ def index_design():
     # merge the data
     data = images + videos
     data.sort(key=lambda x: x.date_created)
-    # render the index_design template
 
     return render_template("dashboard.html", data=data)

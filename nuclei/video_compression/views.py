@@ -12,7 +12,7 @@ video_compression_blueprint = Blueprint(
     __name__,
     template_folder="templates",
     url_prefix="/video_compression",
-    static_folder="static/",
+    static_folder="static/compressed",
 )
 
 from ..extension_globals.celery import celery
@@ -51,6 +51,10 @@ def compress_video() -> Response:
         )
 
 
-@video_compression_blueprint.route("/compressed/video", methods=["GET"])
-def compressed_video():
-    return render_template("compression_service/compressed_video.html")
+@video_compression_blueprint.route(
+    "/video/<int:id>/<string:name>", methods=["GET", "POST"]
+)
+@login_required
+def view_video(id: int, name: str) -> Response:
+    video_media = media_index.query.filter_by(id=id).first()
+    return render_template("video_player.html", video_media=video_media)
