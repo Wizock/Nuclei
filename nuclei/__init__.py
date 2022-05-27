@@ -30,10 +30,9 @@ class Nuclei(Flask):
     ) -> None:
         """
         Initialize the app.
-        :param import_name: app's import name
-        :param template_folder: app's template folder
-        :param root_path: app's root path
-
+            :param import_name: app's import name
+            :param template_folder: app's template folder
+            :param root_path: app's root path
         """
         super().__init__(import_name, template_folder, root_path)
         with self.app_context():
@@ -47,37 +46,27 @@ class Nuclei(Flask):
             self.import_blueprints()
 
     def import_redis(self) -> None:
-        """
-        Import the redis.
-        """
+        """Import the redis."""
         from nuclei.extension_globals.redis import redis_client
 
         redis_client.init_app(self)
 
     def return_app(self) -> Flask:
-        """
-        Return the app.
-        """
+        """Return the app."""
         return self
 
     def import_config(self) -> None:
-        """
-        Import the config.
-        """
+        """Import the config."""
         return self.config.from_object("nuclei.config.Config")
 
     def import_celery(self) -> None:
-        """
-        Import the celery.
-        """
+        """Import the celery."""
         from nuclei.extension_globals.celery import celery
 
         self.celery = celery
 
     def import_db(self) -> None:
-        """
-        Import the database.
-        """
+        """Import the database."""
         db.init_app(self)
         from nuclei.authentication.models import User
         from nuclei.compression_service.models import media_index
@@ -85,26 +74,20 @@ class Nuclei(Flask):
         db.create_all()
 
     def import_security(self) -> None:
-        """
-        Import the security.
-        """
+        """Import the security."""
         from nuclei.extension_globals.security import security
 
         security.init_app(self)
 
     def import_admin(self) -> None:
-        """
-        Import the admin.
-        """
+        """Import the admin."""
         from nuclei.admin_interface.views import admin_interface_blueprint
         from nuclei.extension_globals.admin import admin_instance
 
         admin_instance.init_app(self)
 
     def import_cookies(self) -> None:
-        """
-        Import the cookies.
-        """
+        """Import the cookies."""
         from nuclei.extension_globals.cookies import login_manager
 
         login_manager.init_app(self)
@@ -115,13 +98,13 @@ class Nuclei(Flask):
             return User.query.get(user_id)
 
     def import_blueprints(self) -> None:
-        """
-        Import the blueprints.
-        """
+        """Import the blueprints."""
         from nuclei.authentication.views import authentication_blueprint
+        from nuclei.video_compression.views import video_compression_blueprint
         from nuclei.compression_service.views import compression_service_blueprint
 
         self.register_blueprint(compression_service_blueprint)
+        self.register_blueprint(video_compression_blueprint)
         self.register_blueprint(authentication_blueprint)
 
 

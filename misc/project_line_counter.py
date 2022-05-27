@@ -100,8 +100,11 @@ class ProjectLineCounter:
         import os
 
         directory = "."
-        directory_depth = 100 # How deep you would like to go
-        extensions_to_consider = [".py", ".css"]  # Change to ["all"] to include all extensions
+        directory_depth = 100  # How deep you would like to go
+        extensions_to_consider = [
+            ".py",
+            ".css",
+        ]  # Change to ["all"] to include all extensions
         exclude_filenames = ["venv", ".idea", "__pycache__", "cache"]
         skip_file_error_list = True
 
@@ -109,6 +112,7 @@ class ProjectLineCounter:
 
         print("Path to ignore:", this_file_dir)
         print("=====================================")
+
         def _walk(path, depth):
             """Recursively list files and directories up to a certain depth"""
             depth -= 1
@@ -158,7 +162,12 @@ class ProjectLineCounter:
                     for line in file:
                         if line != "\n":
                             local_count += 1
-                    print("({:.1f}%)".format(100*i/len_files), file_dir, "|", local_count)
+                    print(
+                        "({:.1f}%)".format(100 * i / len_files),
+                        file_dir,
+                        "|",
+                        local_count,
+                    )
                     line_count += local_count
                     file.close()
                 except:
