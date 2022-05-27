@@ -89,7 +89,7 @@ def delete_id(id: int, name: str):
     # delete the image from the database
     db.session.delete(compressed)
     db.session.commit()
-    return redirect(url_for("compression_service.index_design"))
+    return redirect(url_for("index_view.index_design"))
 
 
 @compression_service_blueprint.route("/upload", methods=["POST", "GET"])
@@ -136,7 +136,7 @@ def upload() -> Response:
         db.session.add(compression_service)
         # commit changes to database
         db.session.commit()
-        return redirect(url_for("compression_service.index_design"))
+        return redirect(url_for("index_view.index_design"))
     else:
         return render_template("upload_template.html")
 
@@ -262,6 +262,6 @@ def compression_upload() -> Response:
         db.session.add(compression_service)
         # commit changes to database
         db.session.commit()
-        return redirect(url_for("compression_service.index_design"))
+        return redirect(url_for("index_view.index_design"))
     else:
         return render_template("upload_template.html")
