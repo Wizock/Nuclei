@@ -1,13 +1,6 @@
-import pytest
+import unittest
 
 
-def test_compress_file():
-    # test if compress_file function exists
-    import nuclei.compression_service
-
-    assert nuclei.compression_service.compress_file
-
-    # test if compress_file function returns a response
-    import nuclei.compression_service
-
-    assert nuclei.compression_service.compress_file() == Response
+class TestCompressionService(unittest.TestCase):
+    def test_compress(self):
+        self.assertEqual(True, False)
