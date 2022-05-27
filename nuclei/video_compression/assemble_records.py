@@ -19,12 +19,12 @@ def assemble_record(
 
     file_path: str = (
         str(pathlib.Path.cwd())
-        + str(pathlib.Path(r"\nuclei\compression_service\static\videos"))
+        + str(pathlib.Path(r"\nuclei\video_compression\static\videos"))
         + str(rf"\{video_name}")
     )
     file_path_compressed: str = (
         str(pathlib.Path.cwd())
-        + str(pathlib.Path(r"\nuclei\compression_service\static\compressed"))
+        + str(pathlib.Path(r"\nuclei\video_compression\static\compressed"))
         + str(rf"\{video_name}")
     )
 

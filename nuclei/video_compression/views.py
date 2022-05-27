@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, Response, redirect, render_template, request, url_for
 from flask_login import login_required
 
 from ..compression_service.models import media_index
@@ -22,7 +22,7 @@ from ..extension_globals.database import db
 @video_compression_blueprint.route("/upload/video", methods=["GET", "POST"])
 @login_required
 @celery.task
-def upload_video():
+def upload_video() -> Response:
     if request.method == "POST":
         if request.files:
             video_file = request.files["file"]
@@ -35,7 +35,7 @@ def upload_video():
 @video_compression_blueprint.route("/compress/video", methods=["GET", "POST"])
 @login_required
 @celery.task
-def compress_video():
+def compress_video() -> Response:
     if request.method == "POST":
         print("you posted")
         if request.files:

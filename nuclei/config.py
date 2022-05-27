@@ -4,7 +4,7 @@ from celery import Celery
 
 
 class Config(object):
-    DEBUG = False
+    DEBUG = True
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = "this-really-needs-to-be-changed"
@@ -33,6 +33,8 @@ class StagingConfig(Config):
 
 
 class DevelopmentConfig(Config):
+    """Development configuration"""
+
     DEVELOPMENT = True
     DEBUG = True
 

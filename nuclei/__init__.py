@@ -70,6 +70,7 @@ class Nuclei(Flask):
         db.init_app(self)
         from nuclei.authentication.models import User
         from nuclei.compression_service.models import media_index
+        from nuclei.video_compression.models import video_media
 
         db.create_all()
 

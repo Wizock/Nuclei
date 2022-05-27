@@ -63,7 +63,7 @@
                   <th>
                     <a href="/compression_service/display/compressed/{{ imgs.id }}/{{ imgs.file_name }}">
                       <figure class="figure">
-                        <img height='50' width='50' class="figure-img img-fluid rounded" src="{{ url_for("compression_service.static", filename=imgs.file_name)}}">
+                        <img height='50' width='50' class="figure-img img-fluid rounded" src="{{ url_for('compression_service.static', filename=imgs.file_name)}}">
                       </figure>
                     </a>
                   </th>
@@ -74,11 +74,7 @@
                   <td> 
                     {% if not imgs.file_compressed %} 
                       <button>
-                        {% if imgs.file_extension == ".mp4" or ".avi" or ".mov"%}
-                        <a href="/compression_service/compressed/video/{{ imgs.id }}/{{ imgs.file_name }}">compress</a>
-                        {% else %}
                         <a href="/compression_service/existing_compression/{{ imgs.id }}/{{ imgs.file_name }}">compress</a>
-                        {% endif %}
                       </button> 
                     {% else %} 
                       <button>
