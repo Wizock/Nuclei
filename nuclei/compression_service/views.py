@@ -16,7 +16,7 @@ compression_service_blueprint = Blueprint(
     __name__,
     template_folder="templates",
     url_prefix="/compression_service",
-    static_folder="static/",
+    static_folder="static/imgs",
 )
 
 from ..extension_globals.celery import celery
@@ -46,7 +46,7 @@ def display_compressed_id(id: int, name: str):
     if not compressed:
         return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
     return render_template(
-        "individual_display.html", media=compressed, compressed_flag=True
+        "individual_display.html", img=compressed, compressed_flag=True
     )
 
 

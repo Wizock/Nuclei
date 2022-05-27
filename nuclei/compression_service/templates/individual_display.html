@@ -39,12 +39,12 @@
         </div>
       </div>
     </nav>
-    <!-- render the image -->
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <img src="{{ url_for('static', filename='images/' + filename) }}" alt="{{ filename }}" class="img-fluid">
-        </div>
-      </div>
+    <img src="{{ url_for("compression_service.static", filename=img.file_name)}}">
+    {% if img.file_compressed and compressed %}
+      <p> this file is compressed </p>
+    {% else %}
+      <p> this file is not compressed yet. </p>
+    {% endif %}
+    
     </body>
 </html>
