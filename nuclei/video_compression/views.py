@@ -59,3 +59,14 @@ def view_video(id: int, name: str) -> Response:
     video_query = video_media.query.filter_by(id=id, name=name).first()
     print(video_query)
     return render_template("video_player.html", video_query=video_query)
+
+
+@video_compression_blueprint.route(
+    "/delete/<int:id>/<string:name>", methods=["GET", "POST"]
+)
+@login_required
+def delete_video(id: int, name: str) -> Response:
+    video_query = video_media.query.filter_by(id=id, name=name).first()
+    db.session.delete(video_query)
+    db.session.commit()
+    return redirect("/")

@@ -27,7 +27,7 @@ from ..video_compression.models import video_media
 @_index_view.route("/")
 @_index_view.route("/index_design", methods=["POST", "GET"])
 @login_required
-def index_design():
+def index_design() -> Response:
     # query media models to get all media objects
     images = media_index.query.all()
     videos = video_media.query.all()

@@ -11,7 +11,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" href="/">Navbar</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -58,29 +58,51 @@
               <tbody> {% for imgs in data %} <tr>
                   <th scope="row">{{ imgs.id }}</th>
                   <th>
+                    {% if imgs.file_extension == ".mp4" %}
+                    <a href="/video_compression/video/{{ imgs.id }}/{{ imgs.file_name }}">
+                      <figure class="figure">
+                        <video height='50' width='50' class="figure-img img-fluid rounded" src="{{ url_for('video_compression.static', filename=imgs.file_name)}}">
+                      </figure>
+                    </a>
+                    {% else %}
                     <a href="/compression_service/display/compressed/{{ imgs.id }}/{{ imgs.file_name }}">
                       <figure class="figure">
                         <img height='50' width='50' class="figure-img img-fluid rounded" src="{{ url_for('compression_service.static', filename=imgs.file_name)}}">
                       </figure>
-                    </a>
+                      {% endif %}
                   </th>
                   <td>{{ imgs.file_name[:20] }}</td>
                   <td>{{ imgs.file_size_compressed }}-bytes</td>
                   <td>{{ imgs.file_size_original }}-bytes</td>
                   <td>{{ imgs.file_compressed }}</td>
-                  <td> {% if not imgs.file_compressed %} <button>
+                  <td> 
+                    {% if not imgs.file_compressed %}
+                    <button>
                       <a href="/compression_service/existing_compression/{{ imgs.id }}/{{ imgs.file_name }}">compress</a>
-                    </button> {% else %}
-                    <!-- check if the --> {% if imgs.file_extension == ".mp4" %} <button>
-                      <a href="/video_compression/video/{{ imgs.id }}/{{ imgs.file_name }}">view video</a>
-                    </button> {% else %} <button>
-                      <a href="/compression_service/display/compressed/{{ imgs.id }}/{{ imgs.file_name }}">view image</a>
-                    </button> {% endif %} {% endif %}
+                    </button> 
+                    {% else %}
+                    <!-- check if the --> 
+                      {% if imgs.file_extension == ".mp4" %} 
+                      <button>
+                        <a href="/video_compression/video/{{ imgs.id }}/{{ imgs.file_name }}">view video</a>
+                      </button> 
+                      {% else %} 
+                      <button>
+                        <a href="/compression_service/display/compressed/{{ imgs.id }}/{{ imgs.file_name }}">view image</a>
+                      </button> 
+                      {% endif %} 
+                    {% endif %}
                   </td>
                   <td>
+                    {% if imgs.file_extension == ".mp4" %}
+                    <button>
+                      <a href="/video_compression/delete/{{ imgs.id }}/{{ imgs.file_name }}">delete</a>
+                    </button>
+                    {% else %}
                     <button>
                       <a href="/compression_service/delete/{{ imgs.id }}/{{ imgs.file_name }}">delete</a>
                     </button>
+                    {% endif %}
                   </td>
                 </tr> {% endfor %} </tbody>
             </table>
