@@ -11,7 +11,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" href="/">Navbar</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -47,7 +47,7 @@
               <h5 class="card-title">Video Player</h5>
               <div class="embed-responsive embed-responsive-16by9">
                 <video controls>
-                  <source src="{{url_for("video_compression.static", filename='example.mp4')}}" type="video/mp4">
+                  <source src="{{url_for("video_compression.static", filename=video_query.file_name)}}" type="video/mp4">
                 </video>
               </div>
             </div>

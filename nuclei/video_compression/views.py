@@ -1,11 +1,11 @@
 from flask import Blueprint, Response, redirect, render_template, request, url_for
 from flask_login import login_required
 
-from ..compression_service.models import media_index
 from ..extension_globals.celery import celery
 from ..extension_globals.database import db
 from .assemble_records import assemble_record
 from .compression_preset import compression_main
+from .models import video_media
 
 video_compression_blueprint = Blueprint(
     "video_compression",
@@ -43,7 +43,7 @@ def compress_video() -> Response:
             _ = assemble_record(video_file, compressing=True, compressed=True)
             db.session.add(_)
             db.session.commit()
-            return redirect("/compression_service/")
+            return redirect("/")
     else:
         return render_template(
             "upload_template.html",
@@ -56,5 +56,6 @@ def compress_video() -> Response:
 )
 @login_required
 def view_video(id: int, name: str) -> Response:
-    video_media = media_index.query.filter_by(id=id).first()
-    return render_template("video_player.html", video_media=video_media)
+    video_query = video_media.query.filter_by(id=id, name=name).first()
+    print(video_query)
+    return render_template("video_player.html", video_query=video_query)
