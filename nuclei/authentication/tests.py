@@ -1,8 +1,8 @@
 import unittest
 
+from .models import *
 # write tests for the authentication module
 from .views import *
-from .models import *
 
 
 class TestAuthentication(unittest.TestCase):

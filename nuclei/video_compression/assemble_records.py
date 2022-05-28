@@ -4,9 +4,10 @@ import hashlib
 import os
 import pathlib
 from typing import List
+
 from ..extension_globals.database import db
-from .models import video_media
 from .compression_preset import compression_main
+from .models import video_media
 
 
 def assemble_record(

@@ -4,8 +4,8 @@ import hashlib
 import os
 import pathlib
 
-from flask import Blueprint, Response, redirect, render_template, request, url_for
-
+from flask import (Blueprint, Response, redirect, render_template, request,
+                   url_for)
 # import login required decorator
 from flask_login import login_required
 from PIL import Image
@@ -18,9 +18,9 @@ _index_view = Blueprint(
     url_prefix="/",
 )
 
+from ..compression_service.models import media_index
 from ..extension_globals.celery import celery
 from ..extension_globals.database import db
-from ..compression_service.models import media_index
 from ..video_compression.models import video_media
 
 

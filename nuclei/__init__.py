@@ -9,7 +9,6 @@ from flask_admin import Admin
 from flask_caching import Cache
 from flask_cors import CORS
 from flask_debugtoolbar import DebugToolbarExtension
-
 # from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
@@ -101,9 +100,10 @@ class Nuclei(Flask):
     def import_blueprints(self) -> None:
         """Import the blueprints."""
         from nuclei.authentication.views import authentication_blueprint
-        from nuclei.video_compression.views import video_compression_blueprint
-        from nuclei.compression_service.views import compression_service_blueprint
+        from nuclei.compression_service.views import \
+            compression_service_blueprint
         from nuclei.index_mvc.index_view import _index_view
+        from nuclei.video_compression.views import video_compression_blueprint
 
         self.register_blueprint(compression_service_blueprint)
         self.register_blueprint(video_compression_blueprint)
