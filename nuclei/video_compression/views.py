@@ -1,5 +1,4 @@
-from flask import (Blueprint, Response, redirect, render_template, request,
-                   url_for)
+from flask import Blueprint, Response, redirect, render_template, request, url_for
 from flask_login import login_required
 
 from ..extension_globals.celery import celery

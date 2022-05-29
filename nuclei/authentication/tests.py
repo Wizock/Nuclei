@@ -1,6 +1,7 @@
 import unittest
 
 from .models import *
+
 # write tests for the authentication module
 from .views import *
 
