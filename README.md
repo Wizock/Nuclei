@@ -1,7 +1,8 @@
 # Nuclei
 
 ## todays goals
-
+@Wizock
+ - impliment this: https://platform.uno/
 - [ ] compression implimentation
   - [x] need to figure out video static 
   - [ ] test different compression commands on videos to test quality against bytes compressed
