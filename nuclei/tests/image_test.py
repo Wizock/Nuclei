@@ -1,8 +1,7 @@
+from pathlib import Path
+
 from .authentication_test import *
 from .main_tests import *
-from ..authentication.models import User
-
-from pathlib import Path
 
 resources = Path(__file__).parent / "resources"
 
