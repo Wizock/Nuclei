@@ -8,8 +8,7 @@ resources = Path(__file__).parent / "resources"
 
 def test_video_index(client):
     response = client.post("/login", data={"email": "test", "password": "test"})
-    response = client.get("video_service/video_upload")
-
+    response = client.get("video_service/upload/video")
     assert response.status_code == 200
 
 

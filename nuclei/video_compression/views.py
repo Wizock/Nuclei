@@ -1,5 +1,4 @@
-from flask import (Blueprint, Response, redirect, render_template, request,
-                   url_for)
+from flask import Blueprint, Response, redirect, render_template, request, url_for
 from flask_login import login_required
 
 from ..extension_globals.celery import celery
@@ -30,7 +29,17 @@ def upload_video() -> Response:
             _ = assemble_record(video_file, compressing=False, compressed=False)
             db.session.add(_)
             db.session.commit()
-    return render_template("upload_template.html")
+            return Response(
+                "Video file uploaded successfully",
+                status=200,
+                mimetype="text/plain",
+            )
+        return Response(
+            "No file was uploaded",
+            status=400,
+            mimetype="text/plain",
+        )
+    return render_template("upload_template.html"), 200
 
 
 @video_compression_blueprint.route("/compress/video", methods=["GET", "POST"])
