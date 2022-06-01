@@ -27,7 +27,7 @@ def landing_page() -> Response or render_template:
     if current_user.is_authenticated:
         return redirect(url_for("index_view.index_design"))
     # query all users
-    return render_template("landing_page.html")
+    return render_template("landing_page.html"), 200
 
 
 @authentication_blueprint.route("/login", methods=["POST", "GET"])
@@ -53,23 +53,32 @@ def login() -> Response or redirect or render_template or url_for or None:
                     # make sure user is logged in
                     if user.is_authenticated:
                         print("User is authenticated")
-                        return redirect(url_for("index_view.index_design"))
+                        return redirect(url_for("index_view.index_design")), 200
                 except werkzeug.exceptions.HTTPException:
                     # if user is not authenticated
-                    return render_template(
-                        "login.html", error="Invalid username or password."
+                    return (
+                        render_template(
+                            "login.html", error="Invalid username or password."
+                        ),
+                        302,
                     )
             else:
                 # if password is not correct
-                return render_template(
-                    "login.html", error="Invalid username or password."
+                return (
+                    render_template(
+                        "login.html", error="Invalid username or password."
+                    ),
+                    302,
                 )
         else:
             # if user does not exist
-            return render_template("login.html", error="Invalid username or password.")
+            return (
+                render_template("login.html", error="Invalid username or password."),
+                302,
+            )
     else:
         # if request is not POST
-        return render_template("login.html")
+        return render_template("login.html"), 200
 
 
 @authentication_blueprint.route("/register", methods=["POST", "GET"])
@@ -84,7 +93,7 @@ def register() -> Response or redirect or render_template or url_for or None:
         # check if user exists
         if User.query.filter_by(username=username).first():
             # return error message
-            return redirect(url_for("authentication.login"))
+            return redirect(url_for("authentication.login")), 302
         else:
             # create user
             user = User(username=username, email=email, hashed_password=password)
@@ -95,10 +104,10 @@ def register() -> Response or redirect or render_template or url_for or None:
             # login user
             login_user(user)
             # redirect to home page
-            return redirect("/compression_service/")
+            return redirect("/compression_service/"), 200
     else:
         # return register page
-        return render_template("register.html")
+        return render_template("register.html"), 200
 
 
 @authentication_blueprint.route("/user", methods=["GET"])

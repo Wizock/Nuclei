@@ -5,7 +5,7 @@ from celery import Celery
 
 class Config(object):
     DEBUG = True
-    TESTING = False
+    TESTING = True
     CSRF_ENABLED = True
     SECRET_KEY = "this-really-needs-to-be-changed"
     SQLALCHEMY_ECHO = False
