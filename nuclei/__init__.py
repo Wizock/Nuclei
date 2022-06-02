@@ -20,8 +20,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 from nuclei.extension_globals.database import db
 
-from nuclei.authentication.tokens import *
-
 # create app class
 class Nuclei(Flask):
     """
@@ -101,10 +99,6 @@ class Nuclei(Flask):
         def load_user(user_id):
             return User.query.get(user_id)
 
-    def import_tokens(self) -> None:
-        """Import the tokens."""
-        pass
-
     def import_blueprints(self) -> None:
         """Import the blueprints."""
         from nuclei.authentication.views import authentication_blueprint
@@ -120,18 +114,3 @@ class Nuclei(Flask):
 
 # create app instance
 app = Nuclei(__name__)
-
-from supertokens_python import get_all_cors_headers
-from flask_cors import CORS
-from supertokens_python.framework.flask import Middleware
-
-Middleware(app)
-
-# TODO: Add APIs
-
-CORS(
-    app=app,
-    origins=["http://localhost:3000"],
-    supports_credentials=True,
-    allow_headers=["Content-Type"] + get_all_cors_headers(),
-)

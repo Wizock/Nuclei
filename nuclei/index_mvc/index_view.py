@@ -37,9 +37,3 @@ def index_design() -> Response:
     data.sort(key=lambda x: x.date_created)
 
     return render_template("dashboard.html", data=data)
-
-
-@_index_view.route("/", defaults={"u_path": ""})
-@_index_view.route("/<path:u_path>")
-def catch_all(u_path: str):
-    abort(404)
