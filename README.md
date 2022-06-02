@@ -1,4 +1,11 @@
 # Nuclei
+## quickstart
+```bat
+pip install poetry
+poetry install
+
+poetry run ./main.py
+```
 
 ## todays goals
  - impliment this: https://platform.uno/
@@ -24,20 +31,12 @@
 
 ```bat
 Nuclei:
-|   .gitattributes
-|   .gitignore
 |   main.py
 |   poetry.lock
 |   pyproject.toml
 |   README.md
 |   requirements.txt
-|   tree_file.txt
 |   
-+---misc
-|       build_md.py
-|       project_line_counter.py
-|       tempCodeRunnerFile.py
-|       
 \---nuclei
     |   config.py
     |   __init__.py
