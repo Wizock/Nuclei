@@ -5,8 +5,8 @@ import os
 import pathlib
 
 import sqlalchemy
-from flask import (Blueprint, Response, redirect, render_template, request,
-                   url_for)
+from flask import Blueprint, Response, redirect, render_template, request, url_for
+
 # import login required decorator
 from flask_login import login_required
 from flask_sqlalchemy import SQLAlchemy

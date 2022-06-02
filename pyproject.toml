@@ -1,8 +1,3 @@
-[build-system]
-# Should be the same as `$POETRY_VERSION`:
-requires = ["poetry>=1.0"]
-build-backend = "poetry.masonry.api"
-
 [tool.poetry]
 name = "nuclei"
 version = "0.2.6"
@@ -20,6 +15,7 @@ typer = "^0.4.1"
 ffmpeg-python = "^0.2.0"
 asyncffmpeg = "^1.2.0"
 asynccpu = "^1.2.2"
+supertokens-python = "^0.8.2"
 
 [tool.poetry.dev-dependencies]
 flask-limiter = {git = "https://github.com/alisaifee/flask-limiter"}

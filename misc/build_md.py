@@ -3,6 +3,7 @@ import pathlib
 
 readme_file = pathlib.Path("../README.md")
 
+
 def make_tree_file():
     """
     Make the tree file.

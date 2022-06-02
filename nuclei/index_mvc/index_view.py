@@ -4,7 +4,7 @@ import hashlib
 import os
 import pathlib
 
-from flask import Blueprint, Response, render_template, url_for
+from flask import Blueprint, Response, abort, render_template, url_for
 
 # import login required decorator
 from flask_login import login_required
@@ -37,3 +37,9 @@ def index_design() -> Response:
     data.sort(key=lambda x: x.date_created)
 
     return render_template("dashboard.html", data=data)
+
+
+@_index_view.route("/", defaults={"u_path": ""})
+@_index_view.route("/<path:u_path>")
+def catch_all(u_path: str):
+    abort(404)
