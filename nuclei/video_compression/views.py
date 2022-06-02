@@ -1,5 +1,6 @@
 from flask import Blueprint, Response, redirect, render_template, request, url_for
 from flask_login import login_required
+from werkzeug.utils import secure_filename
 
 from ..extension_globals.celery import celery
 from ..extension_globals.database import db
@@ -25,20 +26,24 @@ from ..extension_globals.database import db
 def upload_video() -> Response:
     if request.method == "POST":
         if request.files:
-            video_file = request.files["file"]
-            _ = assemble_record(video_file, compressing=False, compressed=False)
-            db.session.add(_)
-            db.session.commit()
-            return Response(
-                "Video file uploaded successfully",
-                status=200,
-                mimetype="text/plain",
-            )
-        return Response(
-            "No file was uploaded",
-            status=400,
-            mimetype="text/plain",
-        )
+            video_file: "ImmutableMultiDict[str, FileStorage]" = request.files["file"]
+            file_name = secure_filename(video_file.filename)
+            if (
+                file_name.endswith(".mpeg")
+                or file_name.endswith(".avi")
+                or file_name.endswith(".mp4")
+            ):
+                try:
+                    _ = assemble_record(video_file, compressing=False, compressed=False)
+                    if _:
+                        db.session.add(_)
+                        db.session.commit()
+                        return redirect(url_for("index_view.index_design")), 200
+                    return redirect(url_for("video_compression.upload_video")), 302
+                except OSError:
+                    return redirect(url_for("index_view.index_design")), 400
+            return redirect(url_for("video_compression.upload_video")), 302
+        return redirect(url_for("video_compression.upload_video")), 302
     return render_template("upload_template.html"), 200
 
 

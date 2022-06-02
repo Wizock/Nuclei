@@ -1,7 +1,6 @@
 # Nuclei
 
 ## todays goals
-@Wizock
  - impliment this: https://platform.uno/
 - [ ] compression implimentation
   - [x] need to figure out video static 
@@ -21,21 +20,23 @@
   - [x] index video media
 
 # File Structure
-## *1377* lines of code  
-```bat
+## *1673* lines of code  
 
+```bat
+Nuclei:
 |   .gitattributes
 |   .gitignore
 |   main.py
-|   Nuclei.code-workspace
 |   poetry.lock
 |   pyproject.toml
 |   README.md
+|   requirements.txt
 |   tree_file.txt
 |   
 +---misc
 |       build_md.py
 |       project_line_counter.py
+|       tempCodeRunnerFile.py
 |       
 \---nuclei
     |   config.py
@@ -56,7 +57,6 @@
     +---authentication
     |   |   config.py
     |   |   models.py
-    |   |   tests.py
     |   |   views.py
     |   |   __init__.py
     |   |   
@@ -65,7 +65,6 @@
     |   |       landing_page.html
     |   |       login.html
     |   |       register.html
-    |   |       
     |           
     +---compression_service
     |   |   config.py
@@ -76,21 +75,13 @@
     |   |   
     |   +---static
     |   |   +---compressed
-    |   |   |       20220214_151843.jpg
-    |   |   |       download.jpg
     |   |   |       
     |   |   \---imgs
-    |   |           20220214_151843.jpg
-    |   |           Annotation_2022-04-14_110949.png
-    |   |           download.jpg
-    |   |           example.mp4
     |   |           
     |   +---templates
     |   |       grouped_rendering.html
     |   |       individual_display.html
-    |   |       loading.html
     |   |       upload_template.html
-    |   |       video_player.html
     |   |       
     |           
     +---database
@@ -107,33 +98,39 @@
     |   |   redis.py
     |   |   security.py
     |   |   __init__.py
-    |   |   
     |           
     +---index_mvc
     |   |   index_view.py
     |   |   
     |   +---templates
     |   |       dashboard.html
-    |   |       
+    |           
+    +---tests
+    |   |   authentication_test.py
+    |   |   conftest.py
+    |   |   image_test.py
+    |   |   main_tests.py
+    |   |   video_test.py
+    |   |   __init__.py
     |           
     +---video_compression
     |   |   assemble_records.py
     |   |   compression_preset.py
-    |   |   example.mp4
-    |   |   input.mp4
     |   |   models.py
     |   |   views.py
     |   |   __init__.py
     |   |   
     |   +---static
+    |   |   +---compressed
+    |   |   |       
     |   |   \---videos
+    |   |           
     |   +---templates
     |   |       grouped_rendering.html
     |   |       individual_display.html
-    |   |       loading.html
     |   |       upload_template.html
     |   |       video_player.html
     |   |       
     |           
-
+            
 ```

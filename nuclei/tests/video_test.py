@@ -8,46 +8,26 @@ resources = Path(__file__).parent / "resources"
 
 def test_video_index(client):
     response = client.post("/login", data={"email": "test", "password": "test"})
-    response = client.get("video_service/upload/video")
+    response = client.get("/video_compression/upload/video")
     assert response.status_code == 200
-
-
-def injection_video_test(client):
-    response = client.post("/login", data={"email": "test", "password": "test"})
-    response = client.post(
-        "video_service/video_upload",
-        data={"file": (resources / "input.jpeg").open("rb")},
-    )
-
-    assert response.status_code == 200
-
-
-def test_video_upload(client):
-    response = client.post("/login", data={"email": "test", "password": "test"})
-    response = client.post(
-        "video_service/video_upload",
-        data={"file": (resources / "input.jpeg").open("rb")},
-    )
-
-    assert response.status_code == 400
 
 
 def test_video_upload_invalid_file(client):
     response = client.post("/login", data={"email": "test", "password": "test"})
 
     response = client.post(
-        "video_service/video_upload",
+        "/video_compression/upload/video",
         data={"file": (resources / "input.txt").open("rb")},
     )
 
-    assert response.status_code == 400
+    assert response.status_code == 302
 
 
 def test_video_upload_no_file(client):
     response = client.post("/login", data={"email": "test", "password": "test"})
 
     response = client.post(
-        "video_service/video_upload",
+        "/video_compression/upload/video",
         data={"file": ""},
     )
 
@@ -58,8 +38,8 @@ def test_video_upload_invalid_file_type(client):
     response = client.post("/login", data={"email": "test", "password": "test"})
 
     response = client.post(
-        "video_service/video_upload",
-        data={"file": (resources / "input.mp4").open("rb")},
+        "/video_compression/upload/video",
+        data={"file": (resources / "input.mp4")},
     )
 
-    assert response.status_code == 400
+    assert response.status_code == 200
