@@ -5,7 +5,6 @@ from typing import *
 import werkzeug
 from flask import Blueprint, Response, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
-from pyparsing import str_type
 from typing_extensions import *
 
 authentication_blueprint = Blueprint(
@@ -104,7 +103,7 @@ def register() -> Response or redirect or render_template or url_for or None:
             # login user
             login_user(user)
             # redirect to home page
-            return redirect("/compression_service/"), 200
+            return redirect(url_for("index_view.index_design")), 200
     else:
         # return register page
         return render_template("register.html"), 200

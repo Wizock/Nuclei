@@ -1,6 +1,9 @@
 from flask import Blueprint, Response, redirect, render_template, request, url_for
 from flask_login import login_required
 from werkzeug.utils import secure_filename
+from werkzeug.datastructures import FileStorage
+from werkzeug.datastructures import ImmutableMultiDict
+from werkzeug.exceptions import BadRequest, NotFound
 
 from ..extension_globals.celery import celery
 from ..extension_globals.database import db
@@ -52,13 +55,24 @@ def upload_video() -> Response:
 @celery.task
 def compress_video() -> Response:
     if request.method == "POST":
-        print("you posted")
         if request.files:
-            video_file = request.files["file"]
+            try:
+                video_file: "ImmutableMultiDict[str, FileStorage]" = request.files[
+                    "file"
+                ]
+            except KeyError:
+                if request.form:
+                    video_file = request.form["file"]
+                if not video_file:
+                    return redirect(url_for("video_compression.compress_video")), 302
+                else:
+                    return redirect(url_for("video_compression.compress_video")), 400
+
             _ = assemble_record(video_file, compressing=True, compressed=True)
             db.session.add(_)
             db.session.commit()
             return redirect("/")
+        return redirect(url_for("video_compression.compress_video")), 302
     else:
         return render_template(
             "upload_template.html",
@@ -71,9 +85,16 @@ def compress_video() -> Response:
 )
 @login_required
 def view_video(id: int, name: str) -> Response:
-    video_query = video_media.query.filter_by(id=id, name=name).first()
-    print(video_query)
-    return render_template("video_player.html", video_query=video_query)
+    try:
+        video_query = video_media.query.filter_by(id=id, name=name).first()
+        return render_template("video_player.html", video_query=video_query)
+    except AttributeError:
+        if not video_query:
+            return redirect(url_for("index_view.index_design")), 400
+        else:
+            return render_template(
+                "video_player.html", video_query=ValueError("Video not found")
+            )
 
 
 @video_compression_blueprint.route(
@@ -81,7 +102,15 @@ def view_video(id: int, name: str) -> Response:
 )
 @login_required
 def delete_video(id: int, name: str) -> Response:
-    video_query = video_media.query.filter_by(id=id, name=name).first()
-    db.session.delete(video_query)
-    db.session.commit()
-    return redirect("/")
+    try:
+        video_query: video_media = video_media.query.filter_by(id=id, name=name).first()
+        db.session.delete(video_query)
+        db.session.commit()
+        return redirect(url_for("index_view.index_design")), 200
+    except AttributeError:
+        if not video_query:
+            return redirect(url_for("index_view.index_design")), 400
+        else:
+            return render_template(
+                "video_player.html", video_query=ValueError("Video not found")
+            )
