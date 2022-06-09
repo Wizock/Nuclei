@@ -18,15 +18,12 @@ def assemble_record(
     compressed=False,
 ) -> video_media:
     """
-
     This function takes a file and returns a video_media object
 
     :param video_file: the file to be compressed
     :param compressing: whether or not the file is being compressed
     :param compressed: whether or not the file is compressed
     :return: a video_media object
-
-
     """
 
     video_name = video_file.filename

@@ -24,6 +24,7 @@ compression_service_blueprint = Blueprint(
 from ..extension_globals.celery import celery
 from ..extension_globals.database import db
 from .models import media_index
+from .image_helpers import handle_image_incompatibilities
 
 
 @compression_service_blueprint.route("/display/compressed/<int:id>/<string:name>")
@@ -100,6 +101,13 @@ def delete_id(id: int, name: str):
 def upload() -> Response:
     if request.method == "POST":
         file = request.files["file"]
+        # check if the file is an image
+        if file.content_type not in ["image/jpeg", "image/png", "image/gif"]:
+            return redirect(url_for("compression_service.upload"))
+        # check if the file is a video type
+        elif file.content_type in ["video/mp4", "video/mpeg", "video/ogg"]:
+            return redirect(url_for("compression_service.upload"))
+        # the file must be an unknown type
         if file.filename == "":
             return Response(
                 "No file selected",
@@ -107,6 +115,7 @@ def upload() -> Response:
                 mimetype="text/plain",
             )
         if file:
+
             file_name = secure_filename(file.filename)
             file_storage_path = (
                 str(pathlib.Path.cwd())
@@ -235,7 +244,6 @@ def compression_upload() -> Response:
                 mimetype="text/plain",
             )
         if file:
-
             file_name = secure_filename(file.filename)
             if (
                 file_name.endswith(".jpg")
@@ -259,6 +267,14 @@ def compression_upload() -> Response:
                     picture: Image = Image.open(file_path_static)
                     picture.save(
                         file_path_compressed, "JPEG", optimize=True, quality=85
+                    )
+                    handle_image_incompatibilities(
+                        picture,
+                        picture.format,
+                        os.path.getsize(file_path_static),
+                        picture.width,
+                        picture.height,
+                        picture.mode,
                     )
                 except OSError as e:
                     print(e)
