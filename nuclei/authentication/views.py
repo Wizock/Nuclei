@@ -1,11 +1,20 @@
 from __future__ import annotations
+from calendar import c
 
 from typing import *
 
 import flask_praetorian
 import werkzeug
-from flask import (Blueprint, Response, jsonify, redirect, render_template,
-                   request, session, url_for)
+from flask import (
+    Blueprint,
+    Response,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
 from flask_cors import cross_origin
 from flask_login import current_user, login_required, login_user, logout_user
 from flask_praetorian import auth_required, current_user, roles_accepted
@@ -28,6 +37,8 @@ def make_session_permanent():
 @auth.route("/login", methods=["POST", "OPTIONS", "GET"])
 @cross_origin()
 def login_route():
+    # check if user is already authenticated
+
     if request.method == "POST":
         queried_username = request.json["username"]
         queried_password = request.json["password"]
@@ -40,8 +51,9 @@ def login_route():
 
             print(gen_jwt)
             return jsonify({"access_token": gen_jwt}), 200
+
     if request.method == "GET":
-        return "You didnt post"
+        return "You didn't post"
 
 
 @auth.route("/register", methods=["POST", "GET"])

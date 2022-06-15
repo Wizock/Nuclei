@@ -3,8 +3,9 @@ import datetime
 import hashlib
 import os
 import pathlib
+from typing import Any
 
-from flask import Blueprint, Response, abort, render_template, url_for
+from flask import Blueprint, Response, abort, jsonify, render_template, url_for
 from flask_cors import cross_origin
 
 # import login required decorator
@@ -24,7 +25,7 @@ from ..extension_globals.database import db
 from ..video_compression.models import video_media
 
 
-@_index_view.route("/", methods=["GET"])
+@_index_view.route("/index", methods=["GET"])
 @cross_origin()
 @flask_praetorian.auth_required
 def index_design() -> Response:
@@ -38,9 +39,22 @@ def index_design() -> Response:
     data = images + videos
     data.sort(key=lambda x: x.date_created)
 
-    return Response(
-        data,
-        mimetype="application/json",
-        status=200,
-        headers={"Access-Control-Allow-Origin": "*"},
-    )
+    media: dict[int, dict[str, Any]] = {
+        query.id: {
+            "name": query.name,
+            "file_path": query.file_path,
+            "file_name": query.file_name,
+            "file_extension": query.file_extension,
+            "file_size_original": query.file_size_original,
+            "file_size_compressed": query.file_size_compressed,
+            "file_hash_md5": query.file_hash_md5,
+            "file_base64": query.file_base64,
+            "file_compressed": query.file_compressed,
+            "date_created": query.date_created,
+            "date_updated": query.date_updated,
+        }
+        for query in data
+    }
+
+    print(media)
+    return Response(jsonify(media), mimetype="application/json", status=200)
