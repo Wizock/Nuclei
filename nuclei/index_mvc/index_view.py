@@ -5,12 +5,11 @@ import os
 import pathlib
 
 from flask import Blueprint, Response, abort, render_template, url_for
-
 # import login required decorator
 from flask_login import login_required
 
 _index_view = Blueprint(
-    "index_view",
+    "index_endpoint",
     __name__,
     template_folder="templates",
     url_prefix="/",
@@ -22,8 +21,7 @@ from ..extension_globals.database import db
 from ..video_compression.models import video_media
 
 
-@_index_view.route("/")
-@_index_view.route("/index_design", methods=["GET"])
+@_index_view.route("/", methods=["GET"])
 @login_required
 def index_design() -> Response:
     # query media models to get all media objects
@@ -36,4 +34,9 @@ def index_design() -> Response:
     data = images + videos
     data.sort(key=lambda x: x.date_created)
 
-    return render_template("dashboard.html", data=data)
+    return Response(
+        data,
+        mimetype="application/json",
+        status=200,
+        headers={"Access-Control-Allow-Origin": "*"},
+    )

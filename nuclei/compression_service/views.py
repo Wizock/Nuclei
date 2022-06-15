@@ -5,8 +5,8 @@ import os
 import pathlib
 
 import sqlalchemy
-from flask import Blueprint, Response, redirect, render_template, request, url_for
-
+from flask import (Blueprint, Response, redirect, render_template, request,
+                   url_for)
 # import login required decorator
 from flask_login import login_required
 from flask_sqlalchemy import SQLAlchemy
@@ -23,8 +23,8 @@ compression_service_blueprint = Blueprint(
 
 from ..extension_globals.celery import celery
 from ..extension_globals.database import db
-from .models import media_index
 from .image_helpers import handle_image_incompatibilities
+from .models import media_index
 
 
 @compression_service_blueprint.route("/display/compressed/<int:id>/<string:name>")
@@ -92,7 +92,7 @@ def delete_id(id: int, name: str):
     # delete the image from the database
     db.session.delete(compressed)
     db.session.commit()
-    return redirect(url_for("index_view.index_design"))
+    return redirect(url_for("index_endpoint.index_design"))
 
 
 @compression_service_blueprint.route("/upload", methods=["POST", "GET"])
@@ -156,7 +156,7 @@ def upload() -> Response:
             db.session.add(compression_service)
             # commit changes to database
             db.session.commit()
-            return redirect(url_for("index_view.index_design"))
+            return redirect(url_for("index_endpoint.index_design"))
     else:
         return render_template("upload_template.html")
 
@@ -320,7 +320,7 @@ def compression_upload() -> Response:
                         redirect(f"/compression_service/display/compressed/{e}"),
                         400,
                     )
-                return redirect(url_for("index_view.index_design"))
+                return redirect(url_for("index_endpoint.index_design"))
             else:
                 return redirect(f"/compression_service/compression_upload"), 400
         else:

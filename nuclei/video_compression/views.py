@@ -1,9 +1,9 @@
-from flask import Blueprint, Response, redirect, render_template, request, url_for
+from flask import (Blueprint, Response, redirect, render_template, request,
+                   url_for)
 from flask_login import login_required
-from werkzeug.utils import secure_filename
-from werkzeug.datastructures import FileStorage
-from werkzeug.datastructures import ImmutableMultiDict
+from werkzeug.datastructures import FileStorage, ImmutableMultiDict
 from werkzeug.exceptions import BadRequest, NotFound
+from werkzeug.utils import secure_filename
 
 from ..extension_globals.celery import celery
 from ..extension_globals.database import db
@@ -41,10 +41,10 @@ def upload_video() -> Response:
                     if _:
                         db.session.add(_)
                         db.session.commit()
-                        return redirect(url_for("index_view.index_design")), 200
+                        return redirect(url_for("index_endpoint.index_design")), 200
                     return redirect(url_for("video_compression.upload_video")), 302
                 except OSError:
-                    return redirect(url_for("index_view.index_design")), 400
+                    return redirect(url_for("index_endpoint.index_design")), 400
             return redirect(url_for("video_compression.upload_video")), 302
         return redirect(url_for("video_compression.upload_video")), 302
     return render_template("upload_template.html"), 200
@@ -90,7 +90,7 @@ def view_video(id: int, name: str) -> Response:
         return render_template("video_player.html", video_query=video_query)
     except AttributeError:
         if not video_query:
-            return redirect(url_for("index_view.index_design")), 400
+            return redirect(url_for("index_endpoint.index_design")), 400
         else:
             return render_template(
                 "video_player.html", video_query=ValueError("Video not found")
@@ -106,10 +106,10 @@ def delete_video(id: int, name: str) -> Response:
         video_query: video_media = video_media.query.filter_by(id=id, name=name).first()
         db.session.delete(video_query)
         db.session.commit()
-        return redirect(url_for("index_view.index_design")), 200
+        return redirect(url_for("index_endpoint.index_design")), 200
     except AttributeError:
         if not video_query:
-            return redirect(url_for("index_view.index_design")), 400
+            return redirect(url_for("index_endpoint.index_design")), 400
         else:
             return render_template(
                 "video_player.html", video_query=ValueError("Video not found")

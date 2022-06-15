@@ -1,1 +1,3 @@
-# TODO: start server
+from flask_cors import CORS
+
+cors: CORS = CORS()
