@@ -5,8 +5,11 @@ import os
 import pathlib
 
 from flask import Blueprint, Response, abort, render_template, url_for
+from flask_cors import cross_origin
+
 # import login required decorator
 from flask_login import login_required
+import flask_praetorian
 
 _index_view = Blueprint(
     "index_endpoint",
@@ -22,7 +25,8 @@ from ..video_compression.models import video_media
 
 
 @_index_view.route("/", methods=["GET"])
-@login_required
+@cross_origin()
+@flask_praetorian.auth_required
 def index_design() -> Response:
     # query media models to get all media objects
     images = media_index.query.all()

@@ -8,6 +8,8 @@ from typing_extensions import *
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from ..extension_globals.database import db
+from ..extension_globals.praetorian import guard
+
 
 BaseModel: DeclarativeMeta = db.Model
 
@@ -44,7 +46,7 @@ class User(UserMixin, BaseModel):
         """
         self.email: LiteralString = email
         self.username: LiteralString = username
-        self.hashed_password: LiteralString = generate_password_hash(hashed_password)
+        self.hashed_password: LiteralString = guard.hash_password(hashed_password)
 
     def is_active(self) -> bool:
         """
@@ -101,11 +103,7 @@ class User(UserMixin, BaseModel):
         return self.hashed_password
 
     @classmethod
-    def lookup(cls, username) -> "User":
-        """
-        Lookup a user by username.
-        """
-
+    def lookup(cls, username):
         return cls.query.filter_by(username=username).one_or_none()
 
     @classmethod
