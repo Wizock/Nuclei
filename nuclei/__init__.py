@@ -3,6 +3,8 @@ import importlib
 import os
 import secrets
 
+import pytest
+
 # import flask_security
 from flask import Flask
 from flask_admin import Admin
@@ -42,6 +44,8 @@ class Nuclei(Flask):
             self.import_celery()
             self.import_redis()
             self.import_admin()
+            self.import_cors()
+            self.import_guard()
             self.import_cookies()
             self.import_blueprints()
 
@@ -65,6 +69,13 @@ class Nuclei(Flask):
 
         self.celery = celery
 
+    def import_guard(self) -> None:
+        """Import the guard."""
+        from nuclei.extension_globals.praetorian import guard
+        from nuclei.authentication.models import User
+
+        guard.init_app(self, User)
+
     def import_db(self) -> None:
         """Import the database."""
         db.init_app(self)
@@ -79,6 +90,21 @@ class Nuclei(Flask):
         from nuclei.extension_globals.security import security
 
         security.init_app(self)
+
+    def import_cors(self) -> None:
+        """Import the cors."""
+        from nuclei.extension_globals.cors import cors
+
+        cors.init_app(
+            self,
+            resources={
+                r"/*": {
+                    "origins": "*",
+                    "methods": ["OPTIONS", "GET", "POST"],
+                    "allow_headers": ["Authorisation"],
+                }
+            },
+        )
 
     def import_admin(self) -> None:
         """Import the admin."""
@@ -100,14 +126,14 @@ class Nuclei(Flask):
 
     def import_blueprints(self) -> None:
         """Import the blueprints."""
-        from nuclei.authentication.views import authentication_blueprint
-        from nuclei.video_compression.views import video_compression_blueprint
+        from nuclei.authentication.views import auth
         from nuclei.compression_service.views import compression_service_blueprint
         from nuclei.index_mvc.index_view import _index_view
+        from nuclei.video_compression.views import video_compression_blueprint
 
         self.register_blueprint(compression_service_blueprint)
         self.register_blueprint(video_compression_blueprint)
-        self.register_blueprint(authentication_blueprint)
+        self.register_blueprint(auth)
         self.register_blueprint(_index_view)
 
 

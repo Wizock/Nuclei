@@ -13,6 +13,9 @@ types-six = "^1.16.15"
 types-requests = "^2.27.25"
 typer = "^0.4.1"
 ffmpeg-python = "^0.2.0"
+asyncffmpeg = "^1.2.0"
+asynccpu = "^1.2.2"
+supertokens-python = "^0.8.2"
 
 [tool.poetry.dev-dependencies]
 flask-limiter = {git = "https://github.com/alisaifee/flask-limiter"}

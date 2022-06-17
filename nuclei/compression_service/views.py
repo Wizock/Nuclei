@@ -4,10 +4,12 @@ import hashlib
 import os
 import pathlib
 
-from flask import Blueprint, Response, redirect, render_template, request, url_for
-
+import sqlalchemy
+from flask import (Blueprint, Response, redirect, render_template, request,
+                   url_for)
 # import login required decorator
 from flask_login import login_required
+from flask_sqlalchemy import SQLAlchemy
 from PIL import Image
 from werkzeug.utils import secure_filename
 
@@ -21,6 +23,7 @@ compression_service_blueprint = Blueprint(
 
 from ..extension_globals.celery import celery
 from ..extension_globals.database import db
+from .image_helpers import handle_image_incompatibilities
 from .models import media_index
 
 
@@ -89,7 +92,7 @@ def delete_id(id: int, name: str):
     # delete the image from the database
     db.session.delete(compressed)
     db.session.commit()
-    return redirect(url_for("index_view.index_design"))
+    return redirect(url_for("index_endpoint.index_design"))
 
 
 @compression_service_blueprint.route("/upload", methods=["POST", "GET"])
@@ -98,45 +101,62 @@ def delete_id(id: int, name: str):
 def upload() -> Response:
     if request.method == "POST":
         file = request.files["file"]
-        file_name = secure_filename(file.filename)
-        file_storage_path = (
-            str(pathlib.Path.cwd())
-            + str(pathlib.Path(r"\nuclei\compression_service\static\imgs"))
-            + str(rf"\{file_name}")
-        )
-        file.save(file_storage_path)
-        # get file size
-        file_size = os.path.getsize(file_storage_path)
-        # get file hash
-        file_hash_md5 = hashlib.md5(open(file_storage_path, "rb").read()).hexdigest()
-        # get file base64
-        file_base64 = base64.b64encode(open(file_storage_path, "rb").read()).decode(
-            "utf-8"
-        )
-        file_size_original = os.path.getsize(file_storage_path)
-        # get file extension
-        file_extension = os.path.splitext(file_storage_path)[1]
-        # get file path
-        file_path = os.path.dirname(file_storage_path)
-        # create new CompressionService object
-        compression_service = media_index(
-            name=file_name,
-            file_path=file_path,
-            file_name=file_name,
-            file_extension=file_extension,
-            file_size_original=file_size_original,
-            file_size_compressed=0,
-            file_hash_md5=file_hash_md5,
-            file_base64=file_base64,
-            file_compressed=False,
-            date_created=datetime.datetime.now(),
-            date_updated=datetime.datetime.now(),
-        )
-        # add new CompressionService object to database
-        db.session.add(compression_service)
-        # commit changes to database
-        db.session.commit()
-        return redirect(url_for("index_view.index_design"))
+        # check if the file is an image
+        if file.content_type not in ["image/jpeg", "image/png", "image/gif"]:
+            return redirect(url_for("compression_service.upload"))
+        # check if the file is a video type
+        elif file.content_type in ["video/mp4", "video/mpeg", "video/ogg"]:
+            return redirect(url_for("compression_service.upload"))
+        # the file must be an unknown type
+        if file.filename == "":
+            return Response(
+                "No file selected",
+                status=400,
+                mimetype="text/plain",
+            )
+        if file:
+
+            file_name = secure_filename(file.filename)
+            file_storage_path = (
+                str(pathlib.Path.cwd())
+                + str(pathlib.Path(r"\nuclei\compression_service\static\imgs"))
+                + str(rf"\{file_name}")
+            )
+            file.save(file_storage_path)
+            # get file size
+            file_size = os.path.getsize(file_storage_path)
+            # get file hash
+            file_hash_md5 = hashlib.md5(
+                open(file_storage_path, "rb").read()
+            ).hexdigest()
+            # get file base64
+            file_base64 = base64.b64encode(open(file_storage_path, "rb").read()).decode(
+                "utf-8"
+            )
+            file_size_original = os.path.getsize(file_storage_path)
+            # get file extension
+            file_extension = os.path.splitext(file_storage_path)[1]
+            # get file path
+            file_path = os.path.dirname(file_storage_path)
+            # create new CompressionService object
+            compression_service = media_index(
+                name=file_name,
+                file_path=file_path,
+                file_name=file_name,
+                file_extension=file_extension,
+                file_size_original=file_size_original,
+                file_size_compressed=0,
+                file_hash_md5=file_hash_md5,
+                file_base64=file_base64,
+                file_compressed=False,
+                date_created=datetime.datetime.now(),
+                date_updated=datetime.datetime.now(),
+            )
+            # add new CompressionService object to database
+            db.session.add(compression_service)
+            # commit changes to database
+            db.session.commit()
+            return redirect(url_for("index_endpoint.index_design"))
     else:
         return render_template("upload_template.html")
 
@@ -208,60 +228,102 @@ def compress_uploaded(id: int, name: str) -> Response:
 @celery.task
 def compression_upload() -> Response:
     if request.method == "POST":
-        file = request.files["file"]
-        file_name = secure_filename(file.filename)
-        file_path_static: str = (
-            str(pathlib.Path.cwd())
-            + str(pathlib.Path(r"\nuclei\compression_service\static\imgs"))
-            + str(rf"\{file_name}")
-        )
-        file_path_compressed: str = (
-            str(pathlib.Path.cwd())
-            + str(pathlib.Path(r"\nuclei\compression_service\static\compressed"))
-            + str(rf"\{file_name}")
-        )
         try:
-            file.save(file_path_static)
-            picture: Image = Image.open(file_path_static)
-            picture.save(file_path_compressed, "JPEG", optimize=True, quality=85)
-        except OSError as e:
-            print(e)
-        finally:
-            picture: Image = Image.open(file_path_static)
-            rgb_im = picture.convert("RGB")
-            rgb_im.save(file_path_compressed, "JPEG", optimize=True, quality=85)
-        file_size_original = os.path.getsize(file_path_static)
-        file_size_compressed: int = os.path.getsize(file_path_compressed)
-        # get file hash
-        file_hash_md5: str = hashlib.md5(
-            open(file_path_compressed, "rb").read()
-        ).hexdigest()
-        # get file base64
-        file_base64: str = base64.b64encode(
-            open(file_path_compressed, "rb").read()
-        ).decode("utf-8")
-        # get file extension
-        file_extension: str = os.path.splitext(file_path_compressed)[1]
-        # get file path
-        file_path: str = os.path.dirname(file_path_compressed)
-        # create new CompressionService object
-        compression_service: media_index = media_index(
-            name=file_name,
-            file_path=file_path,
-            file_name=file_name,
-            file_extension=file_extension,
-            file_size_original=file_size_original,
-            file_size_compressed=file_size_compressed,
-            file_hash_md5=file_hash_md5,
-            file_base64=file_base64,
-            file_compressed=True,
-            date_created=datetime.datetime.now(),
-            date_updated=datetime.datetime.now(),
-        )
-        # add new CompressionService object to database
-        db.session.add(compression_service)
-        # commit changes to database
-        db.session.commit()
-        return redirect(url_for("index_view.index_design"))
+            file = request.files["file"]
+        except Exception as e:
+            return Response(
+                "No file selected",
+                status=302,
+                mimetype="text/plain",
+            )
+
+        if file.filename == "":
+            return Response(
+                "No file selected",
+                status=400,
+                mimetype="text/plain",
+            )
+        if file:
+            file_name = secure_filename(file.filename)
+            if (
+                file_name.endswith(".jpg")
+                or file_name.endswith(".png")
+                or file_name.endswith(".jpeg")
+            ):
+                file_path_static: str = (
+                    str(pathlib.Path.cwd())
+                    + str(pathlib.Path(r"\nuclei\compression_service\static\imgs"))
+                    + str(rf"\{file_name}")
+                )
+                file_path_compressed: str = (
+                    str(pathlib.Path.cwd())
+                    + str(
+                        pathlib.Path(r"\nuclei\compression_service\static\compressed")
+                    )
+                    + str(rf"\{file_name}")
+                )
+                try:
+                    file.save(file_path_static)
+                    picture: Image = Image.open(file_path_static)
+                    picture.save(
+                        file_path_compressed, "JPEG", optimize=True, quality=85
+                    )
+                    handle_image_incompatibilities(
+                        picture,
+                        picture.format,
+                        os.path.getsize(file_path_static),
+                        picture.width,
+                        picture.height,
+                        picture.mode,
+                    )
+                except OSError as e:
+                    print(e)
+                finally:
+                    picture: Image = Image.open(file_path_static)
+                    rgb_im = picture.convert("RGB")
+                    rgb_im.save(file_path_compressed, "JPEG", optimize=True, quality=85)
+                file_size_original = os.path.getsize(file_path_static)
+                file_size_compressed: int = os.path.getsize(file_path_compressed)
+                # get file hash
+                file_hash_md5: str = hashlib.md5(
+                    open(file_path_compressed, "rb").read()
+                ).hexdigest()
+                # get file base64
+                file_base64: str = base64.b64encode(
+                    open(file_path_compressed, "rb").read()
+                ).decode("utf-8")
+                # get file extension
+                file_extension: str = os.path.splitext(file_path_compressed)[1]
+                # get file path
+                file_path: str = os.path.dirname(file_path_compressed)
+                # create new CompressionService object
+                try:
+                    compression_service: media_index = media_index(
+                        name=file_name,
+                        file_path=file_path,
+                        file_name=file_name,
+                        file_extension=file_extension,
+                        file_size_original=file_size_original,
+                        file_size_compressed=file_size_compressed,
+                        file_hash_md5=file_hash_md5,
+                        file_base64=file_base64,
+                        file_compressed=True,
+                        date_created=datetime.datetime.now(),
+                        date_updated=datetime.datetime.now(),
+                    )
+                    # add new CompressionService object to database
+                    db.session.add(compression_service)
+                    # commit changes to database
+                    db.session.commit()
+                except sqlalchemy.exc.IntegrityError as e:
+                    return (
+                        redirect(f"/compression_service/display/compressed/{e}"),
+                        400,
+                    )
+                return redirect(url_for("index_endpoint.index_design"))
+            else:
+                return redirect(f"/compression_service/compression_upload"), 400
+        else:
+            return redirect(f"/compression_service/compression_upload"), 302
     else:
         return render_template("upload_template.html")

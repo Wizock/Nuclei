@@ -1,43 +1,46 @@
 from __future__ import annotations
+from calendar import c
 
 from typing import *
 
+import flask_praetorian
 import werkzeug
-from flask import Blueprint, Response, redirect, render_template, request, url_for
+from flask import (
+    Blueprint,
+    Response,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
+from flask_cors import cross_origin
 from flask_login import current_user, login_required, login_user, logout_user
-from pyparsing import str_type
+from flask_praetorian import auth_required, current_user, roles_accepted
 from typing_extensions import *
 
-authentication_blueprint = Blueprint(
-    "authentication",
-    __name__,
-    template_folder="templates",
+auth = Blueprint(
+    "authentication", __name__, template_folder="templates", url_prefix="/auth"
 )
 
 from ..extension_globals.database import db
+from ..extension_globals.praetorian import guard
 from .models import User
 
 
-@authentication_blueprint.route("/")
-@authentication_blueprint.route("/index", methods=["POST", "GET"])
-def landing_page() -> Response or render_template:
-    """
-    Landing page for the application.
-    """
-    if current_user.is_authenticated:
-        return redirect(url_for("index_view.index_design"))
-    # query all users
-    return render_template("landing_page.html")
+@auth.before_request
+def make_session_permanent():
+    session.permanent = True
 
 
-@authentication_blueprint.route("/login", methods=["POST", "GET"])
-def login() -> Response or redirect or render_template or url_for or None:
-    # docstring
-    """
-    Login page for the application.
-    """
+@auth.route("/login", methods=["POST", "OPTIONS", "GET"])
+@cross_origin()
+def login_route():
+    # check if user is already authenticated
 
     if request.method == "POST":
+<<<<<<< HEAD
         # get username and password from form
         email: LiteralString = request.form["email"]
         password: LiteralString = request.form["password"]
@@ -73,10 +76,30 @@ def login() -> Response or redirect or render_template or url_for or None:
 
 
 @authentication_blueprint.route("/register", methods=["POST", "GET"])
+=======
+        queried_username = request.json["username"]
+        queried_password = request.json["password"]
+        data = jsonify(request.json)
+        data.headers.add("Access-Control-Allow-Origin", "*")
+        user_query = guard.authenticate(queried_username, queried_password)
+        if user_query:
+            print(user_query)
+            gen_jwt = guard.encode_jwt_token(user_query)
+
+            print(gen_jwt)
+            return jsonify({"access_token": gen_jwt}), 200
+
+    if request.method == "GET":
+        return "You didn't post"
+
+
+@auth.route("/register", methods=["POST", "GET"])
+>>>>>>> 115d189c6bb98d6267d6f6c2ad449032d94ebbf2
 def register() -> Response or redirect or render_template or url_for or None:
     # docstring
     """Register a new user."""
     if request.method == "POST":
+<<<<<<< HEAD
         # get username password and email from form
         username = request.form["username"]
         password = request.form["password"]
@@ -108,29 +131,55 @@ def user() -> Response or redirect or url_for or dict[str, Any] or None:
     """
     User page for the application.
     """
+=======
+        email = request.json["email"]
+        username = request.json["username"]
+        password = request.json["password"]
+
+        data = jsonify(request.json)
+        data.headers.add("Access-Control-Allow-Origin", "*")
+        userReg = User(email, username, password)
+        db.session.add(userReg)
+        db.session.commit()
+        data = jsonify(request.json)
+        data.headers.add("Access-Control-Allow-Origin", "*")
+        return Response(
+            data,
+            mimetype="application/json",
+            status=200,
+            headers={"Access-Control-Allow-Origin": "*"},
+        )
+>>>>>>> 115d189c6bb98d6267d6f6c2ad449032d94ebbf2
     if request.method == "GET":
-        # check if user is logged in
-        try:
-            if current_user.is_authenticated:
-                # return user page
-                return redirect(url_for("compression_service.index_design"))
-        except werkzeug.exceptions.HTTPException:
-            # if user is not authenticated
-            return redirect(url_for("authentication.login"))
-        finally:
-            # query user
-            current_user_dict: dict[str, Any] = {
-                "username": current_user.username,
-                "email": current_user.email,
-                "password": current_user.hashed_password,
-            }
-            return current_user_dict
-    else:
-        # if request is not GET
-        return redirect(url_for("authentication.login"))
+        return (
+            "this is the register route from the auth api <br><br><br> this is the address https://127.0.0.1:5000/register",
+            300,
+        )
 
 
-@authentication_blueprint.route("/logout")
+@auth.route("/protected")
+@flask_praetorian.auth_required
+def protected():
+    return jsonify(
+        {
+            "message": f"protected endpoint (allowed user {flask_praetorian.current_user().username})"
+        }
+    )
+
+
+@auth.route("/get_user")
+@flask_praetorian.auth_required
+def user_query_route():
+    return jsonify(
+        {
+            "id": f"{flask_praetorian.current_user().id})",
+            "username": f"{flask_praetorian.current_user().username})",
+            "email": f"{flask_praetorian.current_user().email})",
+        }
+    )
+
+
+@auth.route("/logout")
 @login_required
 def logout() -> Response or redirect or url_for or None:
     # docstring

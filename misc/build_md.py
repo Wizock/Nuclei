@@ -1,4 +1,7 @@
 import os
+import pathlib
+
+readme_file = pathlib.Path("../README.md")
 
 
 def make_tree_file():
@@ -98,7 +101,7 @@ def write_lines_file():
     make_lines_file()
     array_to_overwrite = list()
     # open the readme
-    with open("../README.md", "r+") as f:
+    with open(readme_file, "r+") as f:
         lines = f.readlines()
     # open the tree file
     with open("project_lines.txt", "r") as f:
@@ -121,7 +124,7 @@ def write_lines_file():
         else:
             continue
     # open the readme
-    with open("../README.md", "w") as f:
+    with open(readme_file, "w") as f:
         # write the array
         for lines in array_to_overwrite:
 
@@ -135,7 +138,7 @@ def inject_into_readme():
     highlighting_wrapper()
     array_to_overwrite = list()
     # open the readme
-    with open("../README.md", "r+") as f:
+    with open(readme_file, "r+") as f:
         lines = f.readlines()
     # open the tree file
     with open("tree_file.txt", "r") as f:
@@ -153,7 +156,7 @@ def inject_into_readme():
         else:
             continue
     # open the readme
-    with open("../README.md", "w") as f:
+    with open(readme_file, "w") as f:
         # write the array
         for lines in array_to_overwrite:
 
@@ -168,7 +171,7 @@ def main():
     remove_pyc()
     highlighting_wrapper()
     rem_doubles()
-    inject_into_readme()
+    # inject_into_readme()
     # write_lines_file()
 
 

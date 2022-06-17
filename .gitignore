@@ -7,6 +7,7 @@ __pycache__/
 *.so
 *.pyc
 *.jpg
+*.jpeg
 *.png
 *.gif
 *.mp4
@@ -14,6 +15,7 @@ __pycache__/
 *.avi
 *.mp3
 *.wav
+*.db
 
 # Distribution / packaging
 .Python
@@ -56,7 +58,6 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
-*.py,cover
 .hypothesis/
 .pytest_cache/
 

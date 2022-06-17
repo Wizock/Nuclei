@@ -1,7 +1,8 @@
 # Nuclei
 
-## todays goals
+built using Flask and its extensions
 
+<<<<<<< HEAD
 - [ ] compression implimentation
   - [x] need to figure out video static 
   - [ ] test different compression commands on videos to test quality against bytes compressed
@@ -18,121 +19,16 @@
   - [x] implement video compression flow
   - [x] design video media models
   - [x] index video media
+=======
+Nuclei is a web application that allows you to upload and manage your own compressed media to increase media availability and accessibility.
 
-# File Structure
-## *1377* lines of code  
+## quick start
+>>>>>>> 115d189c6bb98d6267d6f6c2ad449032d94ebbf2
+
 ```bat
+pip install poetry
 
-|   .gitattributes
-|   .gitignore
-|   main.py
-|   Nuclei.code-workspace
-|   poetry.lock
-|   pyproject.toml
-|   README.md
-|   tree_file.txt
-|   
-+---misc
-|       build_md.py
-|       project_line_counter.py
-|       
-\---nuclei
-    |   config.py
-    |   __init__.py
-    |   
-    +---admin_interface
-    |   |   config.py
-    |   |   models.py
-    |   |   tests.py
-    |   |   views.py
-    |   |   __init__.py
-    |   |   
-    |   +---static
-    |   +---templates
-    |   |       index.html
-    |   |       
-    |           
-    +---authentication
-    |   |   config.py
-    |   |   models.py
-    |   |   tests.py
-    |   |   views.py
-    |   |   __init__.py
-    |   |   
-    |   +---static
-    |   +---templates
-    |   |       landing_page.html
-    |   |       login.html
-    |   |       register.html
-    |   |       
-    |           
-    +---compression_service
-    |   |   config.py
-    |   |   models.py
-    |   |   tests.py
-    |   |   views.py
-    |   |   __init__.py
-    |   |   
-    |   +---static
-    |   |   +---compressed
-    |   |   |       20220214_151843.jpg
-    |   |   |       download.jpg
-    |   |   |       
-    |   |   \---imgs
-    |   |           20220214_151843.jpg
-    |   |           Annotation_2022-04-14_110949.png
-    |   |           download.jpg
-    |   |           example.mp4
-    |   |           
-    |   +---templates
-    |   |       grouped_rendering.html
-    |   |       individual_display.html
-    |   |       loading.html
-    |   |       upload_template.html
-    |   |       video_player.html
-    |   |       
-    |           
-    +---database
-    |       nuclei.db
-    |       
-    +---extension_globals
-    |   |   admin.py
-    |   |   celery.py
-    |   |   cookies.py
-    |   |   database.py
-    |   |   kafka.py
-    |   |   mail.py
-    |   |   praetorian.py
-    |   |   redis.py
-    |   |   security.py
-    |   |   __init__.py
-    |   |   
-    |           
-    +---index_mvc
-    |   |   index_view.py
-    |   |   
-    |   +---templates
-    |   |       dashboard.html
-    |   |       
-    |           
-    +---video_compression
-    |   |   assemble_records.py
-    |   |   compression_preset.py
-    |   |   example.mp4
-    |   |   input.mp4
-    |   |   models.py
-    |   |   views.py
-    |   |   __init__.py
-    |   |   
-    |   +---static
-    |   |   \---videos
-    |   +---templates
-    |   |       grouped_rendering.html
-    |   |       individual_display.html
-    |   |       loading.html
-    |   |       upload_template.html
-    |   |       video_player.html
-    |   |       
-    |           
+poetry install
 
+poetry run ./main.py
 ```
