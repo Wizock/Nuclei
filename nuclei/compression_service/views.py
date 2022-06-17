@@ -27,58 +27,6 @@ from .image_helpers import handle_image_incompatibilities
 from .models import media_index
 
 
-@compression_service_blueprint.route("/display/compressed/<int:id>/<string:name>")
-@login_required
-@celery.task
-def display_compressed_id(id: int, name: str):
-    # query all compression services
-    compressed = media_index.query.filter_by(
-        id=id, file_name=name, file_compressed=True
-    ).first()
-    if not compressed:
-        return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
-    return render_template(
-        "individual_display.html", img=compressed, compressed_flag=True
-    )
-
-
-@compression_service_blueprint.route("/display/uncompressed/<int:id>/<string:name>")
-@login_required
-@celery.task
-def display_uncompressed_id(id: int, name: str):
-    # query all compression services
-    uncompressed = media_index.query.filter_by(
-        id=id, file_name=name, file_compressed=False
-    ).first()
-    # if not uncompressed:
-    #     return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
-    return render_template(
-        "individual_display.html", img=uncompressed, compressed=False
-    )
-
-
-@compression_service_blueprint.route("/sorted/compressed")
-@login_required
-@celery.task
-def sorted_compressed_render():
-    # query all compression services
-    compressed = media_index.query.filter_by(file_compressed=True).all()
-    if not compressed:
-        return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
-    return render_template("grouped_rendering.html", img=compressed, compressed=True)
-
-
-@compression_service_blueprint.route("/sorted/uncompressed")
-@login_required
-@celery.task
-def sorted_uncompressed_render():
-    # query all compression services
-    uncompressed = media_index.query.filter_by(file_compressed=False).all()
-    if not uncompressed:
-        return """<h1>No compressed images found</h1>  <a href='/compression_service/'>go to index</a>"""
-    return render_template("grouped_rendering.html", img=uncompressed, compressed=False)
-
-
 @compression_service_blueprint.route("/delete/<int:id>/<string:name>")
 @login_required
 @celery.task
