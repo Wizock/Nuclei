@@ -40,7 +40,6 @@ def login_route():
     # check if user is already authenticated
 
     if request.method == "POST":
-<<<<<<< HEAD
         # get username and password from form
         email: LiteralString = request.form["email"]
         password: LiteralString = request.form["password"]
@@ -75,31 +74,11 @@ def login_route():
         return render_template("login.html")
 
 
-@authentication_blueprint.route("/register", methods=["POST", "GET"])
-=======
-        queried_username = request.json["username"]
-        queried_password = request.json["password"]
-        data = jsonify(request.json)
-        data.headers.add("Access-Control-Allow-Origin", "*")
-        user_query = guard.authenticate(queried_username, queried_password)
-        if user_query:
-            print(user_query)
-            gen_jwt = guard.encode_jwt_token(user_query)
-
-            print(gen_jwt)
-            return jsonify({"access_token": gen_jwt}), 200
-
-    if request.method == "GET":
-        return "You didn't post"
-
-
 @auth.route("/register", methods=["POST", "GET"])
->>>>>>> 115d189c6bb98d6267d6f6c2ad449032d94ebbf2
 def register() -> Response or redirect or render_template or url_for or None:
     # docstring
     """Register a new user."""
     if request.method == "POST":
-<<<<<<< HEAD
         # get username password and email from form
         username = request.form["username"]
         password = request.form["password"]
@@ -124,32 +103,13 @@ def register() -> Response or redirect or render_template or url_for or None:
         return render_template("register.html")
 
 
-@authentication_blueprint.route("/user", methods=["GET"])
+@auth.route("/user", methods=["GET"])
 @login_required
 def user() -> Response or redirect or url_for or dict[str, Any] or None:
     # docstring
     """
     User page for the application.
     """
-=======
-        email = request.json["email"]
-        username = request.json["username"]
-        password = request.json["password"]
-
-        data = jsonify(request.json)
-        data.headers.add("Access-Control-Allow-Origin", "*")
-        userReg = User(email, username, password)
-        db.session.add(userReg)
-        db.session.commit()
-        data = jsonify(request.json)
-        data.headers.add("Access-Control-Allow-Origin", "*")
-        return Response(
-            data,
-            mimetype="application/json",
-            status=200,
-            headers={"Access-Control-Allow-Origin": "*"},
-        )
->>>>>>> 115d189c6bb98d6267d6f6c2ad449032d94ebbf2
     if request.method == "GET":
         return (
             "this is the register route from the auth api <br><br><br> this is the address https://127.0.0.1:5000/register",
