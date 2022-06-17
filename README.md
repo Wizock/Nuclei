@@ -2,7 +2,7 @@
 
 built using Flask and its extensions
 
-<<<<<<< HEAD
+
 - [ ] compression implimentation
   - [x] need to figure out video static 
   - [ ] test different compression commands on videos to test quality against bytes compressed
@@ -19,7 +19,7 @@ built using Flask and its extensions
   - [x] implement video compression flow
   - [x] design video media models
   - [x] index video media
-=======
+
 Nuclei is a web application that allows you to upload and manage your own compressed media to increase media availability and accessibility.
 
 ## quick start
