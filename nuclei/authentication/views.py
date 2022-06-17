@@ -53,7 +53,7 @@ def login() -> Response or redirect or render_template or url_for or None:
                     # make sure user is logged in
                     if user.is_authenticated:
                         print("User is authenticated")
-                        return redirect(url_for("compression_service.index_design"))
+                        return redirect(url_for("index_view.index_design"))
                 except werkzeug.exceptions.HTTPException:
                     # if user is not authenticated
                     return render_template(
@@ -95,7 +95,7 @@ def register() -> Response or redirect or render_template or url_for or None:
             # login user
             login_user(user)
             # redirect to home page
-            return redirect("/compression_service/")
+            return redirect(url_for("index_view.index_design"))
     else:
         # return register page
         return render_template("register.html")
