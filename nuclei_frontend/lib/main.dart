@@ -14,45 +14,49 @@ class IndexPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-        scaffoldBackgroundColor: Colors.grey[850],
-      ),
-      home: Builder(
-        builder: (context) => Scaffold(
-          appBar: AppBar(
-            title: const Text('Nuclei'),
-          ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text('Nuclei'),
-              const SizedBox(height: 20),
-              RaisedButton(
-                child: const Text('Login'),
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    '/login',
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              RaisedButton(
-                child: const Text('Register'),
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    '/register',
-                  );
-                },
-              ),
-            ],
-          ),
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.purple,
+          scaffoldBackgroundColor: Colors.grey[600],
         ),
-      ),
-    );
+        home: Builder(
+          builder: (context) => Scaffold(
+            appBar: AppBar(
+              title: const Text('Nuclei'),
+            ),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text('Nuclei'),
+                  const SizedBox(height: 20),
+                  RaisedButton(
+                    child: const Text('Login'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginPageView(),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  RaisedButton(
+                    child: const Text('Register'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const RegisterPageView(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ));
   }
 }

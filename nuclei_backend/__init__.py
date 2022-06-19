@@ -61,7 +61,7 @@ class Nuclei(Flask):
 
     def import_config(self) -> None:
         """Import the config."""
-        return self.config.from_object("nuclei.config.Config")
+        return self.config.from_object("nuclei_backend.config.Config")
 
     def import_celery(self) -> None:
         """Import the celery."""

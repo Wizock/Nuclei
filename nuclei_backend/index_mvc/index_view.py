@@ -1,16 +1,8 @@
-import base64
-import datetime
-import hashlib
-import os
-import pathlib
 from typing import Any
 
 import flask_praetorian
-from flask import Blueprint, Response, abort, jsonify, render_template, url_for
+from flask import Blueprint, Response, jsonify
 from flask_cors import cross_origin
-
-# import login required decorator
-from flask_login import login_required
 
 _index_view = Blueprint(
     "index_endpoint",
