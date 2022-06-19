@@ -1,13 +1,13 @@
-## todays goals
+## todays-goals
 
- - [ ] clean up exception hell in assemble_records.py
+- [ ] clean up exception hell in assemble_records.py
 
 - [ ] compression implimentation
   - [ ] test different compression commands on videos to test quality against bytes compressed
 - [ ] <https://pythonhosted.org/python-gnupg/>
 
 - [ ] compression implimentation
-  - [x] need to figure out video static 
+  - [x] need to figure out video static
   - [ ] test different compression commands on videos to test quality against bytes compressed
 - [ ] <https://pythonhosted.org/python-gnupg/>
 - [ ] UI revamp
