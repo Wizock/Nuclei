@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -89,14 +90,17 @@ class LoginPageForm extends StatelessWidget {
                     key: "token",
                     value: response.body,
                   );
+                  // ignore: use_build_context_synchronously
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const IndexPage(),
+                      builder: (context) => const Nuclei(),
                     ),
                   );
                 } else {
-                  print(response.body);
+                  if (kDebugMode) {
+                    print(response.body);
+                  }
                 }
               },
               child: const Text('Login')),
