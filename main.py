@@ -1,5 +1,6 @@
-from nuclei_backend import app
 import logging
+
+from nuclei_backend import app
 
 # add logging for the app
 

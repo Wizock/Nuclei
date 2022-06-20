@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'dart:async';
 import '../main.dart';
 
@@ -81,6 +83,21 @@ class LoginPageForm extends StatelessWidget {
                     "Content-Type": "application/json",
                   },
                 );
+                if (response.statusCode == 200) {
+                  final storage = FlutterSecureStorage();
+                  await storage.write(
+                    key: "token",
+                    value: response.body,
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const IndexPage(),
+                    ),
+                  );
+                } else {
+                  print(response.body);
+                }
               },
               child: const Text('Login')),
         ],

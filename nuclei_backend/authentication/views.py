@@ -1,8 +1,8 @@
 from __future__ import annotations
-from calendar import c
 
-from typing import *
 import logging
+from calendar import c
+from typing import *
 
 import flask_praetorian
 import werkzeug

@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'auth/login.dart';
+import 'interface/home.dart';
 import 'auth/register.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 void main() {
   runApp(const IndexPage());
@@ -12,51 +14,61 @@ class IndexPage extends StatelessWidget {
   const IndexPage({Key? key}) : super(key: key);
 
   @override
+  // check if the user is logged in by checking the local storage
+
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.purple,
-          scaffoldBackgroundColor: Colors.grey[600],
-        ),
-        home: Builder(
-          builder: (context) => Scaffold(
-            appBar: AppBar(
-              title: const Text('Nuclei'),
-            ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text('Nuclei'),
-                  const SizedBox(height: 20),
-                  RaisedButton(
-                    child: const Text('Login'),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPageView(),
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  RaisedButton(
-                    child: const Text('Register'),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RegisterPageView(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+    const storage = const FlutterSecureStorage();
+    final token = storage.read(key: "token");
+    if (token == null) {
+      return MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.purple,
+            scaffoldBackgroundColor: Colors.grey[600],
+          ),
+          home: Builder(
+            builder: (context) => Scaffold(
+              appBar: AppBar(
+                title: const Text('Nuclei'),
+              ),
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Text('Nuclei'),
+                    const SizedBox(height: 20),
+                    RaisedButton(
+                      child: const Text('Login'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPageView(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    RaisedButton(
+                      child: const Text('Register'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterPageView(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ));
+          ));
+    } else {
+      return const MaterialApp(
+        home: HomePage(),
+      );
+    }
   }
 }
