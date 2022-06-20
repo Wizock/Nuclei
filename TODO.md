@@ -1,5 +1,9 @@
 ## todays-goals
 
+- [ ] Research IPFS 
+- [ ] Research Peer to Peer 
+- [ ] Research decentralised data storage
+
 - [ ] clean up exception hell in assemble_records.py
 
 - [ ] compression implimentation
