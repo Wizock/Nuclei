@@ -11,3 +11,5 @@
 *.txt linguist-vendored
 *.CMake linguist-vendored
 *.cmake.in linguist-vendored
+*.swift linguist-vendored
+*.bat linguist-vendored
