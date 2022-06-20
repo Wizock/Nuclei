@@ -13,3 +13,5 @@
 *.cmake.in linguist-vendored
 *.swift linguist-vendored
 *.bat linguist-vendored
+*.kotlin linguist-vendored
+*.java linguist-vendored
