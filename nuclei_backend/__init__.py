@@ -4,14 +4,12 @@ import os
 import secrets
 
 import pytest
-
 # import flask_security
 from flask import Flask
 from flask_admin import Admin
 from flask_caching import Cache
 from flask_cors import CORS
 from flask_debugtoolbar import DebugToolbarExtension
-
 # from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
@@ -81,6 +79,7 @@ class Nuclei(Flask):
         db.init_app(self)
         from nuclei_backend.authentication.models import User
         from nuclei_backend.compression_service.models import media_index
+        from nuclei_backend.storage_sequencer.model import FileTracker
         from nuclei_backend.video_compression.models import video_media
 
         db.create_all()
@@ -108,7 +107,8 @@ class Nuclei(Flask):
 
     def import_admin(self) -> None:
         """Import the admin."""
-        from nuclei_backend.admin_interface.views import admin_interface_blueprint
+        from nuclei_backend.admin_interface.views import \
+            admin_interface_blueprint
         from nuclei_backend.extension_globals.admin import admin_instance
 
         admin_instance.init_app(self)
@@ -127,15 +127,18 @@ class Nuclei(Flask):
     def import_blueprints(self) -> None:
         """Import the blueprints."""
         from nuclei_backend.authentication.views import auth
-        from nuclei_backend.compression_service.views import (
-            compression_service_blueprint,
-        )
+        from nuclei_backend.compression_service.views import \
+            compression_service_blueprint
         from nuclei_backend.index_mvc.index_view import _index_view
-        from nuclei_backend.video_compression.views import video_compression_blueprint
+        from nuclei_backend.storage_sequencer.main import \
+            storage_sequencer_blueprint
+        from nuclei_backend.video_compression.views import \
+            video_compression_blueprint
 
         self.register_blueprint(compression_service_blueprint)
         self.register_blueprint(video_compression_blueprint)
         self.register_blueprint(auth)
+        self.register_blueprint(storage_sequencer_blueprint)
         self.register_blueprint(_index_view)
 
 

@@ -1,6 +1,7 @@
 import requests
 import sqlalchemy
-from flask import Blueprint, Response, redirect, render_template, request, url_for
+from flask import (Blueprint, Response, redirect, render_template, request,
+                   url_for)
 
 storage_sequencer_controller = Blueprint(
     "storage_sequencer",
@@ -17,5 +18,5 @@ from .model import file_tracker
 
 storage_sequencer_controller.config = storage_sequence_config
 
-from .upload import *
 from .download import *
+from .upload import *

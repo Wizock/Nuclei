@@ -1,4 +1,5 @@
-from flask import Blueprint, Response, redirect, render_template, request, url_for
+from flask import (Blueprint, Response, redirect, render_template, request,
+                   url_for)
 from flask_login import login_required
 from werkzeug.datastructures import FileStorage, ImmutableMultiDict
 from werkzeug.exceptions import BadRequest, NotFound
@@ -70,7 +71,17 @@ def compress_video() -> Response:
             _ = assemble_record(video_file, compressing=True, compressed=True)
             db.session.add(_)
             db.session.commit()
-            return redirect("/")
+            # post the video to storage_sequencer/upload/file
+            ipfs_upload_task = celery.send_task(
+                "storage_sequencer.upload_file",
+                kwargs={"file": video_file},
+            )
+
+            return Response(
+                "Video compressed successfully",
+                status=200,
+                mimetype="text/plain",
+            )
         return redirect(url_for("video_compression.compress_video")), 302
     else:
         return render_template(
