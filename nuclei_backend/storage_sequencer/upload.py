@@ -1,13 +1,19 @@
+import base64
 import contextlib
+import datetime
+import hashlib
 import logging
 import os
+import pathlib
+import time
 
 import requests
 from flask import Response, request
 from werkzeug.utils import secure_filename
 
+from ..extension_globals.database import db
 from .main import storage_sequencer_controller
-from .model import file_tracker
+from .model import FileTracker
 
 
 def allowed_file(filename):
@@ -18,7 +24,6 @@ def allowed_file(filename):
     ]
 
 
-@contextlib.contextmanager
 def produce_cid(file: str):
     """
     Produce a CID for a file.
@@ -44,8 +49,7 @@ def produce_cid(file: str):
     return ipfs_hash
 
 
-@storage_sequencer_controller.route("/upload/<file:file>", methods=["POST"])
-@contextlib.contextmanager
+@storage_sequencer_controller.route("/upload/<string:file>", methods=["GET", "POST"])
 def ipfs_upload(file):
     """
     Upload a file to IPFS.
@@ -57,13 +61,16 @@ def ipfs_upload(file):
         filename = secure_filename(file.filename)
         ipfs_hash = produce_cid(file)
 
-        file_record = file_tracker(
+        file_record = FileTracker(
             file_name=filename,
-            file_type=filename.rsplit(".", 1)[1].lower(),
+            file_path=file.filename,
             file_hash=ipfs_hash,
             file_size=file.content_length,
-            file_status="uploaded",
+            file_type=file.content_type,
+            file_date=datetime.datetime.now(),
         )
+        db.session.add(file_record)
+        db.session.commit()
     else:
         return Response(
             "File type not allowed.",

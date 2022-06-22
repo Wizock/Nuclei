@@ -1,5 +1,12 @@
-from flask import (Blueprint, Flask, Response, redirect, render_template,
-                   request, url_for)
+from flask import (
+    Blueprint,
+    Flask,
+    Response,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from flask_admin.contrib.sqla import ModelView
 from flask_login import login_required
 from PIL import Image
