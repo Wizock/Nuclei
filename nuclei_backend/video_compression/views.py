@@ -8,8 +8,8 @@ import requests_file
 
 from ..extension_globals.celery import celery
 from ..extension_globals.database import db
-from ..utils.assemble_records import assemble_record
-from ..utils.compression_preset import compression_main
+from .assemble_records import assemble_record
+from .compression_preset import compression_main
 from ..utils.file_info_utils import allowed_file
 
 from .models import video_media
@@ -27,7 +27,6 @@ from ..extension_globals.database import db
 
 
 @video_compression_blueprint.route("/upload/video", methods=["POST"])
-@login_required
 @celery.task
 def upload_video() -> Response:
     if request.method == "POST":
@@ -50,7 +49,6 @@ def upload_video() -> Response:
 
 
 @video_compression_blueprint.route("/compress/video", methods=["GET", "POST"])
-@login_required
 @celery.task
 def compress_video() -> Response:
     if request.method == "POST":
@@ -76,6 +74,50 @@ def compress_video() -> Response:
                 kwargs={"file": video_file},
             )
 
-            return Response(f"{ipfs_upload_task.id}", status=200, mimetype="text/plain")
-
+            return Response(
+                "Video compressed successfully",
+                status=200,
+                mimetype="text/plain",
+            )
         return redirect(url_for("video_compression.compress_video")), 302
+    else:
+        return render_template(
+            "upload_template.html",
+            loading=url_for("compression_service.static", filename="loading.gif"),
+        )
+
+
+@video_compression_blueprint.route(
+    "/video/<int:id>/<string:name>", methods=["GET", "POST"]
+)
+@login_required
+def view_video(id: int, name: str) -> Response:
+    try:
+        video_query = video_media.query.filter_by(id=id, name=name).first()
+        return render_template("video_player.html", video_query=video_query)
+    except AttributeError:
+        if not video_query:
+            return redirect(url_for("index_endpoint.index_design")), 400
+        else:
+            return render_template(
+                "video_player.html", video_query=ValueError("Video not found")
+            )
+
+
+@video_compression_blueprint.route(
+    "/delete/<int:id>/<string:name>", methods=["GET", "POST"]
+)
+@login_required
+def delete_video(id: int, name: str) -> Response:
+    try:
+        video_query: video_media = video_media.query.filter_by(id=id, name=name).first()
+        db.session.delete(video_query)
+        db.session.commit()
+        return redirect(url_for("index_endpoint.index_design")), 200
+    except AttributeError:
+        if not video_query:
+            return redirect(url_for("index_endpoint.index_design")), 400
+        else:
+            return render_template(
+                "video_player.html", video_query=ValueError("Video not found")
+            )

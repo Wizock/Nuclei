@@ -14,12 +14,11 @@ from ..video_compression.models import video_media
 
 def assemble_record(
     video_file: "ImmutableMultiDict[str, FileStorage]",
-    compressing=False,
-    compressed=False,
+    compressing: bool = False,
+    compressed: bool = False,
 ) -> video_media:
     """
     This function takes a file and returns a video_media object
-
     :param video_file: the file to be compressed
     :param compressing: whether or not the file is being compressed
     :param compressed: whether or not the file is compressed
@@ -32,15 +31,15 @@ def assemble_record(
         or video_name.endswith(".avi")
         or video_name.endswith(".mp4")
     ):
-
+        print(pathlib.Path.cwd())
         file_path: str = (
             str(pathlib.Path.cwd())
-            + str(pathlib.Path(r"\nuclei\video_compression\static\videos"))
+            + str(pathlib.Path(r"\nuclei_backend\video_compression\static\videos"))
             + str(rf"\{video_name}")
         )
         file_path_compressed: str = (
             str(pathlib.Path.cwd())
-            + str(pathlib.Path(r"\nuclei\video_compression\static\compressed"))
+            + str(pathlib.Path(r"\nuclei_backend\video_compression\static\compressed"))
             + str(rf"\{video_name}")
         )
         if not file_path or not file_path_compressed:
