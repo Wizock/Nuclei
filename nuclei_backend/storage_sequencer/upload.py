@@ -24,7 +24,7 @@ image_type = typing.Union[str, bytes]
 video_type = typing.Union[str, bytes]
 
 
-def allowed_file(filename: str) -> bool:
+def allowed_file(filename:  typing.AnyStr) -> bool:
     if "." in filename and filename.rsplit(".", 1)[1].lower() in [
         "png",
         "jpg",
@@ -69,13 +69,15 @@ def produce_cid(file: str):
             # if the file exists, return the CID
             return file_tracker.cid
 
-        if os.path.isfile(file):
+        if return_file_path(
+            allowed_file(file.filename)
+        ):
             for _ in range(0, 3):
                 if _ == 2:
                     return "Error: IPFS hash not found."
                 if os.path.isfile(f"temp{unique_id}.txt"):
                     os.system(
-                        "ipfs add --quiet --pin {file}.{file_type} > temp{unique_id}.txt"
+                        f"ipfs add --quiet --pin {file}.{file_type} > temp{unique_id}.txt"
                     )
                     with open("temp.txt", "r+") as f:
                         ipfs_hash = f.read()
