@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from ..extension_globals.database import db
 from .compression_preset import compression_main
-from .models import video_media
+from ..video_compression.models import video_media
 
 
 def assemble_record(
