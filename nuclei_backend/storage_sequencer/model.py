@@ -33,7 +33,6 @@ class FileTracker(db.Model):
     __tablename__ = "file_tracker"
     id: int = db.Column(db.Integer, primary_key=True)
     file_name: str = db.Column(db.String(255), nullable=False)
-    file_path: str = db.Column(db.String(255), nullable=False)
     file_cid: str = db.Column(db.String(255), nullable=False)
     file_hash: str = db.Column(db.String(255), nullable=False)
     file_size: int = db.Column(db.Integer, nullable=False)
@@ -59,7 +58,7 @@ class FileTracker(db.Model):
     def __init__(
         self,
         file_name: str,
-        file_path: str,
+        file_cid: str,
         file_hash: str,
         file_size: int,
         file_type: str,
@@ -69,14 +68,14 @@ class FileTracker(db.Model):
         Args:
 
             file_name: (str) The name of the file.
-            file_path: (str) The path of the file.
+            file_cid: (str) The CID of the file.
             file_hash: (str) The hash of the file.
             file_size: (int) The size of the file.
             file_type: (str) The type of the file.
             file_date: (date) The date of the file.
         """
         self.file_name = file_name
-        self.file_path = file_path
+        self.file_cid = file_cid
         self.file_hash = file_hash
         self.file_size = file_size
         self.file_type = file_type

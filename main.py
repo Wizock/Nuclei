@@ -1,7 +1,6 @@
 import logging
 
 from gevent import monkey
-
 from nuclei_backend import app
 
 # add logging for the app

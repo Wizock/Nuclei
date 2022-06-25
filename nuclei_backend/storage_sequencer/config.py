@@ -1,6 +1,7 @@
-from importlib.resources import path
-from git import Object
 import pathlib
+from importlib.resources import path
+
+from git import Object
 
 
 class storage_sequence_config(Object):

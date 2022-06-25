@@ -1,6 +1,7 @@
 import requests
 import requests_file
-from flask import Blueprint, Response, redirect, render_template, request, url_for
+from flask import (Blueprint, Response, redirect, render_template, request,
+                   url_for)
 from flask_login import login_required
 from werkzeug.datastructures import FileStorage, ImmutableMultiDict
 from werkzeug.exceptions import BadRequest, NotFound

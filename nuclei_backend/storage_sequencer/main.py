@@ -1,5 +1,6 @@
-from flask import Blueprint
 import pathlib
+
+from flask import Blueprint
 
 storage_sequencer_controller = Blueprint(
     "storage_sequencer",

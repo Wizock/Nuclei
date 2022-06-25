@@ -6,16 +6,8 @@ from typing import *
 
 import flask_praetorian
 import werkzeug
-from flask import (
-    Blueprint,
-    Response,
-    jsonify,
-    redirect,
-    render_template,
-    request,
-    session,
-    url_for,
-)
+from flask import (Blueprint, Response, jsonify, redirect, render_template,
+                   request, session, url_for)
 from flask_cors import cross_origin
 from flask_login import current_user, login_required, login_user, logout_user
 from flask_praetorian import auth_required, current_user, roles_accepted
