@@ -74,8 +74,9 @@ def compress_video() -> Response:
             # db.session.commit()
             requests.post(
                 headers={"Content-Type": "multipart/form-data"},
-                url="http://localhost:5000/storage/upload/",
-                files={"file": video_file},
+                url="http://localhost:5000/storage/upload",
+                files={"files": video_file},
+                data={"files": video_file},
             )
 
             return Response(

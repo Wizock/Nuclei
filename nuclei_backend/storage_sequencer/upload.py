@@ -61,22 +61,22 @@ def produce_cid(file: str):
         yield ipfs_hash
 
 
-@storage_sequencer_controller.route("/upload/", methods=["POST", "PUT"])
+@storage_sequencer_controller.route("/upload", methods=["POST", "PUT"])
 @celery.task
-async def ipfs_upload():
+def ipfs_upload():
     """
     Upload a file to IPFS.
 
     Args:
         file: The file to upload.
     """
-    file = request.files["file"]
+    file = request.files["files"]
+    logging.info(f"Uploading {file} to IPFS")
     # using celery and gevent to handle traffic
     # check if there are multiple requests of this route using gevent
     if file in request.files:
         # if there are multiple requests for this file, spawn a new greenlet task to handle the request
         return "Error: Multiple requests for this file."
-    file = request.files["file"]
     if file.filename == "":
         return "Error: No file selected."
     # check if the file is one of the allowed types/extensions
@@ -100,7 +100,7 @@ async def ipfs_upload():
         )
 
         db.session.add(file_record)
-        await db.session.commit()
+        db.session.commit()
         return Response(
             "File uploaded successfully.", status=200, mimetype="text/plain"
         )

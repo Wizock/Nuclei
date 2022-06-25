@@ -9,4 +9,8 @@ from nuclei_backend import app
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     # monkey.patch_all()
-    app.run("0.0.0.0", port=5000, debug=True)
+    app.run(
+        "0.0.0.0",
+        port=5000,
+        debug=True,
+    )
