@@ -17,8 +17,7 @@ def allowed_file(filename: typing.AnyStr) -> bool:
         # check if the file exists in the media_index table
         if media_index.query.filter_by(file_name=filename).first():
             # return the file with the image type
-            filename = image_type
-            return filename
+            return True
     if "." in filename and filename.rsplit(".", 1)[1].lower() in [
         "mp4",
         "mov",
@@ -26,9 +25,8 @@ def allowed_file(filename: typing.AnyStr) -> bool:
     ]:
         # check if the file exists in the media_index table
         if video_media.query.filter_by(file_name=filename).first():
-            filename = video_type
-            return filename
-    return False
+            # return the file with the image type
+            return True
 
 
 def return_file_path(filename: typing.Callable) -> str:

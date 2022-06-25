@@ -8,7 +8,7 @@ from werkzeug.utils import secure_filename
 
 from ..extension_globals.celery import celery
 from ..extension_globals.database import db
-from ..utils.file_info_utils import allowed_file
+from ..storage_sequencer.file_info_utils import allowed_file
 from .assemble_records import assemble_record
 from .compression_preset import compression_main
 from .models import video_media
