@@ -1,7 +1,7 @@
 The upload response status code is 500 and the body is <!DOCTYPE html>
 <html>
   <head>
-    <title>FileNotFoundError: [Errno 2] No such file or directory: 'H:\\_webdev\\python+flutter\\Nuclei\\nuclei_backend\\storage_sequencer\\temp_\\tempf8734688-8c9d-43ce-8866-d97cf5dae6c1.txt'
+    <title>FileNotFoundError: [Errno 2] No such file or directory: 'H:\\_webdev\\python+flutter\\Nuclei\\nuclei_backend\\storage_sequencer\\temp_\\temp9a816812-2e81-4984-909d-548fec32c8e1.txt'
  // Werkzeug Debugger</title>
     <link rel="stylesheet" href="?__debugger__=yes&amp;cmd=resource&amp;f=style.css">
     <link rel="shortcut icon"
@@ -11,20 +11,20 @@ The upload response status code is 500 and the body is <!DOCTYPE html>
       var CONSOLE_MODE = false,
           EVALEX = true,
           EVALEX_TRUSTED = false,
-          SECRET = "lGfgdOeg2sCLWQV3PKUE";
+          SECRET = "lEBbeJZfEIVZkLBbnvgv";
     </script>
   </head>
   <body style="background-color: #fff">
     <div class="debugger">
 <h1>FileNotFoundError</h1>
 <div class="detail">
-  <p class="errormsg">FileNotFoundError: [Errno 2] No such file or directory: &#x27;H:\\_webdev\\python+flutter\\Nuclei\\nuclei_backend\\storage_sequencer\\temp_\\tempf8734688-8c9d-43ce-8866-d97cf5dae6c1.txt&#x27;
+  <p class="errormsg">FileNotFoundError: [Errno 2] No such file or directory: &#x27;H:\\_webdev\\python+flutter\\Nuclei\\nuclei_backend\\storage_sequencer\\temp_\\temp9a816812-2e81-4984-909d-548fec32c8e1.txt&#x27;
 </p>
 </div>
 <h2 class="traceback">Traceback <em>(most recent call last)</em></h2>
 <div class="traceback">
   <h3></h3>
-  <ul><li><div class="frame" id="frame-2376329897104">
+  <ul><li><div class="frame" id="frame-2978850939040">
   <h4>File <cite class="filename">"C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\flask\app.py"</cite>,
       line <em class="line">2095</em>,
       in <code class="function">__call__</code></h4>
@@ -36,7 +36,7 @@ The upload response status code is 500 and the body is <!DOCTYPE html>
 <pre class="line current"><span class="ws">        </span>return self.wsgi_app(environ, start_response)</pre></div>
 </div>
 
-<li><div class="frame" id="frame-2376330501632">
+<li><div class="frame" id="frame-2978851495648">
   <h4>File <cite class="filename">"C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\flask\app.py"</cite>,
       line <em class="line">2080</em>,
       in <code class="function">wsgi_app</code></h4>
@@ -53,7 +53,7 @@ The upload response status code is 500 and the body is <!DOCTYPE html>
 <pre class="line after"><span class="ws">        </span>finally:</pre></div>
 </div>
 
-<li><div class="frame" id="frame-2376330501744">
+<li><div class="frame" id="frame-2978851495760">
   <h4>File <cite class="filename">"C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\flask_cors\extension.py"</cite>,
       line <em class="line">165</em>,
       in <code class="function">wrapped_function</code></h4>
@@ -70,7 +70,7 @@ The upload response status code is 500 and the body is <!DOCTYPE html>
 <pre class="line after"><span class="ws">                    </span>app.handle_exception)</pre></div>
 </div>
 
-<li><div class="frame" id="frame-2376330504656">
+<li><div class="frame" id="frame-2978851498672">
   <h4>File <cite class="filename">"C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\flask\app.py"</cite>,
       line <em class="line">2077</em>,
       in <code class="function">wsgi_app</code></h4>
@@ -87,7 +87,7 @@ The upload response status code is 500 and the body is <!DOCTYPE html>
 <pre class="line after"><span class="ws">                </span>error = sys.exc_info()[1]</pre></div>
 </div>
 
-<li><div class="frame" id="frame-2376330504768">
+<li><div class="frame" id="frame-2978851498784">
   <h4>File <cite class="filename">"C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\flask\app.py"</cite>,
       line <em class="line">1525</em>,
       in <code class="function">full_dispatch_request</code></h4>
@@ -104,7 +104,7 @@ The upload response status code is 500 and the body is <!DOCTYPE html>
 <pre class="line after"><span class="ws">        </span>rv: t.Union[ResponseReturnValue, HTTPException],</pre></div>
 </div>
 
-<li><div class="frame" id="frame-2376330504880">
+<li><div class="frame" id="frame-2978851498896">
   <h4>File <cite class="filename">"C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\flask_cors\extension.py"</cite>,
       line <em class="line">165</em>,
       in <code class="function">wrapped_function</code></h4>
@@ -121,7 +121,7 @@ The upload response status code is 500 and the body is <!DOCTYPE html>
 <pre class="line after"><span class="ws">                    </span>app.handle_exception)</pre></div>
 </div>
 
-<li><div class="frame" id="frame-2376330504992">
+<li><div class="frame" id="frame-2978851499008">
   <h4>File <cite class="filename">"C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\flask\app.py"</cite>,
       line <em class="line">1523</em>,
       in <code class="function">full_dispatch_request</code></h4>
@@ -138,7 +138,7 @@ The upload response status code is 500 and the body is <!DOCTYPE html>
 <pre class="line after"><span class="ws">    </span>def finalize_request(</pre></div>
 </div>
 
-<li><div class="frame" id="frame-2376330505104">
+<li><div class="frame" id="frame-2978851499120">
   <h4>File <cite class="filename">"C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\flask\app.py"</cite>,
       line <em class="line">1509</em>,
       in <code class="function">dispatch_request</code></h4>
@@ -155,7 +155,7 @@ The upload response status code is 500 and the body is <!DOCTYPE html>
 <pre class="line after"><span class="ws">        </span>error handling.</pre></div>
 </div>
 
-<li><div class="frame" id="frame-2376330505216">
+<li><div class="frame" id="frame-2978851499232">
   <h4>File <cite class="filename">"C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\celery\local.py"</cite>,
       line <em class="line">188</em>,
       in <code class="function">__call__</code></h4>
@@ -172,7 +172,7 @@ The upload response status code is 500 and the body is <!DOCTYPE html>
 <pre class="line after"><span class="ws">    </span>def __getitem__(self, i):</pre></div>
 </div>
 
-<li><div class="frame" id="frame-2376330549776">
+<li><div class="frame" id="frame-2978851543792">
   <h4>File <cite class="filename">"C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\celery\app\task.py"</cite>,
       line <em class="line">392</em>,
       in <code class="function">__call__</code></h4>
@@ -189,9 +189,9 @@ The upload response status code is 500 and the body is <!DOCTYPE html>
 <pre class="line after"><span class="ws">    </span>def __reduce__(self):</pre></div>
 </div>
 
-<li><div class="frame" id="frame-2376330621024">
+<li><div class="frame" id="frame-2978851615040">
   <h4>File <cite class="filename">"H:\_webdev\python+flutter\Nuclei\nuclei_backend\storage_sequencer\upload.py"</cite>,
-      line <em class="line">82</em>,
+      line <em class="line">107</em>,
       in <code class="function">ipfs_upload</code></h4>
   <div class="source "><pre class="line before"><span class="ws">        </span>return &quot;Error: No file selected.&quot;</pre>
 <pre class="line before"><span class="ws">    </span># check if the file is one of the allowed types/extensions</pre>
@@ -200,47 +200,13 @@ The upload response status code is 500 and the body is <!DOCTYPE html>
 <pre class="line before"><span class="ws">    </span>filename = secure_filename(file.filename)</pre>
 <pre class="line current"><span class="ws">    </span>ipfs_hash = produce_cid(file)</pre>
 <pre class="line after"><span class="ws">    </span>logging.info(f&quot;IPFS hash: {ipfs_hash}&quot;)</pre>
-<pre class="line after"><span class="ws">    </span>ipfs_hash = ipfs_hash</pre>
+<pre class="line after"><span class="ws">    </span># ipfs_hash = ipfs_hashS</pre>
 <pre class="line after"><span class="ws">    </span>if ipfs_hash == &quot;Error: IPFS hash not found.&quot;:</pre>
 <pre class="line after"><span class="ws">        </span>return ipfs_hash</pre>
 <pre class="line after"><span class="ws"></span> </pre></div>
 </div>
 
-<li><div class="frame" id="frame-2376330622256">
-  <h4>File <cite class="filename">"C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\contextlib.py"</cite>,
-      line <em class="line">281</em>,
-      in <code class="function">helper</code></h4>
-  <div class="source library"><pre class="line before"><span class="ws">        </span>finally:</pre>
-<pre class="line before"><span class="ws">            </span>&lt;cleanup&gt;</pre>
-<pre class="line before"><span class="ws">    </span>&quot;&quot;&quot;</pre>
-<pre class="line before"><span class="ws">    </span>@wraps(func)</pre>
-<pre class="line before"><span class="ws">    </span>def helper(*args, **kwds):</pre>
-<pre class="line current"><span class="ws">        </span>return _GeneratorContextManager(func, args, kwds)</pre>
-<pre class="line after"><span class="ws">    </span>return helper</pre>
-<pre class="line after"><span class="ws"></span> </pre>
-<pre class="line after"><span class="ws"></span> </pre>
-<pre class="line after"><span class="ws"></span>def asynccontextmanager(func):</pre>
-<pre class="line after"><span class="ws">    </span>&quot;&quot;&quot;@asynccontextmanager decorator.</pre></div>
-</div>
-
-<li><div class="frame" id="frame-2376330698912">
-  <h4>File <cite class="filename">"C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\contextlib.py"</cite>,
-      line <em class="line">103</em>,
-      in <code class="function">__init__</code></h4>
-  <div class="source library"><pre class="line before"><span class="ws"></span> </pre>
-<pre class="line before"><span class="ws"></span>class _GeneratorContextManagerBase:</pre>
-<pre class="line before"><span class="ws">    </span>&quot;&quot;&quot;Shared functionality for @contextmanager and @asynccontextmanager.&quot;&quot;&quot;</pre>
-<pre class="line before"><span class="ws"></span> </pre>
-<pre class="line before"><span class="ws">    </span>def __init__(self, func, args, kwds):</pre>
-<pre class="line current"><span class="ws">        </span>self.gen = func(*args, **kwds)</pre>
-<pre class="line after"><span class="ws">        </span>self.func, self.args, self.kwds = func, args, kwds</pre>
-<pre class="line after"><span class="ws">        </span># Issue 19330: ensure context manager instances have good docstrings</pre>
-<pre class="line after"><span class="ws">        </span>doc = getattr(func, &quot;__doc__&quot;, None)</pre>
-<pre class="line after"><span class="ws">        </span>if doc is None:</pre>
-<pre class="line after"><span class="ws">            </span>doc = type(self).__doc__</pre></div>
-</div>
-
-<li><div class="frame" id="frame-2376330699024">
+<li><div class="frame" id="frame-2978851616496">
   <h4>File <cite class="filename">"C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\celery\local.py"</cite>,
       line <em class="line">188</em>,
       in <code class="function">__call__</code></h4>
@@ -257,7 +223,7 @@ The upload response status code is 500 and the body is <!DOCTYPE html>
 <pre class="line after"><span class="ws">    </span>def __getitem__(self, i):</pre></div>
 </div>
 
-<li><div class="frame" id="frame-2376330699136">
+<li><div class="frame" id="frame-2978851616608">
   <h4>File <cite class="filename">"C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\celery\app\task.py"</cite>,
       line <em class="line">392</em>,
       in <code class="function">__call__</code></h4>
@@ -274,24 +240,24 @@ The upload response status code is 500 and the body is <!DOCTYPE html>
 <pre class="line after"><span class="ws">    </span>def __reduce__(self):</pre></div>
 </div>
 
-<li><div class="frame" id="frame-2376330699248">
+<li><div class="frame" id="frame-2978851616720">
   <h4>File <cite class="filename">"H:\_webdev\python+flutter\Nuclei\nuclei_backend\storage_sequencer\upload.py"</cite>,
-      line <em class="line">49</em>,
+      line <em class="line">63</em>,
       in <code class="function">produce_cid</code></h4>
-  <div class="source "><pre class="line before"><span class="ws"></span> </pre>
-<pre class="line before"><span class="ws">    </span>unique_id = str(uuid.uuid4())</pre>
-<pre class="line before"><span class="ws">    </span>file_type = str(file).split(&quot;.&quot;)[-1]</pre>
+  <div class="source "><pre class="line before"><span class="ws">        </span>)</pre>
+<pre class="line before"><span class="ws">    </span>subprocess.call(</pre>
+<pre class="line before"><span class="ws">        </span>os.path.join(storage_sequencer_controller.config.TEMP_FOLDER, &quot;upload.bat&quot;)</pre>
+<pre class="line before"><span class="ws">    </span>)</pre>
 <pre class="line before"><span class="ws"></span> </pre>
-<pre class="line before"><span class="ws">    </span>os.system(f&quot;ipfs add --quiet --pin {file}.{file_type} &gt; temp_/temp{unique_id}.txt&quot;)</pre>
 <pre class="line current"><span class="ws">    </span>with open(</pre>
-<pre class="line after"><span class="ws">        </span>pathlib.Path(storage_sequencer_controller.config.TEMP_FOLDER).joinpath(</pre>
-<pre class="line after"><span class="ws">            </span>f&quot;temp{unique_id}.txt&quot;</pre>
+<pre class="line after"><span class="ws">        </span>os.path.join(</pre>
+<pre class="line after"><span class="ws">            </span>storage_sequencer_controller.config.TEMP_FOLDER, f&quot;temp{unique_id}.txt&quot;</pre>
 <pre class="line after"><span class="ws">        </span>),</pre>
 <pre class="line after"><span class="ws">        </span>&quot;r&quot;,</pre>
 <pre class="line after"><span class="ws">    </span>) as f:</pre></div>
 </div>
 </ul>
-  <blockquote>FileNotFoundError: [Errno 2] No such file or directory: &#x27;H:\\_webdev\\python+flutter\\Nuclei\\nuclei_backend\\storage_sequencer\\temp_\\tempf8734688-8c9d-43ce-8866-d97cf5dae6c1.txt&#x27;
+  <blockquote>FileNotFoundError: [Errno 2] No such file or directory: &#x27;H:\\_webdev\\python+flutter\\Nuclei\\nuclei_backend\\storage_sequencer\\temp_\\temp9a816812-2e81-4984-909d-548fec32c8e1.txt&#x27;
 </blockquote>
 </div>
 
@@ -320,19 +286,15 @@ The upload response status code is 500 and the body is <!DOCTYPE html>
     return self._get_current_object()(*a, **kw)
   File &quot;C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\celery\app\task.py&quot;, line 392, in __call__
     return self.run(*args, **kwargs)
-  File &quot;H:\_webdev\python+flutter\Nuclei\nuclei_backend\storage_sequencer\upload.py&quot;, line 82, in ipfs_upload
+  File &quot;H:\_webdev\python+flutter\Nuclei\nuclei_backend\storage_sequencer\upload.py&quot;, line 107, in ipfs_upload
     ipfs_hash = produce_cid(file)
-  File &quot;C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\contextlib.py&quot;, line 281, in helper
-    return _GeneratorContextManager(func, args, kwds)
-  File &quot;C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\contextlib.py&quot;, line 103, in __init__
-    self.gen = func(*args, **kwds)
   File &quot;C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\celery\local.py&quot;, line 188, in __call__
     return self._get_current_object()(*a, **kw)
   File &quot;C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\celery\app\task.py&quot;, line 392, in __call__
     return self.run(*args, **kwargs)
-  File &quot;H:\_webdev\python+flutter\Nuclei\nuclei_backend\storage_sequencer\upload.py&quot;, line 49, in produce_cid
+  File &quot;H:\_webdev\python+flutter\Nuclei\nuclei_backend\storage_sequencer\upload.py&quot;, line 63, in produce_cid
     with open(
-FileNotFoundError: [Errno 2] No such file or directory: &#x27;H:\\_webdev\\python+flutter\\Nuclei\\nuclei_backend\\storage_sequencer\\temp_\\tempf8734688-8c9d-43ce-8866-d97cf5dae6c1.txt&#x27;
+FileNotFoundError: [Errno 2] No such file or directory: &#x27;H:\\_webdev\\python+flutter\\Nuclei\\nuclei_backend\\storage_sequencer\\temp_\\temp9a816812-2e81-4984-909d-548fec32c8e1.txt&#x27;
 </textarea>
 </div>
 <div class="explanation">
@@ -388,19 +350,15 @@ Traceback (most recent call last):
     return self._get_current_object()(*a, **kw)
   File "C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\celery\app\task.py", line 392, in __call__
     return self.run(*args, **kwargs)
-  File "H:\_webdev\python+flutter\Nuclei\nuclei_backend\storage_sequencer\upload.py", line 82, in ipfs_upload
+  File "H:\_webdev\python+flutter\Nuclei\nuclei_backend\storage_sequencer\upload.py", line 107, in ipfs_upload
     ipfs_hash = produce_cid(file)
-  File "C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\contextlib.py", line 281, in helper
-    return _GeneratorContextManager(func, args, kwds)
-  File "C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\contextlib.py", line 103, in __init__
-    self.gen = func(*args, **kwds)
   File "C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\celery\local.py", line 188, in __call__
     return self._get_current_object()(*a, **kw)
   File "C:\Users\silen\AppData\Local\Programs\Python\Python310\lib\site-packages\celery\app\task.py", line 392, in __call__
     return self.run(*args, **kwargs)
-  File "H:\_webdev\python+flutter\Nuclei\nuclei_backend\storage_sequencer\upload.py", line 49, in produce_cid
+  File "H:\_webdev\python+flutter\Nuclei\nuclei_backend\storage_sequencer\upload.py", line 63, in produce_cid
     with open(
-FileNotFoundError: [Errno 2] No such file or directory: 'H:\\_webdev\\python+flutter\\Nuclei\\nuclei_backend\\storage_sequencer\\temp_\\tempf8734688-8c9d-43ce-8866-d97cf5dae6c1.txt'
+FileNotFoundError: [Errno 2] No such file or directory: 'H:\\_webdev\\python+flutter\\Nuclei\\nuclei_backend\\storage_sequencer\\temp_\\temp9a816812-2e81-4984-909d-548fec32c8e1.txt'
 
 
 -->

@@ -7,6 +7,7 @@ import os
 import pathlib
 import typing
 import uuid
+import subprocess
 
 import gevent
 from flask import Response, request
@@ -33,7 +34,6 @@ def check_if_temp_exist(file_name: str) -> bool:
     return False
 
 
-@contextlib.contextmanager
 @celery.task
 def produce_cid(file: str):
     """
@@ -44,15 +44,40 @@ def produce_cid(file: str):
 
     unique_id = str(uuid.uuid4())
     file_type = str(file).split(".")[-1]
+    file_name = str(file).split("/")[-1]
+    logging.info(f"Producing CID for {file_name}")
+    path = storage_sequencer_controller.config.TEMP_FOLDER
+    logging.info(path)
 
-    os.system(f"ipfs add --quiet --pin {file}.{file_type} > temp_/temp{unique_id}.txt")
     with open(
-        pathlib.Path(storage_sequencer_controller.config.TEMP_FOLDER).joinpath(
-            f"temp{unique_id}.txt"
+        os.path.join(path, "upload.bat"),
+        "w",
+    ) as f:
+        f.write(
+            f"ipfs add --quiet --pin {file_name}.{file_type} > {path}/temp{unique_id}.txt"
+        )
+    subprocess.call(
+        os.path.join(storage_sequencer_controller.config.TEMP_FOLDER, "upload.bat")
+    )
+
+    with open(
+        os.path.join(
+            storage_sequencer_controller.config.TEMP_FOLDER, f"temp{unique_id}.txt"
         ),
         "r",
     ) as f:
-        cid = f.read()
+        cid = f.read().strip()
+
+    os.remove(
+        os.path.join(
+            storage_sequencer_controller.config.TEMP_FOLDER, f"temp{unique_id}.txt"
+        )
+    )
+    # os.remove(
+    #     os.path.join(
+    #         storage_sequencer_controller.config.TEMP_FOLDER, f"{file}.{file_type}"
+    #     )
+    # )
 
     return cid
 
@@ -81,7 +106,7 @@ def ipfs_upload():
     filename = secure_filename(file.filename)
     ipfs_hash = produce_cid(file)
     logging.info(f"IPFS hash: {ipfs_hash}")
-    ipfs_hash = ipfs_hash
+    # ipfs_hash = ipfs_hashS
     if ipfs_hash == "Error: IPFS hash not found.":
         return ipfs_hash
 
@@ -94,7 +119,7 @@ def ipfs_upload():
         file_date=datetime.datetime.now(),
     )
 
-    db.session.add(file_record)
-    db.session.commit()
-    return Response("File uploaded successfully.", status=200, mimetype="text/plain")
+    # db.session.add(file_record)
+    # db.session.commit()
+    return Response(ipfs_hash, status=200, mimetype="text/plain")
     # return Response("Error: File type not allowed.", status=400, mimetype="text/plain")
