@@ -29,6 +29,7 @@ class Config(object):
     PERMANENT_SESSION_LIFETIME = timedelta(minutes=5)
     JWT_ACCESS_LIFESPAN = {"hours": 24}
     JWT_REFRESH_LIFESPAN = {"days": 30}
+    SSL_DISABLE = True
 
 
 class ProductionConfig(Config):

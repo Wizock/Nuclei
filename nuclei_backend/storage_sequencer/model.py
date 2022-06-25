@@ -17,6 +17,19 @@ from ..extension_globals.database import db
 
 
 class FileTracker(db.Model):
+    """_summary_ = "FileTracker"
+
+    Args:
+        db (_type_): _description_
+
+    Returns:
+        _type_: _description_
+
+    Raises:
+        _type_: _description_
+
+    """
+
     __tablename__ = "file_tracker"
     id: int = db.Column(db.Integer, primary_key=True)
     file_name: str = db.Column(db.String(255), nullable=False)
@@ -28,9 +41,19 @@ class FileTracker(db.Model):
     file_date: date = db.Column(db.Date, nullable=False)
 
     def check_if_valid_hash(self, hash_: str) -> bool:
+        """_summary_ = "Check if the hash is valid"
+
+        Args:
+            hash_ (_type_): _description_
+        """
         return self.file_hash == hash_
 
     def check_if_valid_cid(self, cid: str) -> bool:
+        """_summary_ = "Check if the CID is valid"
+
+        Args:
+            cid (_type_): _description_
+        """
         return self.file_cid == cid
 
     def __init__(
@@ -42,6 +65,16 @@ class FileTracker(db.Model):
         file_type: str,
         file_date: date,
     ):
+        """_summary_ = "Initialize the FileTracker"
+        Args:
+
+            file_name: (str) The name of the file.
+            file_path: (str) The path of the file.
+            file_hash: (str) The hash of the file.
+            file_size: (int) The size of the file.
+            file_type: (str) The type of the file.
+            file_date: (date) The date of the file.
+        """
         self.file_name = file_name
         self.file_path = file_path
         self.file_hash = file_hash

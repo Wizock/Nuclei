@@ -2,6 +2,8 @@ import subprocess
 
 import ffmpeg
 
+from ..extension_globals.celery import celery
+
 """
 transform these functions into generators
 
@@ -14,6 +16,7 @@ else, the process is not running
 """
 
 
+@celery.task(bind=True)
 def compression_low_preset(
     file_path: str, file_path_compressed: str
 ) -> subprocess.CompletedProcess:
@@ -33,6 +36,7 @@ def compression_low_preset(
     return result
 
 
+@celery.task(bind=True)
 def compress_medium_preset(
     file_path: str, file_path_compressed: str
 ) -> subprocess.CompletedProcess:
@@ -52,6 +56,7 @@ def compress_medium_preset(
     return result
 
 
+@celery.task(bind=True)
 def compression_high_preset(
     file_path: str, file_path_compressed: str
 ) -> subprocess.CompletedProcess:
@@ -71,6 +76,7 @@ def compression_high_preset(
     return result
 
 
+@celery.task(bind=True)
 def tested_perfect_preset(
     file_path: str, file_path_compressed: str
 ) -> subprocess.CompletedProcess:
@@ -90,6 +96,7 @@ def tested_perfect_preset(
     return result
 
 
+@celery.task(bind=True)
 def compression_main(
     file_path: str, file_path_compressed: str, preset: str = "perfect"
 ) -> subprocess.CompletedProcess:
