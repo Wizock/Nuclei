@@ -206,15 +206,17 @@ def understand_filetype(file: FileStorage) -> Literal["video", "image", "audio"]
     >>> "Video"
 
     """
-
-    if allowed_file(file.filename):
-        if file.content_type == "video/mp4":
-            return "video"
-        elif file.content_type == "image/jpeg":
-            return "image"
+    try:
+        if allowed_file(file.filename):
+            if file.content_type == "video/mp4":
+                return "video"
+            elif file.content_type == "image/jpeg":
+                return "image"
+            else:
+                return "file"
         else:
-            return "file"
-    else:
+            return "invalid"
+    except Exception as e:
         return "invalid"
 
 
@@ -227,19 +229,19 @@ def ipfs_upload() -> Response:
     Returns:
         A response with the CID of the file.
     """
+    if request.method == "POST":
+        file = request.files["files"]
+        file.save(
+            os.path.join(storage_sequencer_controller.config.TEMP_FOLDER, file.filename)
+        )
+        file_type = understand_filetype(file)
 
-    file = request.files["files"]
-    file.save(
-        os.path.join(storage_sequencer_controller.config.TEMP_FOLDER, file.filename)
-    )
-    file_type = understand_filetype(file)
+        cid = produce_cid(file)
 
-    cid = produce_cid(file)
+        record = assemble_record(file, cid)
 
-    record = assemble_record(file, cid)
+        db.session.add(record)
 
-    db.session.add(record)
+        db.session.commit()
 
-    db.session.commit()
-
-    return Response(cid, mimetype="text/plain", status=200)
+        return Response(cid, mimetype="text/plain", status=200)
