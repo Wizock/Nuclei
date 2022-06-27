@@ -1,22 +1,23 @@
-import lz4.frame
-from lz4.block import compress, decompress
-import os
 import base64
 import datetime
 import hashlib
 import os
 import pathlib
 from typing import List
-from .main import file_compression
+
+import gevent
+import lz4.frame
 import requests
 import requests_file
 from flask import Blueprint, Response, redirect, render_template, request, url_for
 from flask_login import login_required
+from gevent import *
+from lz4.block import compress, decompress
 from werkzeug.datastructures import FileStorage, ImmutableMultiDict
 from werkzeug.exceptions import BadRequest, NotFound
 from werkzeug.utils import secure_filename
-import gevent
-from gevent import *
+
+from .main import file_compression
 
 
 @file_compression.route("/compress", methods=["POST"])
@@ -39,7 +40,6 @@ def compress_misc_file() -> Response:
         with open(f"{file_name}.lz4", "wb") as fout:
             fout.write(compressed)
 
-    print(compressed)
 
 
 @file_compression.route("/decompress", methods=["POST"])

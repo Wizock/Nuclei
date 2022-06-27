@@ -1,4 +1,5 @@
 from flask_login import LoginManager
+
 from nuclei_backend.authentication.models import User
 
 login_manager = LoginManager()

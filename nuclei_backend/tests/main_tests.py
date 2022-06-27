@@ -1,5 +1,6 @@
-import nuclei_backend
 import pytest
+
+import nuclei_backend
 
 
 @pytest.fixture

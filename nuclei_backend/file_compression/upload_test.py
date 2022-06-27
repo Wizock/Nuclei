@@ -12,5 +12,5 @@ import requests
 # )
 req_comp = requests.post(
     "http://10.1.1.41:5000/storage/upload",
-    files={"files": open(pathlib.Path(__file__).parent.absolute() / "test.mp4", "rb")},
+    files={"files": open(pathlib.Path(__file__).parent.absolute() / "data.pdf", "rb")},
 )
