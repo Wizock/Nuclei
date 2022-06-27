@@ -41,7 +41,6 @@ def compress_misc_file() -> Response:
             fout.write(compressed)
 
 
-
 @file_compression.route("/decompress", methods=["POST"])
 def decompress_misc_file() -> Response:
 
