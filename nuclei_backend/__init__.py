@@ -65,9 +65,12 @@ class Nuclei(Flask):
 
     def import_celery(self) -> None:
         """Import the celery."""
-        from nuclei_backend.extension_globals.celery import celery
+        from nuclei_backend.extension_globals.celery import make_celery
 
-        self.celery = celery
+        self.celery = make_celery(self)
+
+    def return_celery(self):
+        return self.celery
 
     def import_guard(self) -> None:
         """Import the guard."""
@@ -142,5 +145,4 @@ class Nuclei(Flask):
         self.register_blueprint(_index_view)
 
 
-# create app instance
 app = Nuclei(__name__)
