@@ -7,8 +7,8 @@ from sqlalchemy.ext.declarative import DeclarativeMeta
 from typing_extensions import *
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from ..extension_globals.database import db
-from ..extension_globals.praetorian import guard
+from ...extension_globals.database import db
+from ...extension_globals.praetorian import guard
 
 BaseModel: DeclarativeMeta = db.Model
 

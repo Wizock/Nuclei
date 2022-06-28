@@ -74,7 +74,7 @@ class Nuclei(Flask):
 
     def import_guard(self) -> None:
         """Import the guard."""
-        from nuclei_backend.authentication.models import User
+        from nuclei_backend.components.authentication.models import User
         from nuclei_backend.extension_globals.praetorian import guard
 
         guard.init_app(self, User)
@@ -82,10 +82,10 @@ class Nuclei(Flask):
     def import_db(self) -> None:
         """Import the database."""
         db.init_app(self)
-        from nuclei_backend.authentication.models import User
-        from nuclei_backend.compression_service.models import media_index
-        from nuclei_backend.storage_sequencer.model import FileTracker
-        from nuclei_backend.video_compression.models import video_media
+        from nuclei_backend.components.authentication.models import User
+        from nuclei_backend.components.compression_service.models import media_index
+        from nuclei_backend.components.storage_sequencer.model import FileTracker
+        from nuclei_backend.components.video_compression.models import video_media
 
         db.create_all()
 
@@ -112,7 +112,9 @@ class Nuclei(Flask):
 
     def import_admin(self) -> None:
         """Import the admin."""
-        from nuclei_backend.admin_interface.views import admin_interface_blueprint
+        from nuclei_backend.components.admin_interface.views import (
+            admin_interface_blueprint,
+        )
         from nuclei_backend.extension_globals.admin import admin_instance
 
         admin_instance.init_app(self)
@@ -122,7 +124,7 @@ class Nuclei(Flask):
         from nuclei_backend.extension_globals.cookies import login_manager
 
         login_manager.init_app(self)
-        from nuclei_backend.authentication.models import User
+        from nuclei_backend.components.authentication.models import User
 
         @login_manager.user_loader
         def load_user(user_id):
@@ -130,13 +132,17 @@ class Nuclei(Flask):
 
     def import_blueprints(self) -> None:
         """Import the blueprints."""
-        from nuclei_backend.authentication.views import auth
-        from nuclei_backend.compression_service.views import (
+        from nuclei_backend.components.authentication.views import auth
+        from nuclei_backend.components.compression_service.views import (
             compression_service_blueprint,
         )
         from nuclei_backend.index_mvc.index_view import _index_view
-        from nuclei_backend.storage_sequencer.main import storage_sequencer_controller
-        from nuclei_backend.video_compression.views import video_compression_blueprint
+        from nuclei_backend.components.storage_sequencer.main import (
+            storage_sequencer_controller,
+        )
+        from nuclei_backend.components.video_compression.views import (
+            video_compression_blueprint,
+        )
 
         self.register_blueprint(compression_service_blueprint)
         self.register_blueprint(video_compression_blueprint)
