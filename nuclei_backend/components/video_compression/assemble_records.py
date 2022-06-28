@@ -6,16 +6,17 @@ import pathlib
 from typing import List
 
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.datastructures import FileStorage
 
-from ..extension_globals.celery import celery
-from ..extension_globals.database import db
+from ...extension_globals.celery import celery
+from ...extension_globals.database import db
 from ..video_compression.models import video_media
 from .compression_preset import compression_main
 
 
 @celery.task
 def assemble_record(
-    video_file: "ImmutableMultiDict[str, FileStorage]",
+    video_file: FileStorage,
     compressing: bool = False,
     compressed: bool = False,
 ) -> video_media:

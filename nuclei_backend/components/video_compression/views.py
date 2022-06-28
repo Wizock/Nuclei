@@ -6,8 +6,8 @@ from werkzeug.datastructures import FileStorage, ImmutableMultiDict
 from werkzeug.exceptions import BadRequest, NotFound
 from werkzeug.utils import secure_filename
 
-from ..extension_globals.celery import celery
-from ..extension_globals.database import db
+from ...extension_globals.celery import celery
+from ...extension_globals.database import db
 from ..storage_sequencer.file_info_utils import allowed_file
 from .assemble_records import assemble_record
 from .compression_preset import compression_main
@@ -20,9 +20,6 @@ video_compression_blueprint = Blueprint(
     url_prefix="/video_compression",
     static_folder="static/compressed",
 )
-
-from ..extension_globals.celery import celery
-from ..extension_globals.database import db
 
 
 @video_compression_blueprint.route("/upload/video", methods=["POST"])

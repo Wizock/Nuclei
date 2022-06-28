@@ -13,7 +13,7 @@ from typing import *
 from sqlalchemy import DATE
 from typing_extensions import *
 
-from ..extension_globals.database import db
+from ...extension_globals.database import db
 
 
 class FileTracker(db.Model):

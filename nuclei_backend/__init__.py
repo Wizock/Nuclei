@@ -43,7 +43,6 @@ class Nuclei(Flask):
             self.import_db()
             self.import_celery()
             self.import_redis()
-            self.import_admin()
             self.import_cors()
             self.import_guard()
             self.import_cookies()
@@ -65,12 +64,9 @@ class Nuclei(Flask):
 
     def import_celery(self) -> None:
         """Import the celery."""
-        from nuclei_backend.extension_globals.celery import make_celery
+        from nuclei_backend.extension_globals.celery import celery
 
-        self.celery = make_celery(self)
-
-    def return_celery(self):
-        return self.celery
+        self.celery = celery
 
     def import_guard(self) -> None:
         """Import the guard."""
@@ -110,15 +106,6 @@ class Nuclei(Flask):
             },
         )
 
-    def import_admin(self) -> None:
-        """Import the admin."""
-        from nuclei_backend.components.admin_interface.views import (
-            admin_interface_blueprint,
-        )
-        from nuclei_backend.extension_globals.admin import admin_instance
-
-        admin_instance.init_app(self)
-
     def import_cookies(self) -> None:
         """Import the cookies."""
         from nuclei_backend.extension_globals.cookies import login_manager
@@ -136,7 +123,7 @@ class Nuclei(Flask):
         from nuclei_backend.components.compression_service.views import (
             compression_service_blueprint,
         )
-        from nuclei_backend.index_mvc.index_view import _index_view
+        from nuclei_backend.components.index_mvc.index_view import _index_view
         from nuclei_backend.components.storage_sequencer.main import (
             storage_sequencer_controller,
         )

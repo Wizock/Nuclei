@@ -1,7 +1,7 @@
 import typing
 
+from ...extension_globals.database import db
 from ..compression_service.models import media_index
-from ..extension_globals.database import db
 from ..video_compression.models import video_media
 
 image_type = typing.Union[str, bytes]

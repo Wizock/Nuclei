@@ -25,8 +25,8 @@ auth = Blueprint(
     "authentication", __name__, template_folder="templates", url_prefix="/auth"
 )
 
-from ..extension_globals.database import db
-from ..extension_globals.praetorian import guard
+from ...extension_globals.database import db
+from ...extension_globals.praetorian import guard
 from .models import User
 
 

@@ -10,16 +10,11 @@ _index_view = Blueprint(
     template_folder="templates",
     url_prefix="/",
 )
-
 from ..compression_service.models import media_index
-from ..extension_globals.celery import celery
-from ..extension_globals.database import db
 from ..video_compression.models import video_media
 
 
 @_index_view.route("/index", methods=["GET"])
-@cross_origin()
-@flask_praetorian.auth_required
 def index_design() -> Response:
     # query media models to get all media objects
     images = media_index.query.all()

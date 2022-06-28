@@ -21,8 +21,8 @@ compression_service_blueprint = Blueprint(
     static_folder="static/imgs",
 )
 
-from ..extension_globals.celery import celery
-from ..extension_globals.database import db
+from ...extension_globals.celery import celery
+from ...extension_globals.database import db
 from .image_helpers import handle_image_incompatibilities
 from .models import media_index
 

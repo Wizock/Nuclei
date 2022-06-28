@@ -2,7 +2,7 @@ import subprocess
 
 import ffmpeg
 
-from ..extension_globals.celery import celery
+from ...extension_globals.celery import celery
 
 """
 transform these functions into generators
