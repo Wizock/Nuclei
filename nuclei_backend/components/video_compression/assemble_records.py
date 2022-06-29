@@ -4,9 +4,9 @@ import hashlib
 import os
 import pathlib
 from typing import List
-
+import logging
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.datastructures import FileStorage
+from werkzeug.datastructures import FileStorage, ImmutableMultiDict
 
 from ...extension_globals.celery import celery
 from ...extension_globals.database import db
@@ -16,7 +16,7 @@ from .compression_preset import compression_main
 
 @celery.task
 def assemble_record(
-    video_file: FileStorage,
+    video_file: ImmutableMultiDict,
     compressing: bool = False,
     compressed: bool = False,
 ) -> video_media:
@@ -29,22 +29,33 @@ def assemble_record(
     """
 
     video_name = video_file.filename
+    logging.info(f"video_name: {video_name}")
     if (
         video_name.endswith(".mpeg")
         or video_name.endswith(".avi")
         or video_name.endswith(".mp4")
     ):
-        print(pathlib.Path.cwd())
+
         file_path: str = (
             str(pathlib.Path.cwd())
-            + str(pathlib.Path(r"\nuclei_backend\video_compression\static\videos"))
+            + str(
+                pathlib.Path(
+                    r"\nuclei_backend\components\video_compression\static\videos"
+                )
+            )
             + str(rf"\{video_name}")
         )
+        logging.info(f"file_path: {file_path}")
         file_path_compressed: str = (
             str(pathlib.Path.cwd())
-            + str(pathlib.Path(r"\nuclei_backend\video_compression\static\compressed"))
+            + str(
+                pathlib.Path(
+                    r"\nuclei_backend\components\video_compression\static\compressed"
+                )
+            )
             + str(rf"\{video_name}")
         )
+        logging.info(f"file_path_compressed: {file_path_compressed}")
         if not file_path or not file_path_compressed:
             raise OSError("File path is not valid")
 

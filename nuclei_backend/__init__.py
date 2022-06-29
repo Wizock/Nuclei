@@ -127,7 +127,7 @@ class Nuclei(Flask):
         from nuclei_backend.components.storage_sequencer.main import (
             storage_sequencer_controller,
         )
-        from nuclei_backend.components.video_compression.views import (
+        from nuclei_backend.components.video_compression.upload_compression import (
             video_compression_blueprint,
         )
 
@@ -138,4 +138,5 @@ class Nuclei(Flask):
         self.register_blueprint(_index_view)
 
 
+# create app instance
 app = Nuclei(__name__)

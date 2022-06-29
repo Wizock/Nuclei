@@ -11,6 +11,6 @@ import requests
 #     files={"file": open(pathlib.Path(__file__).parent.absolute() / "test.mp4", "rb")},
 # )
 req_comp = requests.post(
-    "http://10.1.1.41:5000/storage/compress/video",
-    files={"files": open(pathlib.Path(__file__).parent.absolute() / "test.mp4", "rb")},
+    "http://10.1.1.41:5000/video_compression/compress/video",
+    files={"file": open(pathlib.Path(__file__).parent.absolute() / "test.mp4", "rb")},
 )

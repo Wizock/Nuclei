@@ -27,11 +27,8 @@ from .model import FileTracker
 def check_if_temp_exist(file_name: str) -> bool:
     """
     _summary_: Check if the temp file exists
-
     _parameters_:
-
         file_name: str
-
     _return_: bool
     """
     temp_folder = storage_sequencer_controller.config.TEMP_FOLDER
@@ -43,12 +40,9 @@ def check_if_temp_exist(file_name: str) -> bool:
 def cleanup(unique_id: UUID, path: pathlib.Path, file_name: str):
     """
     Cleanup the file from the temp folder.
-
     Args:
         unique_id (UUID): the unique identifier for file
-
         path (pathlib.Path): the path of the file to be cleaned up
-
         file_name (str): the name of the file to be cleaned up
     """
 
@@ -57,13 +51,10 @@ def generate_hash(cid: LiteralString) -> LiteralString:
 
     """
     Generate a hash for the file.
-
     Args:
         cid: The cid of the file.
-
     Usage:
     >>> hash = generate_hash(cid)
-
     """
     path = str(storage_sequencer_controller.config.TEMP_FOLDER)
     unique_id = str(uuid4())
@@ -109,7 +100,6 @@ def produce_cid(file: FileStorage) -> LiteralString:
     Produce a CID for a file. using celery and gevent to handle traffic
     Args:
         file: The file to produce a CID for.
-
     Returns:
         A CID for the file.
         >>> produce_cid(file)
@@ -159,15 +149,11 @@ def produce_cid(file: FileStorage) -> LiteralString:
 def assemble_record(file: FileStorage, cid: LiteralString) -> FileTracker:
     """
     Assembles a record for the file tracker
-
     Args:
         file: The file to assemble a record for
-
         cid: The cid of the file
-
     Returns:
         A record for the file tracker
-
         >>> assemble_record(file, cid)
         >>> FileTracker( file_name='test.mp4',
         >>>             file_type='video',
@@ -197,14 +183,11 @@ def assemble_record(file: FileStorage, cid: LiteralString) -> FileTracker:
 def understand_filetype(file: FileStorage) -> Literal["video", "image", "audio"]:
     """
     Determine the file type of a file.
-
     Args:
         file: The file to determine the file type of.
-
     Usage:
     >>> file_type = understand_filetype(file)
     >>> "Video"
-
     """
     try:
         if allowed_file(file.filename):
@@ -225,7 +208,6 @@ def understand_filetype(file: FileStorage) -> Literal["video", "image", "audio"]
 def ipfs_upload() -> Response:
     """
     Upload a file to IPFS.
-
     Returns:
         A response with the CID of the file.
     """

@@ -1,29 +1,23 @@
+import pathlib
 import requests
-import requests_file
-from flask import Blueprint, Response, redirect, render_template, request, url_for
-from flask_login import login_required
+from flask import Response, redirect, render_template, request, url_for
 from werkzeug.datastructures import FileStorage, ImmutableMultiDict
 from werkzeug.exceptions import BadRequest, NotFound
 from werkzeug.utils import secure_filename
 
 from ...extension_globals.celery import celery
 from ...extension_globals.database import db
+from ...extension_globals.redis import redis_client
 from ..storage_sequencer.file_info_utils import allowed_file
 from .assemble_records import assemble_record
-from .compression_preset import compression_main
-from .models import video_media
-
-video_compression_blueprint = Blueprint(
-    "video_compression",
-    __name__,
-    template_folder="templates",
-    url_prefix="/video_compression",
-    static_folder="static/compressed",
-)
+from .main import video_compression_blueprint
+import logging
 
 
 @video_compression_blueprint.route("/upload/video", methods=["POST"])
-@celery.task
+@celery.task(
+    bind=True, name="upload_video", max_retries=3, interval_start=0, interval_step=0.5
+)
 def upload_video() -> Response:
     if request.method == "POST":
         try:
@@ -52,13 +46,18 @@ def upload_video() -> Response:
 @video_compression_blueprint.route("/compress/video", methods=["GET", "POST"])
 @celery.task
 def compress_video() -> Response:
+    logging.info("compress_video")
     if request.method == "POST":
         if request.files:
             try:
-                video_file: "ImmutableMultiDict[str, FileStorage]" = request.files[
-                    "file"
-                ]
+                logging.info(" post request")
+
+                video_file: ImmutableMultiDict[str, FileStorage] = request.files["file"]
+                logging.info(f"video_file: {video_file}")
+
             except KeyError:
+                logging.info("exception")
+
                 if request.form:
                     video_file = request.form["file"]
                 if not video_file:
@@ -66,60 +65,34 @@ def compress_video() -> Response:
                 else:
                     return redirect(url_for("video_compression.compress_video")), 400
 
-            # _ = assemble_record.apply_async(args=(video_file, True, False))
+            if redis_client.get(video_file.filename):
+                logging.info("checking redis")
+
+                pass
+
+            logging.info("video_file acceptence")
+
+            # redis_client.set(video_file.filename, "True")  #
+            # _ = assemble_record(video_file, True, True)
+
             # db.session.add(_)
             # db.session.commit()
-            requests.post(
-                headers={"Content-Type": "multipart/form-data"},
-                url="http://localhost:5000/storage/upload",
-                files={"files": video_file},
-                data={"files": video_file},
-            )
+            logging.info("try")
 
+            # post the video
+            req_comp = requests.post(
+                "http://10.1.1.41:5000/storage/upload",
+                files={
+                    "files": open(
+                        pathlib.Path(__file__).parent.absolute()
+                        / f"static/compressed/{secure_filename(video_file.filename)}",
+                        "rb",
+                    )
+                },
+            )
             return Response(
                 "Video compressed successfully",
                 status=200,
                 mimetype="text/plain",
             )
         return redirect(url_for("video_compression.compress_video")), 302
-    else:
-        return render_template(
-            "upload_template.html",
-            loading=url_for("compression_service.static", filename="loading.gif"),
-        )
-
-
-@video_compression_blueprint.route(
-    "/video/<int:id>/<string:name>", methods=["GET", "POST"]
-)
-@login_required
-def view_video(id: int, name: str) -> Response:
-    try:
-        video_query = video_media.query.filter_by(id=id, name=name).first()
-        return render_template("video_player.html", video_query=video_query)
-    except AttributeError:
-        if not video_query:
-            return redirect(url_for("index_endpoint.index_design")), 400
-        else:
-            return render_template(
-                "video_player.html", video_query=ValueError("Video not found")
-            )
-
-
-@video_compression_blueprint.route(
-    "/delete/<int:id>/<string:name>", methods=["GET", "POST"]
-)
-@login_required
-def delete_video(id: int, name: str) -> Response:
-    try:
-        video_query: video_media = video_media.query.filter_by(id=id, name=name).first()
-        db.session.delete(video_query)
-        db.session.commit()
-        return redirect(url_for("index_endpoint.index_design")), 200
-    except AttributeError:
-        if not video_query:
-            return redirect(url_for("index_endpoint.index_design")), 400
-        else:
-            return render_template(
-                "video_player.html", video_query=ValueError("Video not found")
-            )
