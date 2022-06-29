@@ -120,7 +120,7 @@ class Nuclei(Flask):
     def import_blueprints(self) -> None:
         """Import the blueprints."""
         from nuclei_backend.components.authentication.views import auth
-        from nuclei_backend.components.compression_service.views import (
+        from nuclei_backend.components.compression_service.main import (
             compression_service_blueprint,
         )
         from nuclei_backend.components.index_mvc.index_view import _index_view

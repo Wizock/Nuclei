@@ -81,7 +81,7 @@ def compress_video() -> Response:
 
             # post the video
             req_comp = requests.post(
-                "http://10.1.1.41:5000/storage/upload",
+                url_for("storage_sequencer.ipfs_upload"),
                 files={
                     "files": open(
                         pathlib.Path(__file__).parent.absolute()
