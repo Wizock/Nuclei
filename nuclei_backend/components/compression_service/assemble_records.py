@@ -1,16 +1,18 @@
 import base64
 import datetime
 import hashlib
+import logging
 import os
 import pathlib
 from typing import List
-import logging
+
 from flask_sqlalchemy import SQLAlchemy
+from PIL import Image
+from sqlalchemy.exc import IntegrityError, OperationalError, ProgrammingError
 from werkzeug.datastructures import FileStorage, ImmutableMultiDict
 from werkzeug.utils import secure_filename
-from PIL import Image
+
 from .image_helpers import handle_image_incompatibilities
-from sqlalchemy.exc import IntegrityError, OperationalError, ProgrammingError
 from .models import media_index
 
 

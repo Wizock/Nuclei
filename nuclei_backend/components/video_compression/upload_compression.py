@@ -1,4 +1,6 @@
+import logging
 import pathlib
+
 import requests
 from flask import Response, redirect, render_template, request, url_for
 from werkzeug.datastructures import FileStorage, ImmutableMultiDict
@@ -11,7 +13,6 @@ from ...extension_globals.redis import redis_client
 from ..storage_sequencer.file_info_utils import allowed_file
 from .assemble_records import assemble_record
 from .main import video_compression_blueprint
-import logging
 
 
 @video_compression_blueprint.route("/upload/video", methods=["POST"])
@@ -49,47 +50,36 @@ def compress_video() -> Response:
     logging.info("compress_video")
     if request.method == "POST":
         if request.files:
-            try:
-                logging.info(" post request")
+            logging.info(" post request")
+            video_files = request.files.getlist("files")
+            logging.info(f"{video_files}")
+            for video_file in video_files:
 
-                video_file: ImmutableMultiDict[str, FileStorage] = request.files["file"]
                 logging.info(f"video_file: {video_file}")
 
-            except KeyError:
-                logging.info("exception")
+                if redis_client.get(video_file.filename):
+                    logging.info("checking redis")
 
-                if request.form:
-                    video_file = request.form["file"]
-                if not video_file:
-                    return redirect(url_for("video_compression.compress_video")), 302
-                else:
-                    return redirect(url_for("video_compression.compress_video")), 400
+                logging.info("video_file acceptence")
 
-            if redis_client.get(video_file.filename):
-                logging.info("checking redis")
+                redis_client.set(video_file.filename, "True")  #
+                _ = assemble_record(video_file, True, True)
 
-                pass
+                db.session.add(_)
+                db.session.commit()
+                logging.info("try")
 
-            logging.info("video_file acceptence")
-
-            # redis_client.set(video_file.filename, "True")  #
-            # _ = assemble_record(video_file, True, True)
-
-            # db.session.add(_)
-            # db.session.commit()
-            logging.info("try")
-
-            # post the video
-            req_comp = requests.post(
-                url_for("storage_sequencer.ipfs_upload"),
-                files={
-                    "files": open(
-                        pathlib.Path(__file__).parent.absolute()
-                        / f"static/compressed/{secure_filename(video_file.filename)}",
-                        "rb",
-                    )
-                },
-            )
+                # post the video
+                req_comp = requests.post(
+                    url_for("storage_sequencer.ipfs_upload"),
+                    files={
+                        "files": open(
+                            pathlib.Path(__file__).parent.absolute()
+                            / f"static/compressed/{secure_filename(video_file.filename)}",
+                            "rb",
+                        )
+                    },
+                )
             return Response(
                 "Video compressed successfully",
                 status=200,

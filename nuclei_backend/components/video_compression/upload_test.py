@@ -2,15 +2,27 @@ import pathlib
 
 import requests
 
-# make a post request to the /video_compression/upload/video endpoint
-# with the video file as the payload
-# the response should be a redirect to the /video_compression/upload/video endpoint
+multiple_files = [
+    (
+        "files",
+        (
+            "second.mkv",
+            open(pathlib.Path(__file__).parent.absolute() / "second.mkv", "rb"),
+            "video/mp4",
+        ),
+    ),
+    (
+        "files",
+        (
+            "test.mp4",
+            open(pathlib.Path(__file__).parent.absolute() / "test.mp4", "rb"),
+            "video/mp4",
+        ),
+    ),
+]
 
-# req_norm = requests.post(
-#     "http://10.1.1.41:5000/video_compression/upload/video",
-#     files={"file": open(pathlib.Path(__file__).parent.absolute() / "test.mp4", "rb")},
-# )
-req_comp = requests.post(
-    "http://10.1.1.41:5000/video_compression/compress/video",
-    files={"file": open(pathlib.Path(__file__).parent.absolute() / "test.mp4", "rb")},
+
+requests.post(
+    url="http://localhost:5000/storage/upload",
+    files=multiple_files,
 )

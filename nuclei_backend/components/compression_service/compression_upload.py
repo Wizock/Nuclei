@@ -1,25 +1,25 @@
-from nuclei_backend.components.compression_service.assemble_records import (
-    assemble_image_record,
-)
-from ...extension_globals.celery import celery
-from ...extension_globals.database import db
-from .main import compression_service_blueprint
-
 import base64
 import datetime
 import hashlib
 import os
 import pathlib
-from .models import media_index
 
 import sqlalchemy
 from flask import Response, redirect, render_template, request, url_for
 
 # import login required decorator
 from flask_login import login_required
-
 from PIL import Image
 from werkzeug.utils import secure_filename
+
+from nuclei_backend.components.compression_service.assemble_records import (
+    assemble_image_record,
+)
+
+from ...extension_globals.celery import celery
+from ...extension_globals.database import db
+from .main import compression_service_blueprint
+from .models import media_index
 
 
 @compression_service_blueprint.route("/upload", methods=["POST", "GET"])

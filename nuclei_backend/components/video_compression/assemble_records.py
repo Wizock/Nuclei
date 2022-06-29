@@ -1,10 +1,11 @@
 import base64
 import datetime
 import hashlib
+import logging
 import os
 import pathlib
 from typing import List
-import logging
+
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.datastructures import FileStorage, ImmutableMultiDict
 

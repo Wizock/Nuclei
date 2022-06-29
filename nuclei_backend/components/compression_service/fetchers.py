@@ -1,9 +1,3 @@
-from ...extension_globals.celery import celery
-from ...extension_globals.database import db
-from .main import compression_service_blueprint
-from .image_helpers import handle_image_incompatibilities
-from .models import media_index
-
 import base64
 import datetime
 import hashlib
@@ -18,6 +12,12 @@ from flask_login import login_required
 from flask_sqlalchemy import SQLAlchemy
 from PIL import Image
 from werkzeug.utils import secure_filename
+
+from ...extension_globals.celery import celery
+from ...extension_globals.database import db
+from .image_helpers import handle_image_incompatibilities
+from .main import compression_service_blueprint
+from .models import media_index
 
 
 @compression_service_blueprint.route("/delete/<int:id>/<string:name>")
