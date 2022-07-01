@@ -79,7 +79,7 @@ class Nuclei(Flask):
         """Import the database."""
         db.init_app(self)
         from nuclei_backend.components.authentication.models import User
-        from nuclei_backend.components.compression_service.models import media_index
+        from nuclei_backend.components.image_compression.models import media_index
         from nuclei_backend.components.storage_sequencer.model import FileTracker
         from nuclei_backend.components.video_compression.models import video_media
 
@@ -120,8 +120,8 @@ class Nuclei(Flask):
     def import_blueprints(self) -> None:
         """Import the blueprints."""
         from nuclei_backend.components.authentication.views import auth
-        from nuclei_backend.components.compression_service.main import (
-            compression_service_blueprint,
+        from nuclei_backend.components.image_compression.main import (
+            image_compression_blueprint,
         )
         from nuclei_backend.components.index_mvc.index_view import _index_view
         from nuclei_backend.components.storage_sequencer.main import (
@@ -131,7 +131,7 @@ class Nuclei(Flask):
             video_compression_blueprint,
         )
 
-        self.register_blueprint(compression_service_blueprint)
+        self.register_blueprint(image_compression_blueprint)
         self.register_blueprint(video_compression_blueprint)
         self.register_blueprint(auth)
         self.register_blueprint(storage_sequencer_controller)

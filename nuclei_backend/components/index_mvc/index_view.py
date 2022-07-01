@@ -10,7 +10,7 @@ _index_view = Blueprint(
     template_folder="templates",
     url_prefix="/",
 )
-from ..compression_service.models import media_index
+from ..image_compression.models import media_index
 from ..video_compression.models import video_media
 
 

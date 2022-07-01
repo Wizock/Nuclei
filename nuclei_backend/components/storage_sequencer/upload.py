@@ -18,7 +18,7 @@ from werkzeug.utils import secure_filename
 
 from ...extension_globals.celery import celery
 from ...extension_globals.database import db
-from ..compression_service.models import media_index
+from ..image_compression.models import media_index
 from .file_info_utils import allowed_file, return_file_path
 from .main import storage_sequencer_controller
 from .model import FileTracker

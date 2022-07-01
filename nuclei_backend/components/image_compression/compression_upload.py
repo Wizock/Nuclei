@@ -1,29 +1,35 @@
 import base64
 import datetime
 import hashlib
+import logging
 import os
 import pathlib
 
+import requests
 import sqlalchemy
 from flask import Response, redirect, render_template, request, url_for
 
 # import login required decorator
 from flask_login import login_required
 from PIL import Image
+
+# import request's exceptions
+from requests import exceptions
 from werkzeug.utils import secure_filename
 
-from nuclei_backend.components.compression_service.assemble_records import (
+from nuclei_backend.components.image_compression.assemble_records import (
     assemble_image_record,
 )
 
 from ...extension_globals.celery import celery
 from ...extension_globals.database import db
-from .main import compression_service_blueprint
+from ...extension_globals.redis import redis_client
+from .assemble_records import assemble_image_record
+from .main import image_compression_blueprint
 from .models import media_index
 
 
-@compression_service_blueprint.route("/upload", methods=["POST", "GET"])
-@login_required
+@image_compression_blueprint.route("/upload", methods=["POST", "GET"])
 @celery.task
 def upload() -> Response:
     if request.method == "POST":
@@ -54,8 +60,7 @@ def upload() -> Response:
         return render_template("upload_template.html")
 
 
-@compression_service_blueprint.route("/existing_compression/<int:id>/<string:name>")
-@login_required
+@image_compression_blueprint.route("/existing_compression/<int:id>/<string:name>")
 @celery.task
 def compress_uploaded(id: int, name: str) -> Response:
     # check if file exists in database of either compressed or uncompressed files
@@ -116,48 +121,65 @@ def compress_uploaded(id: int, name: str) -> Response:
         return redirect(f"/compression_service/display/compressed/{id}/{name}")
 
 
-@compression_service_blueprint.route("/compression_upload", methods=["POST", "GET"])
+@image_compression_blueprint.route("/compression_upload", methods=["POST", "GET"])
 @celery.task
 def compression_upload() -> Response:
     if request.method == "POST":
-        try:
-            file = request.files["file"]
-        except Exception as e:
-            return Response(
-                "No file selected",
-                status=302,
-                mimetype="text/plain",
-            )
+        images = request.files.getlist("files")
+        for image_file in images:
+            if image_file.filename == "":
+                return Response(
+                    "No file selected",
+                    status=400,
+                    mimetype="text/plain",
+                )
+            if image_file:
+                file_name = secure_filename(image_file.filename)
+                if (
+                    file_name.endswith(".jpg")
+                    or file_name.endswith(".png")
+                    or file_name.endswith(".jpeg")
+                    or file_name.endswith(".gif")
+                ):
+                    logging.info(f"video_file: {image_file}")
 
-        if file.filename == "":
-            return Response(
-                "No file selected",
-                status=400,
-                mimetype="text/plain",
-            )
-        if file:
-            file_name = secure_filename(file.filename)
-            if (
-                file_name.endswith(".jpg")
-                or file_name.endswith(".png")
-                or file_name.endswith(".jpeg")
-            ):
-                # create new CompressionService object
-                try:
-                    compression_service = assemble_image_record(file, True)
-                    # add new CompressionService object to database
-                    db.session.add(compression_service)
-                    # commit changes to database
-                    db.session.commit()
-                except sqlalchemy.exc.IntegrityError as e:
-                    return (
-                        redirect(f"/compression_service/display/compressed/{e}"),
-                        400,
-                    )
-                return redirect(url_for("index_endpoint.index_design"))
-            else:
-                return redirect(f"/compression_service/compression_upload"), 400
-        else:
-            return redirect(f"/compression_service/compression_upload"), 302
-    else:
-        return render_template("upload_template.html")
+                    if redis_client.get(image_file.filename):
+                        logging.info("checking redis")
+
+                    logging.info("video_file acceptence")
+
+                    redis_client.set(image_file.filename, "True")  #
+                    try:
+                        _ = assemble_image_record(image_file, True, True)
+                        db.session.add(_)
+                        db.session.commit()
+                    except sqlalchemy.exc.IntegrityError as e:
+                        return Response(
+                            "File already exists",
+                            status=400,
+                            mimetype="text/plain",
+                        )
+                    # post the video
+                    try:
+                        requests.post(
+                            url_for("storage_sequencer.ipfs_upload"),
+                            files={
+                                "files": open(
+                                    pathlib.Path(__file__).parent.absolute()
+                                    / f"static/compressed/{secure_filename(image_file.filename)}",
+                                    "rb",
+                                )
+                            },
+                        )
+                    except requests.exceptions.RequestException as e:
+                        logging.info(e)
+                        return Response(
+                            "Error: " + str(e),
+                            status=400,
+                            mimetype="text/plain",
+                        )
+                return Response(
+                    "Video compressed successfully",
+                    status=200,
+                    mimetype="text/plain",
+                )
