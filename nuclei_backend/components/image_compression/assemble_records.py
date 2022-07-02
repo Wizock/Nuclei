@@ -1,12 +1,9 @@
 import base64
 import datetime
 import hashlib
-import logging
 import os
 import pathlib
-from typing import List
 
-from flask_sqlalchemy import SQLAlchemy
 from PIL import Image
 from sqlalchemy.exc import IntegrityError, OperationalError, ProgrammingError
 from werkzeug.datastructures import FileStorage, ImmutableMultiDict
@@ -110,7 +107,7 @@ def assemble_image_record(
     except OSError as e:
         return e
 
-    except (IntegrityError or IntegrityError or ProgrammingError) as e:
+    except (IntegrityError or OperationalError or ProgrammingError) as e:
         return e
 
     return compression_service

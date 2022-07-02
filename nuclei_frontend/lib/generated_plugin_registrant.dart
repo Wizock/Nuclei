@@ -7,11 +7,15 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter_secure_storage_web/flutter_secure_storage_web.dart';
+import 'package:uni_links_web/uni_links_web.dart';
+import 'package:url_launcher_web/url_launcher_web.dart';
 
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 // ignore: public_member_api_docs
 void registerPlugins(Registrar registrar) {
   FlutterSecureStorageWeb.registerWith(registrar);
+  UniLinksPlugin.registerWith(registrar);
+  UrlLauncherPlugin.registerWith(registrar);
   registrar.registerMessageHandler();
 }

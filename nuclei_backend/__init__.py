@@ -45,7 +45,6 @@ class Nuclei(Flask):
             self.import_redis()
             self.import_cors()
             self.import_guard()
-            self.import_cookies()
             self.import_blueprints()
 
     def import_redis(self) -> None:
@@ -105,17 +104,6 @@ class Nuclei(Flask):
                 }
             },
         )
-
-    def import_cookies(self) -> None:
-        """Import the cookies."""
-        from nuclei_backend.extension_globals.cookies import login_manager
-
-        login_manager.init_app(self)
-        from nuclei_backend.components.authentication.models import User
-
-        @login_manager.user_loader
-        def load_user(user_id):
-            return User.query.get(user_id)
 
     def import_blueprints(self) -> None:
         """Import the blueprints."""

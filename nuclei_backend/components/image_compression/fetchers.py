@@ -1,28 +1,16 @@
-import base64
-import datetime
-import hashlib
 import os
-import pathlib
 
-import sqlalchemy
-from flask import Blueprint, Response, redirect, render_template, request, url_for
-
-# import login required decorator
-from flask_login import login_required
-from flask_sqlalchemy import SQLAlchemy
-from PIL import Image
-from werkzeug.utils import secure_filename
+from flask import Response, redirect, url_for
 
 from ...extension_globals.celery import celery
 from ...extension_globals.database import db
-from .image_helpers import handle_image_incompatibilities
 from .main import compression_service_blueprint
 from .models import media_index
 
 
 @compression_service_blueprint.route("/delete/<int:id>/<string:name>")
 @celery.task
-def delete_id(id: int, name: str):
+def delete_id(id: int, name: str) -> Response:
     # query all compression services
     compressed = media_index.query.filter_by(id=id, file_name=name).first()
     if not compressed:

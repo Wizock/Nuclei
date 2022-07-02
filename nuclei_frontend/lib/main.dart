@@ -1,17 +1,23 @@
 // ignore_for_file: deprecated_member_use, unnecessary_const
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'auth/login.dart';
 import 'interface/home.dart';
 import 'auth/register.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+      url: 'https://xyzcompany.supabase.co', anonKey: 'public-anon-key');
+
   runApp(const Nuclei());
 }
 
 class Nuclei extends StatelessWidget {
   const Nuclei({Key? key}) : super(key: key);
+
   @override
   // check if the user is logged in by checking the local storage
 

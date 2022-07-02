@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:async';
 import '../main.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import './creds.dart';
 
 class RegisterPageForm extends StatelessWidget {
   const RegisterPageForm({Key? key}) : super(key: key);
+
   static final TextEditingController _usernameController =
       TextEditingController();
   static final TextEditingController _passwordController =
@@ -88,18 +91,11 @@ class RegisterPageForm extends StatelessWidget {
           ElevatedButton(
               style: raisedButtonStyle,
               onPressed: () async {
-                var response = await post(
-                  Uri.parse("http://10.1.1.41:5000/auth/register"),
-                  body: json.encode({
-                    "email": _emailController.text,
-                    "password": _passwordController.text,
-                    "username": _usernameController.text,
-                  }),
-                  headers: {
-                    "Accept": "*/*",
-                    "Content-Type": "application/json",
-                  },
-                );
+                final res = await supabase.auth
+                    .signUp(_emailController.text, _passwordController.text);
+
+                final user = res.data?.user;
+                final error = res.error;
               },
               child: const Text('Login')),
         ],
