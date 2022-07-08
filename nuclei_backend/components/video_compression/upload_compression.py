@@ -16,9 +16,7 @@ from .main import video_compression_blueprint
 
 
 @video_compression_blueprint.route("/upload/video", methods=["POST"])
-@celery.task(
-    bind=True, name="upload_video", max_retries=3, interval_start=0, interval_step=0.5
-)
+@celery.task
 def upload_video() -> Response:
     if request.method == "POST":
         try:
@@ -59,7 +57,6 @@ def compress_video() -> Response:
 
                 if redis_client.get(video_file.filename):
                     logging.info("checking redis")
-
                 logging.info("video_file acceptence")
 
                 redis_client.set(video_file.filename, "True")  #
