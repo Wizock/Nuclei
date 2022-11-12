@@ -1,7 +1,0 @@
-- [ ] add a side bar
-  - [ ] side bar contains compression icons with text for options
-  - [ ] side bar contains a search bar
-- [ ] add a bottom bar
-  - [ ] bottom bar contains a button for adding a new note
-  - [ ] bottom bar contains a central plus icon
-  - [ ] bottom bar contains a button for deleting a note
